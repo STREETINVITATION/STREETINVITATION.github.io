@@ -195,8 +195,6 @@ body::after{content:"";position:fixed;inset:0;z-index:8999;pointer-events:none;b
 .day__video{opacity:0;filter:grayscale(1) contrast(1.4) brightness(.45) saturate(1.1);transform:scale(1.04);transition:opacity .5s var(--ease),transform 8s var(--ease);pointer-events:none;z-index:1}
 .day__video.playing{opacity:1;transform:scale(1.12)}
 .day.has-video:hover .day__photo img{opacity:0}
-.day.has-video::after{content:"VIDEO · HOVER";position:absolute;top:1rem;left:1rem;z-index:4;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.28em;color:#fff;background:var(--grad);padding:.3rem .55rem;border-radius:999px;box-shadow:var(--glow-red);opacity:.85;pointer-events:none;animation:videoTag 2s ease-in-out infinite}
-@keyframes videoTag{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
 .day__photo-overlay{position:absolute;inset:0;z-index:2;background:linear-gradient(120deg,rgba(5,5,7,.96) 0%,rgba(5,5,7,.75) 35%,rgba(255,0,64,.35) 75%,rgba(255,42,157,.45) 100%)}
 .day:nth-child(even) .day__photo-overlay{background:linear-gradient(60deg,rgba(5,5,7,.96) 0%,rgba(5,5,7,.75) 35%,rgba(255,42,157,.35) 75%,rgba(255,0,64,.45) 100%)}
 .day__photo-scan{position:absolute;inset:0;z-index:3;background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.02) 0 1px,transparent 1px 4px);mix-blend-mode:overlay;pointer-events:none}
@@ -313,9 +311,14 @@ body::after{content:"";position:fixed;inset:0;z-index:8999;pointer-events:none;b
 .map-panel__head{display:flex;align-items:center;gap:.45rem;padding:.85rem .9rem;border-bottom:1px solid var(--line);background:rgba(5,5,8,.55);flex-shrink:0}
 .map-panel__title{flex:1;font-family:var(--font-head);font-size:.9rem;letter-spacing:-.005em;text-align:center;line-height:1.15;font-weight:600}
 .map-panel__title b{display:block;font-family:var(--font-mono);font-size:.58rem;letter-spacing:.22em;color:var(--text-mute);font-weight:500;text-transform:uppercase;margin-bottom:.15rem}
-.map-panel__nav{width:32px;height:32px;border:1px solid var(--line);border-radius:50%;color:var(--text);background:var(--bg-3);display:grid;place-items:center;font-size:1.05rem;transition:all .25s;cursor:pointer;flex-shrink:0}
-.map-panel__nav:hover:not(:disabled){background:var(--grad);color:#fff;border-color:transparent;box-shadow:var(--glow-red)}
-.map-panel__nav:disabled{opacity:.35;cursor:default}
+.map-panel__nav{width:34px;height:34px;border:1px solid var(--line);border-radius:50%;color:var(--text);background:var(--bg-3);display:grid;place-items:center;font-size:1.05rem;transition:all .25s;cursor:pointer;flex-shrink:0}
+.map-panel__nav:hover:not(:disabled){background:var(--dc,var(--red));color:#fff;border-color:transparent;box-shadow:0 4px 14px -4px var(--dc,var(--red))}
+.map-panel__nav:disabled{opacity:.3;cursor:default}
+
+.map-panel__stopnav{display:flex;align-items:center;gap:.5rem;padding:.65rem .8rem;border-bottom:1px solid var(--line);background:linear-gradient(90deg,var(--dc,var(--red)) 0%,transparent 20%,transparent 80%,var(--dc,var(--red)) 100%);background-size:100% 3px;background-repeat:no-repeat;background-position:bottom}
+.map-panel__stopinfo{flex:1;min-width:0;text-align:center;line-height:1.15;font-family:var(--font-mono)}
+.map-panel__stopinfo b{display:block;font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:var(--text-mute);font-weight:500;margin-bottom:.15rem}
+.map-panel__stopinfo span{display:block;font-family:var(--font-head);font-size:.85rem;font-weight:600;color:var(--text);letter-spacing:-.005em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 .map-panel__body{flex:1;overflow-y:auto;padding:.55rem .6rem;display:flex;flex-direction:column;gap:.35rem;min-height:0}
 .map-panel__body::-webkit-scrollbar{width:6px}
@@ -337,6 +340,8 @@ body::after{content:"";position:fixed;inset:0;z-index:8999;pointer-events:none;b
 .dayCard.is-active .dayCard__stops{display:flex;max-height:400px}
 .dayCard__stop{display:flex;align-items:center;gap:.45rem;padding:.3rem .35rem;border-radius:6px;cursor:pointer;transition:background .2s;text-align:left;background:transparent;border:0;color:inherit;font:inherit;width:100%}
 .dayCard__stop:hover{background:rgba(255,255,255,.04)}
+.dayCard__stop.is-active{background:rgba(255,255,255,.06);outline:1px solid var(--dc)}
+.dayCard__stop.is-active .dayCard__stopName{color:var(--dc)}
 .dayCard__stopPin{flex-shrink:0;width:22px;height:22px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--dc);border:2px solid #fff;display:grid;place-items:center;position:relative;box-shadow:0 2px 4px rgba(0,0,0,.4)}
 .dayCard__stopPin span{transform:rotate(45deg);color:#fff;font-family:var(--font-head);font-weight:700;font-size:.6rem;line-height:1}
 .dayCard__stopInfo{flex:1;line-height:1.1;min-width:0}
@@ -595,7 +600,7 @@ body::after{content:"";position:fixed;inset:0;z-index:8999;pointer-events:none;b
 <section class="section" id="days">
   <header class="section__head">
     <div><div class="section__eyebrow reveal">Lineup · 9 Days</div><h2 class="section__title reveal">Jeder Tag<br>eine <em>Line.</em></h2></div>
-    <p class="section__lede reveal reveal--2">Jeder Tag ist eine eigene Bühne. Hover über eine Tages-Karte startet das Video, Klick auf ein Thumbnail öffnet die Galerie.</p>
+    <p class="section__lede reveal reveal--2">Jeder Tag ist eine eigene Bühne. Klick auf ein Thumbnail öffnet Bild oder Video in der Galerie.</p>
   </header>
   <div class="days" id="daysList"></div>
 </section>
@@ -616,9 +621,12 @@ body::after{content:"";position:fixed;inset:0;z-index:8999;pointer-events:none;b
   <div class="map-wrap reveal">
     <aside class="map-panel" aria-label="Tagesauswahl">
       <div class="map-panel__head">
-        <button class="map-panel__nav" id="mapPrev" aria-label="Vorheriger Tag">‹</button>
         <div class="map-panel__title" id="mapPanelTitle"><b>Ansicht</b>Alle Spots</div>
-        <button class="map-panel__nav" id="mapNext" aria-label="Nächster Tag">›</button>
+      </div>
+      <div class="map-panel__stopnav" id="mapStopNav" hidden>
+        <button class="map-panel__nav" id="stopPrev" aria-label="Vorheriger Stop">‹</button>
+        <div class="map-panel__stopinfo" id="stopInfo">—</div>
+        <button class="map-panel__nav" id="stopNext" aria-label="Nächster Stop">›</button>
       </div>
       <div class="map-panel__body" id="mapPanelBody"></div>
       <div class="map-panel__foot">
@@ -1265,9 +1273,12 @@ function arrowIcon(angle, color){
     html:`<div class="route-arrow" style="--dc:${color};transform:rotate(${angle-90}deg)"></div>` });
 }
 
-/* Tages-Layer (farbig, mit Start/Ende-Indikatoren) */
+/* Tages-Layer (farbig, mit Start/Ende-Indikatoren)
+   Routing via OSRM (cycling) — reale Straßen statt Luftlinie.
+   Fallback auf Luftlinie, falls Request fehlschlägt. */
 const dayLayers = [];
 const dayMeta = [];
+const dayRouteRefs = []; // { underlay, main, arrows, straightCoords }
 eventDays.forEach((d, i) => {
   const group = L.layerGroup();
   const c = dayColor(d.n);
@@ -1282,16 +1293,65 @@ eventDays.forEach((d, i) => {
     marker.addTo(group);
     latlngs.push(s.coords);
   });
+  let refs = null;
   if(latlngs.length > 1){
-    L.polyline(latlngs, { color:"#ffffff", weight:7, opacity:.85, lineJoin:"round", lineCap:"round" }).addTo(group);
-    L.polyline(latlngs, { color:c, weight:4, opacity:1, lineJoin:"round", lineCap:"round", className:"route-main" }).addTo(group);
+    const underlay = L.polyline(latlngs, { color:"#ffffff", weight:7, opacity:.85, lineJoin:"round", lineCap:"round" }).addTo(group);
+    const main = L.polyline(latlngs, { color:c, weight:4, opacity:1, lineJoin:"round", lineCap:"round", className:"route-main" }).addTo(group);
+    const arrowGroup = L.layerGroup().addTo(group);
     for(let i2=1; i2<latlngs.length; i2++){
       const a = latlngs[i2-1], b = latlngs[i2];
-      L.marker(midPoint(a,b), { icon: arrowIcon(bearingDeg(a,b), c), interactive:false }).addTo(group);
+      L.marker(midPoint(a,b), { icon: arrowIcon(bearingDeg(a,b), c), interactive:false }).addTo(arrowGroup);
     }
+    refs = { underlay, main, arrowGroup, straightCoords:latlngs, color:c };
   }
+  dayRouteRefs.push(refs);
   dayLayers.push(group);
   dayMeta.push({ color:c, km: latlngs.length>1 ? routeKm(latlngs) : 0, stops: d.stops.length, poiCount: poiNearDay(d, 1.2).length });
+});
+
+/* OSRM Cycling-Routen im Hintergrund laden (reale Straßen) */
+async function fetchOsrmRoute(latlngs){
+  const coords = latlngs.map(c => `${c[1]},${c[0]}`).join(';');
+  const url = `https://router.project-osrm.org/route/v1/cycling/${coords}?overview=full&geometries=geojson`;
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), 9000);
+  try {
+    const res = await fetch(url, { signal: ctrl.signal });
+    clearTimeout(timer);
+    if(!res.ok) return null;
+    const data = await res.json();
+    if(!data.routes || !data.routes[0]) return null;
+    return {
+      coords: data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]),
+      distanceKm: data.routes[0].distance / 1000
+    };
+  } catch(_) { clearTimeout(timer); return null; }
+}
+function midSampled(coords, targetCount){
+  if(coords.length < 3) return [];
+  const out = [];
+  const step = Math.max(1, Math.floor(coords.length / (targetCount+1)));
+  for(let k=step; k<coords.length-1; k+=step) out.push(coords[k]);
+  return out.slice(0, targetCount);
+}
+dayRouteRefs.forEach(async (refs, i) => {
+  if(!refs) return;
+  const result = await fetchOsrmRoute(refs.straightCoords);
+  if(!result || result.coords.length < 2) return;
+  refs.underlay.setLatLngs(result.coords);
+  refs.main.setLatLngs(result.coords);
+  // Pfeile neu entlang der echten Route verteilen
+  refs.arrowGroup.clearLayers();
+  const samples = midSampled(result.coords, Math.min(6, Math.max(refs.straightCoords.length-1, 3)));
+  samples.forEach((pt, k) => {
+    const prev = result.coords[Math.max(0, Math.floor(result.coords.length * (k+0.5) / (samples.length+1)) - 1)];
+    const next = result.coords[Math.min(result.coords.length-1, Math.floor(result.coords.length * (k+0.5) / (samples.length+1)) + 1)];
+    L.marker(pt, { icon: arrowIcon(bearingDeg(prev, next), refs.color), interactive:false }).addTo(refs.arrowGroup);
+  });
+  // Aktualisierte Distanz übernehmen
+  dayMeta[i].km = result.distanceKm;
+  // Panel/Legende refreshen, falls dieser Tag gerade aktiv ist
+  if(activeDayIdx === i){ renderLegend(); renderPanel(); }
 });
 
 /* All-Spots-Layer · jeder Spot in seiner Primärfarbe */
@@ -1356,7 +1416,7 @@ function renderPanel(){
     btn.style.setProperty("--dc", meta.color);
     const stopsHtml = d.stops.map((s, si) => {
       const seq = d.stops.length>1 ? (si+1) : "•";
-      return `<button class="dayCard__stop" data-stop-day="${i}" data-stop-lat="${s.coords[0]}" data-stop-lng="${s.coords[1]}">
+      return `<button class="dayCard__stop${activeDayIdx===i && activeStopIdx===si?' is-active':''}" data-stop-day="${i}" data-stop-idx="${si}">
         <span class="dayCard__stopPin" style="--dc:${meta.color}"><span>${seq}</span></span>
         <span class="dayCard__stopInfo">
           <span class="dayCard__stopName">${s.title}</span>
@@ -1384,20 +1444,14 @@ function renderPanel(){
     panelBody.appendChild(btn);
   });
 
-  // Stop-Klicks
+  // Stop-Klicks im Panel
   panelBody.querySelectorAll(".dayCard__stop").forEach(b => {
     b.addEventListener("click", e => {
       e.stopPropagation();
-      const di = +b.dataset.stopDay, lat = +b.dataset.stopLat, lng = +b.dataset.stopLng;
-      if(activeDayIdx !== di) showDay(di);
-      setTimeout(() => {
-        map.flyTo([lat,lng], 16, { duration:.8 });
-        setTimeout(() => {
-          (dayLayers[di]).eachLayer(l => {
-            if(l.getLatLng && Math.abs(l.getLatLng().lat-lat)<.001 && Math.abs(l.getLatLng().lng-lng)<.001) l.openPopup();
-          });
-        }, 700);
-      }, 80);
+      const di = +b.dataset.stopDay, si = +b.dataset.stopIdx;
+      if(activeDayIdx !== di){ showDay(di); }
+      activeStopIdx = si;
+      focusStop();
     });
   });
 }
@@ -1435,19 +1489,49 @@ function renderLegend(){
   }
 }
 
-function updateNavButtons(){
-  document.getElementById("mapPrev").disabled = activeDayIdx <= -1;
-  document.getElementById("mapNext").disabled = activeDayIdx >= eventDays.length-1;
+const stopNavEl = document.getElementById("mapStopNav");
+const stopInfoEl = document.getElementById("stopInfo");
+let activeStopIdx = 0;
+
+function updatePanelHead(){
   if(activeDayIdx === -1){
-    panelTitle.innerHTML = `<b>Ansicht</b>Alle Spots`;
+    panelTitle.innerHTML = `<b>Ansicht</b>Alle Spots · Übersicht`;
+    stopNavEl.hidden = true;
   } else {
     const d = eventDays[activeDayIdx];
+    const m = dayMeta[activeDayIdx];
     panelTitle.innerHTML = `<b>Tag ${d.n} · ${d.date.split(' · ')[0]}</b>${d.tag}`;
+    stopNavEl.hidden = false;
+    stopNavEl.style.setProperty("--dc", m.color);
+    const s = d.stops[activeStopIdx];
+    const total = d.stops.length;
+    stopInfoEl.innerHTML = `<b>Stop ${activeStopIdx+1} / ${total}${s.time?` · ${s.time}`:''}</b><span>${s.title}</span>`;
+    document.getElementById("stopPrev").disabled = activeStopIdx <= 0;
+    document.getElementById("stopNext").disabled = activeStopIdx >= total-1;
   }
+}
+
+function focusStop(){
+  if(activeDayIdx === -1) return;
+  const d = eventDays[activeDayIdx];
+  const s = d.stops[activeStopIdx];
+  map.flyTo(s.coords, 15.5, { duration:.8 });
+  setTimeout(() => {
+    dayLayers[activeDayIdx].eachLayer(l => {
+      if(l.getLatLng && Math.abs(l.getLatLng().lat-s.coords[0])<.001 && Math.abs(l.getLatLng().lng-s.coords[1])<.001) l.openPopup();
+    });
+  }, 650);
+  updatePanelHead();
+  // Active-Stop-Highlight in der Liste aktualisieren
+  panelBody.querySelectorAll(".dayCard__stop").forEach(b => {
+    b.classList.toggle("is-active",
+      +b.dataset.stopDay === activeDayIdx && +b.dataset.stopIdx === activeStopIdx);
+  });
 }
 
 function showDay(idx){
   activeDayIdx = idx;
+  activeStopIdx = 0;
   dayLayers.forEach(l => map.removeLayer(l));
   map.removeLayer(allLayer);
   if(idx === -1){
@@ -1461,18 +1545,20 @@ function showDay(idx){
   renderPanel();
   renderBar();
   renderLegend();
-  updateNavButtons();
+  updatePanelHead();
   renderPois();
-  // Aktive Karte ins Zentrum des Sidebar-Scrolls holen
   const active = panelBody.querySelector(".dayCard.is-active, .allCard.is-active");
   if(active) active.scrollIntoView({ behavior:"smooth", block:"nearest" });
 }
 
-document.getElementById("mapPrev").addEventListener("click", () => {
-  if(activeDayIdx > -1) showDay(activeDayIdx - 1);
+document.getElementById("stopPrev").addEventListener("click", () => {
+  if(activeDayIdx === -1) return;
+  if(activeStopIdx > 0){ activeStopIdx--; focusStop(); }
 });
-document.getElementById("mapNext").addEventListener("click", () => {
-  if(activeDayIdx < eventDays.length - 1) showDay(activeDayIdx + 1);
+document.getElementById("stopNext").addEventListener("click", () => {
+  if(activeDayIdx === -1) return;
+  const total = eventDays[activeDayIdx].stops.length;
+  if(activeStopIdx < total-1){ activeStopIdx++; focusStop(); }
 });
 
 /* Initial render */
@@ -1480,7 +1566,7 @@ allLayer.addTo(map);
 renderPanel();
 renderBar();
 renderLegend();
-updateNavButtons();
+updatePanelHead();
 // POI-Counts
 document.getElementById("poiCountFood").textContent = `(${pois.filter(p=>p.type==="food").length})`;
 document.getElementById("poiCountWc").textContent = `(${pois.filter(p=>p.type==="wc").length})`;
