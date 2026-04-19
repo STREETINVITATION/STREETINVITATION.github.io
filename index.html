@@ -703,7 +703,7 @@ const spotsMaster = {
   3:  { title:"Heizhaus · Indoor",              addr:"Alte Salzstraße 63, 04209 Leipzig",    coords:[51.3185,12.2838], desc:"Indoor-Street & Flat. Ramps, Rails, Free Ride, Game of Uni. Die Indoor-Homebase.",              mapsUrl:"https://maps.app.goo.gl/JShsajAzJpGFTfQu9?g_st=ac", img:IMG.heiz1 },
   4:  { title:"Giezer Skatespot DIY",           addr:"Naumburger Str. 44, 04229 Leipzig",    coords:[51.3110,12.3380], desc:"Selbstgebauter Beton von der Community. Raue Surfaces, Hips, Banks — echter DIY-Charakter.",    mapsUrl:"https://maps.app.goo.gl/FfhY9LhZF2jNgfQh6?g_st=ac", img:IMG.geizer1 },
   5:  { title:"Biomare Südvorstadt",            addr:"Karl-Liebknecht-Str. 27, 04107 Leipzig", coords:[51.3292,12.3742], desc:"Flat & Street. Zwei 3er-Stairs plus 7-Stair mit Downrail. Technisches Gelände.",                mapsUrl:"https://maps.app.goo.gl/Qh9e5h8DKNPHF5BK7",         img:IMG.biomare },
-  6:  { title:"Propsteikirche Trinitatis",      addr:"Nonnenmühlgasse 2, 04107 Leipzig",     coords:[51.3353,12.3735], desc:"Moderne Sakralarchitektur. Geschliffene Kanten, lange Lines, glattes Pflaster.",               mapsUrl:"https://maps.app.goo.gl/n7dXYNUHT4Hd77uZ6?g_st=ac", img:IMG.dyn },
+  6:  { title:"Propsteikirche Trinitatis",      addr:"Nonnenmühlgasse 2, 04107 Leipzig",     coords:[51.3353,12.3735], desc:"Moderne Sakralarchitektur. Geschliffene Kanten, lange Lines, glattes Pflaster.",               mapsUrl:"https://maps.app.goo.gl/n7dXYNUHT4Hd77uZ6?g_st=ac", img:IMG.bg },
   7:  { title:"Moritzbastei",                   addr:"Kurt-Masur-Platz 1, 04109 Leipzig",    coords:[51.3387,12.3795], desc:"Historische Festungsmauer, Stein-Ledges, Treppen. Mitten im Zentrum.",                         mapsUrl:"https://maps.app.goo.gl/m18f2n53uQgcfMo48",         img:IMG.titel },
   8:  { title:"Augustusplatz",                  addr:"Augustusplatz, 04109 Leipzig",         coords:[51.3396,12.3810], desc:"Großer Platz im Stadtzentrum. Weite Flächen für Flat, Kanten für Street.",                     mapsUrl:"https://maps.app.goo.gl/Km7ESNiwQyAfe6mk9",         img:IMG.bg },
   9:  { title:"Skatepark Leipzig · AOK",        addr:"Anton-Bruckner-Allee 1, 04229 Leipzig", coords:[51.3267,12.3547], desc:"Offener Skatepark. Bowl, Street-Plaza, Rails. Feuerstelle am AOK-Spielplatz direkt nebenan.",   mapsUrl:"https://maps.app.goo.gl/3BtepMxP2pX6VbKQ6",         img:IMG.geizer2 },
@@ -719,8 +719,8 @@ const eventDays = [
   { id:"day-1", n:1, date:"Sa · 08.08.2026", tag:"ANKOMMEN", title:"Arrival &amp; <span class='accent'>Set-Up</span>",
     description:"Ankunft an der Homebase nach der Unicon. Zelte auf, Equipment sortieren, Crew kennenlernen. Am Abend Selbstverpflegung, Foodliste für Tag 2.",
     pretext:"Tag null zählt auch.",
-    image:IMG.bg, videos:[],
-    gallery:[IMG.titel, IMG.see, IMG.folke, IMG.bg],
+    image:IMG.folke, videos:[],
+    gallery:[IMG.folke, IMG.dyn, IMG.titel, IMG.see, IMG.bg],
     summary:[{k:"Treffpunkt",v:"Pleißenhof"},{k:"Ankunft",v:"flexibel"},{k:"Verpflegung",v:"Selbst"},{k:"Vibe",v:"Set-Up"}],
     stops:[ spot(1,"ab Nachmittag") ] },
 
@@ -728,7 +728,7 @@ const eventDays = [
     description:"Community-Frühstück. 12 Uhr Roll-Start am Richard-Wagner-Platz, Sport-Exploring durch die Innenstadt. Nachmittag Heizhaus — Street und Flat indoor. Ab 20 Uhr Homebase.",
     pretext:"Erster echter Ride-Tag.",
     image:IMG.heiz1, videos:[VID.heiz1, VID.heiz2],
-    gallery:[IMG.heiz1, IMG.heiz2, IMG.bg, IMG.dyn],
+    gallery:[IMG.heiz1, IMG.heiz2, IMG.bg, IMG.titel],
     summary:[{k:"12:00",v:"Blaza"},{k:"Nachmittag",v:"Heizhaus"},{k:"Stil",v:"Street · Flat"},{k:"Return",v:"20:00"}],
     stops:[ spot(2,"12:00"), spot(3,"Nachmittag"), spot(1,"ab 20:00") ] },
 
@@ -744,7 +744,7 @@ const eventDays = [
     description:"Big Day. Biomare Stairs, Propsteikirche, Moritzbastei, Augustusplatz, Skatepark Leipzig. Abends Grillen. 23 Uhr zurück.",
     pretext:"Fünf Spots. Ein Tag.",
     image:IMG.biomare, videos:[VID.moritz1, VID.moritz2, VID.moritz3],
-    gallery:[IMG.biomare, IMG.dyn, IMG.bg, IMG.folke, IMG.mdr4, IMG.titel, IMG.geizer2, IMG.see],
+    gallery:[IMG.biomare, IMG.mdr4, IMG.bg, IMG.mdr5, IMG.titel, IMG.geizer2, IMG.see, IMG.mdr6],
     summary:[{k:"Spots",v:"5 × Leipzig"},{k:"Highlight",v:"7-Stair Downrail"},{k:"21:00",v:"Grillen"},{k:"Return",v:"23:00"}],
     stops:[ spot(5,"12:00"), spot(6,"13:00"), spot(7,"15:00"), spot(8,"16:00"), spot(9,"17:00"), spot(1,"23:00") ] },
 
@@ -752,7 +752,7 @@ const eventDays = [
     description:"14 Uhr Conne Island. Chill all day, Gelände erkunden, locker rollen. 18 Uhr gemeinsames Essen an der Herderstraße. 20 Uhr Homebase.",
     pretext:"Recovery. Crew Time.",
     image:IMG.conne, videos:[VID.conne1, VID.conne2, VID.conne3],
-    gallery:[IMG.conne, IMG.see, IMG.folke, IMG.dyn],
+    gallery:[IMG.conne, IMG.see, IMG.biomare, IMG.titel],
     summary:[{k:"14:00",v:"Conne Island"},{k:"18:00",v:"Essen"},{k:"Level",v:"Chill"},{k:"Return",v:"20:00"}],
     stops:[ spot(10,"14:00"), spot(11,"18:00"), spot(1,"20:00") ] },
 
@@ -775,8 +775,8 @@ const eventDays = [
   { id:"day-8", n:8, date:"Sa · 15.08.2026", tag:"FINALE", title:"Ride Together &amp; <span class='accent'>Final Jam</span>",
     description:"Schredderei-Tour — alle zusammen, BMX, Skate, Roller, Einrad. Sechs Stunden durch Leipzig. 18 Uhr gemeinsames Essen. 19 Uhr Final Jam open end.",
     pretext:"Das Finale.",
-    image:IMG.dyn, videos:[VID.conne3, VID.conne1, VID.conne2],
-    gallery:[IMG.dyn, IMG.folke, IMG.titel, IMG.bg, IMG.biomare, IMG.conne],
+    image:IMG.titel, videos:[VID.conne3, VID.conne1, VID.conne2],
+    gallery:[IMG.titel, IMG.bg, IMG.biomare, IMG.conne, IMG.geizer1, IMG.heiz1],
     summary:[{k:"12:00",v:"Schredderei"},{k:"Dauer",v:"6 h ride"},{k:"18:00",v:"Essen"},{k:"19:00+",v:"Open end"}],
     stops:[ spot(11,"18:00"), spot(1,"19:00") ] },
 
@@ -784,7 +784,7 @@ const eventDays = [
     description:"Letztes Frühstück am Community-Tisch. Lager abbauen. 12 Uhr Abreise. Danke Leipzig.",
     pretext:"Danke.",
     image:IMG.see, videos:[],
-    gallery:[IMG.see, IMG.folke, IMG.titel, IMG.bg],
+    gallery:[IMG.see, IMG.titel, IMG.bg, IMG.biomare],
     summary:[{k:"Start",v:"Frühstück"},{k:"12:00",v:"Abreise"},{k:"Ort",v:"Pleißenhof"},{k:"Next",v:"2027?"}],
     stops:[ spot(1,"bis 12:00") ] }
 ];
