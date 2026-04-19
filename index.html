@@ -95,7 +95,7 @@ body::after{content:"";position:fixed;inset:0;z-index:8999;pointer-events:none;b
 }
 
 /* HERO */
-.hero{position:relative;min-height:100svh;overflow:hidden;padding:7rem 1.25rem 3rem;display:flex;align-items:flex-end;background:radial-gradient(60% 55% at 75% 30%,rgba(255,42,157,.12),transparent 60%),radial-gradient(45% 40% at 20% 85%,rgba(255,0,64,.14),transparent 60%),linear-gradient(180deg,var(--ink) 0%,var(--bg) 100%)}
+.hero{position:relative;min-height:min(78svh,820px);overflow:hidden;padding:5.5rem 1.25rem 2.5rem;display:flex;align-items:flex-end;background:radial-gradient(60% 55% at 75% 30%,rgba(255,42,157,.12),transparent 60%),radial-gradient(45% 40% at 20% 85%,rgba(255,0,64,.14),transparent 60%),linear-gradient(180deg,var(--ink) 0%,var(--bg) 100%)}
 .hero__grid{position:absolute;inset:0;z-index:0;opacity:.4;background-image:linear-gradient(to right,rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,.035) 1px,transparent 1px);background-size:70px 70px;mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%)}
 .hero__image{position:absolute;inset:0;z-index:1;overflow:hidden}
 .hero__image img{width:100%;height:100%;object-fit:cover;filter:grayscale(.7) contrast(1.25) brightness(.5) hue-rotate(-8deg);mix-blend-mode:screen;opacity:.65;transform:translateY(var(--parallax,0)) scale(1.08);transition:transform .2s linear}
@@ -103,11 +103,11 @@ body::after{content:"";position:fixed;inset:0;z-index:8999;pointer-events:none;b
 .hero__image::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(255,0,64,.35) 0%,transparent 40%,rgba(255,42,157,.35) 100%);mix-blend-mode:color;z-index:3}
 
 .hero__inner{position:relative;z-index:4;width:100%;max-width:1400px;margin:0 auto}
-.hero__meta{display:flex;gap:1.25rem;flex-wrap:wrap;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:var(--text-dim);margin-bottom:1.75rem}
+.hero__meta{display:flex;gap:1.25rem;flex-wrap:wrap;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.28em;text-transform:uppercase;color:var(--text-dim);margin-bottom:1.1rem}
 .hero__meta span{display:flex;align-items:center;gap:.5rem}
 .hero__meta span::before{content:"";width:6px;height:6px;background:var(--red);border-radius:50%;box-shadow:0 0 10px var(--red)}
 
-.hero__title{font-family:var(--font-head);font-size:clamp(3.2rem,15vw,13rem);line-height:.82;letter-spacing:-.045em;text-transform:uppercase;margin-bottom:1.25rem;color:var(--text)}
+.hero__title{font-family:var(--font-head);font-size:clamp(2.6rem,11vw,9.5rem);line-height:.82;letter-spacing:-.045em;text-transform:uppercase;margin-bottom:1rem;color:var(--text)}
 .hero__title .l{display:block;overflow:hidden;padding:.08em 0}
 .hero__title .l>span{display:inline-block;transform:translateY(110%);animation:lift 1.05s var(--ease-out) forwards}
 .hero__title .l:nth-child(1)>span{animation-delay:.25s}
@@ -115,7 +115,7 @@ body::after{content:"";position:fixed;inset:0;z-index:8999;pointer-events:none;b
 .hero__title .l:nth-child(2)>span i{font-style:italic;color:var(--text);-webkit-text-fill-color:var(--text)}
 @keyframes lift{to{transform:translateY(0)}}
 
-.hero__tag{max-width:640px;font-size:clamp(1rem,1.3vw,1.2rem);color:var(--text-dim);margin-bottom:2.25rem;line-height:1.6;opacity:0;transform:translateY(20px);animation:fadeUp 1s var(--ease-out) .8s forwards}
+.hero__tag{max-width:580px;font-size:clamp(.95rem,1.2vw,1.1rem);color:var(--text-dim);margin-bottom:1.6rem;line-height:1.55;opacity:0;transform:translateY(20px);animation:fadeUp 1s var(--ease-out) .8s forwards}
 @keyframes fadeUp{to{opacity:1;transform:none}}
 .hero__cta{display:flex;gap:.75rem;flex-wrap:wrap;opacity:0;transform:translateY(20px);animation:fadeUp 1s var(--ease-out) .95s forwards}
 
@@ -130,7 +130,7 @@ body::after{content:"";position:fixed;inset:0;z-index:8999;pointer-events:none;b
 .btn svg{width:14px;height:14px;transition:transform .3s}
 .btn:hover svg{transform:translateX(4px)}
 
-.hero__stats{display:grid;grid-auto-flow:column;gap:2rem;margin-top:3.5rem;padding-top:2rem;border-top:1px solid var(--line);font-family:var(--font-mono);opacity:0;transform:translateY(20px);animation:fadeUp 1s var(--ease-out) 1.1s forwards}
+.hero__stats{display:grid;grid-auto-flow:column;gap:1.6rem;margin-top:2.25rem;padding-top:1.4rem;border-top:1px solid var(--line);font-family:var(--font-mono);opacity:0;transform:translateY(20px);animation:fadeUp 1s var(--ease-out) 1.1s forwards}
 .hero__stat{min-width:90px;position:relative}
 .hero__stat b{display:block;font-size:clamp(1.8rem,3vw,2.6rem);font-family:var(--font-head);line-height:1;letter-spacing:-.03em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hero__stat span{font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--text-dim);margin-top:.35rem;display:block}
@@ -301,18 +301,27 @@ body::after{content:"";position:fixed;inset:0;z-index:8999;pointer-events:none;b
 .map-tab.is-active{background:var(--grad);color:#fff;border-color:transparent;font-weight:700;box-shadow:var(--glow-red)}
 #map{width:100%;height:clamp(440px,70vh,720px);background:var(--bg-2)}
 
-.leaflet-container{background:#0a0a0d!important;font-family:var(--font-body)!important}
-.leaflet-control-zoom a{background:var(--bg-3)!important;color:var(--text)!important;border:1px solid var(--line)!important}
+.leaflet-container{background:#06070b!important;font-family:var(--font-body)!important}
+.leaflet-tile-pane{filter:contrast(1.18) brightness(1.12) saturate(1.15)}
+.leaflet-pane.labels-pane{pointer-events:none;z-index:450}
+.leaflet-pane.labels-pane img{filter:brightness(1.4) contrast(1.3)}
+.leaflet-control-zoom a{background:rgba(12,12,16,.9)!important;color:var(--text)!important;border:1px solid var(--line)!important;backdrop-filter:blur(8px)}
 .leaflet-control-zoom a:hover{background:var(--red)!important;color:#fff!important;border-color:var(--red)!important}
 .leaflet-control-attribution{background:rgba(8,8,10,.75)!important;color:var(--text-mute)!important;font-size:10px!important;padding:2px 6px!important;border-radius:4px!important}
 .leaflet-control-attribution a{color:var(--text-dim)!important}
 
-.pin{width:40px;height:40px;position:relative;filter:drop-shadow(0 6px 16px rgba(255,0,64,.45))}
-.pin__body{position:absolute;inset:0;background:var(--grad);border:2px solid #fff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);transition:transform .25s var(--ease)}
+.pin{width:40px;height:40px;position:relative;filter:drop-shadow(0 6px 18px rgba(255,0,64,.6))}
+.pin__body{position:absolute;inset:0;background:var(--grad);border:2px solid #fff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);transition:transform .3s var(--ease)}
 .pin__num{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--font-head);font-size:.95rem;color:#fff;font-weight:700}
-.pin:hover .pin__body{transform:rotate(-45deg) scale(1.2)}
+.pin:hover{z-index:600}
+.pin:hover .pin__body{transform:rotate(-45deg) scale(1.25)}
 .pin--home .pin__body{background:#fff;border-color:var(--red)}
 .pin--home .pin__num{color:var(--red)}
+.pin__seq{position:absolute;top:-10px;right:-10px;min-width:22px;height:22px;padding:0 5px;border-radius:999px;background:#fff;color:var(--red);font-family:var(--font-head);font-size:.72rem;display:grid;place-items:center;border:2px solid var(--red);box-shadow:0 4px 10px rgba(255,0,64,.45);z-index:2}
+.route-arrow{width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:14px solid var(--pink);filter:drop-shadow(0 0 6px rgba(255,42,157,.9));transform-origin:center}
+.route-flow{stroke:var(--pink);stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 8px rgba(255,42,157,.6))}
+.leaflet-interactive.route-main{stroke-dasharray:2 12;animation:routeFlow 1.2s linear infinite}
+@keyframes routeFlow{to{stroke-dashoffset:-28}}
 
 .leaflet-popup-content-wrapper{background:var(--bg-2)!important;color:var(--text)!important;border-radius:var(--radius)!important;border:1px solid var(--line);box-shadow:var(--shadow)!important;padding:0!important;overflow:hidden}
 .leaflet-popup-content{margin:0!important;width:280px!important;font-family:var(--font-body)!important}
@@ -353,8 +362,17 @@ body::after{content:"";position:fixed;inset:0;z-index:8999;pointer-events:none;b
 .join__content p{margin:1.25rem 0 2rem;color:var(--text-dim);font-size:1.05rem;line-height:1.65;max-width:48ch}
 .join__cta{display:flex;flex-direction:column;gap:1rem;align-items:flex-start}
 .join__cta .btn{font-size:.82rem;padding:1.15rem 1.8rem}
-.join__cta .meta{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.2em;color:var(--text-mute);text-transform:uppercase}
-.join__cta .meta b{color:var(--pink);font-weight:500}
+.join__actions{display:flex;gap:.6rem;flex-wrap:wrap}
+.join__actions .btn--ghost{font-size:.7rem;padding:.85rem 1.2rem}
+.join__cta .meta{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.18em;color:var(--text-mute);text-transform:uppercase;max-width:100%;word-break:break-word}
+.join__cta .meta b{color:var(--pink);font-weight:500;user-select:all}
+
+.mail-preview{position:relative;z-index:2;margin-top:1.75rem;border:1px solid var(--line);border-radius:var(--radius);background:rgba(5,5,8,.55);overflow:hidden}
+.mail-preview summary{padding:.85rem 1.1rem;cursor:pointer;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--pink);list-style:none;display:flex;justify-content:space-between;align-items:center}
+.mail-preview summary::-webkit-details-marker{display:none}
+.mail-preview summary::after{content:"▾";font-size:.9rem;transition:transform .3s}
+.mail-preview[open] summary::after{transform:rotate(180deg)}
+.mail-preview pre{padding:0 1.1rem 1.1rem;font-family:var(--font-mono);font-size:.78rem;color:var(--text-dim);line-height:1.55;white-space:pre-wrap;word-break:break-word;max-height:280px;overflow:auto}
 .join__stats{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;padding:1.5rem;border:1px solid var(--line);border-radius:var(--radius);background:rgba(10,10,14,.6);backdrop-filter:blur(8px)}
 .join__stat{display:flex;flex-direction:column;gap:.2rem}
 .join__stat b{font-family:var(--font-head);font-size:2rem;line-height:1;letter-spacing:-.02em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -375,6 +393,35 @@ body::after{content:"";position:fixed;inset:0;z-index:8999;pointer-events:none;b
 .reveal.is-visible{opacity:1;transform:none}
 .reveal--2{transition-delay:.12s}
 .reveal--3{transition-delay:.22s}
+
+/* SECTION TITLE CHAR REVEAL */
+.section__title{overflow:hidden}
+.section__title .w{display:inline-block;overflow:hidden;padding-bottom:.08em}
+.section__title .w>span{display:inline-block;transform:translateY(100%);transition:transform .85s var(--ease-out)}
+.section__title.is-visible .w>span,.reveal.is-visible .section__title .w>span{transform:translateY(0)}
+.section__title .w:nth-child(2)>span{transition-delay:.12s}
+.section__title .w:nth-child(3)>span{transition-delay:.2s}
+
+/* JOIN STICKY (mobile) */
+.join-sticky{position:fixed;right:1rem;bottom:1rem;z-index:480;padding:.9rem 1.3rem;border-radius:999px;background:var(--grad);color:#fff;font-family:var(--font-head);font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;box-shadow:var(--glow-red),0 10px 30px -5px rgba(0,0,0,.7);border:2px solid #fff;display:none;align-items:center;gap:.5rem;cursor:pointer;animation:stickyPulse 2.6s ease-in-out infinite}
+.join-sticky svg{width:16px;height:16px}
+@keyframes stickyPulse{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-3px) scale(1.04)}}
+@media (max-width:900px){.join-sticky{display:inline-flex}}
+
+/* COPIED TOAST */
+.toast{position:fixed;left:50%;bottom:2rem;transform:translateX(-50%) translateY(140%);z-index:9100;padding:.9rem 1.4rem;background:var(--bg-2);color:var(--text);border:1px solid var(--red);border-radius:999px;font-family:var(--font-mono);font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;box-shadow:var(--glow-red);transition:transform .45s var(--ease-out)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* MAGNETIC HOVER for primary buttons */
+.btn--primary{will-change:transform}
+
+/* DAY TILT */
+.day{transform:perspective(1200px) rotateX(var(--tx,0deg)) rotateY(var(--ty,0deg));transition:transform .45s var(--ease-out)}
+.day:hover{transform:perspective(1200px) rotateX(var(--tx,0deg)) rotateY(var(--ty,0deg)) translateY(-4px)}
+
+/* NAV link bouncy underline enhancement */
+.nav__links a.is-section-active::after{transform:scaleX(1);background:var(--grad)}
+.nav__links a.is-section-active{color:var(--text)}
 
 @media (max-width:700px){
   .nav{padding:.75rem 1rem}
@@ -489,9 +536,16 @@ body::after{content:"";position:fixed;inset:0;z-index:8999;pointer-events:none;b
     <details class="faq__item"><summary>Muss ich Tricks können?</summary><div class="answer">Nein. Wir haben Spots für Flat, Street, technisches Riden und Chill-Sessions. Wichtiger als Level ist Motivation und Respekt vor den Spots.</div></details>
     <details class="faq__item"><summary>Wie läuft Verpflegung?</summary><div class="answer">Selbstverpflegung. Am Ankunftstag gibt's eine Foodliste für Tag 2. Danach organisiert sich die Crew über den Community-Tisch. Frühstück gemeinsam, Abends wird gegrillt wenn geplant.</div></details>
     <details class="faq__item"><summary>Was kostet es?</summary><div class="answer">Homebase Pleißenhof: kostenlos (25 Plätze). Heizhaus: 10€ (10 Plätze). Ab Platz 36 selbst organisiert – Campingplatz, Hostel, Hotel oder Jugendherberge.</div></details>
-    <details class="faq__item"><summary>Ist Transport zwischen den Spots organisiert?</summary><div class="answer">Nein — wir rollen. Das ist ein Ride-Trip, also Einrad als primäres Fortbewegungsmittel zwischen den Spots. ÖPNV Leipzig ist solide, falls mal länger.</div></details>
     <details class="faq__item"><summary>Kann ich auch nur ein paar Tage kommen?</summary><div class="answer">Grundsätzlich ja. Meld dich früh, damit wir einen Platz freihalten können — besonders auf der Homebase sind Plätze begrenzt.</div></details>
     <details class="faq__item"><summary>Welche Ausrüstung brauche ich?</summary><div class="answer">Dein Einrad (ideal 19" oder 24/26" Street-Setup), Protektoren (Shin, Knee empfehlen wir strong), Helm. Zelt + Schlafsack für die Homebase, Kochzeug. Eventuell Reserve-Pedale und Pumpe.</div></details>
+
+    <details class="faq__item"><summary>Wie komme ich zwischen den Spots?</summary><div class="answer">Primär auf dem Einrad — wir sind ein Ride-Trip. Die Routen sind auf der Karte als verbundene Linien sichtbar, jeder Stop nummeriert nach Reihenfolge im Tag. Für längere Strecken (Homebase ↔ Innenstadt) nutzen wir LVB S-Bahn & Straßenbahn, Tageskarte 8,80 €.</div></details>
+    <details class="faq__item"><summary>Wo sind die Spots geografisch verteilt?</summary><div class="answer">Fast alles liegt innerhalb des Leipziger Stadtgebiets in ≤ 5 km Radius um das Zentrum. Homebase Pleißenhof liegt in Markkleeberg (südlich, 8 km zur Innenstadt). Heizhaus im Westen (Alte Salzstraße), Giezer DIY im Südwesten, Reudnitz Skatepark östlich — alles machbar am Rad.</div></details>
+    <details class="faq__item"><summary>Sind alle Spots öffentlich und frei zugänglich?</summary><div class="answer">Ja, bis auf das Heizhaus (vereinsbetrieben, 10€ bei Übernachtung). Alle Straßenspots sind öffentlicher Raum — wir verhalten uns respektvoll: keine Schäden, keine Lautstärke zur Unzeit, Müll mitnehmen. Bei Ansprache freundlich bleiben, gegebenenfalls Spot wechseln.</div></details>
+    <details class="faq__item"><summary>Was ist wenn ich einen Spot nicht finde?</summary><div class="answer">Jeder Spot auf der Karte hat eine „Navigation →" zu Google Maps. Im Zweifel ping die Crew-Gruppe — Telegram/Signal-Link kommt nach Anmeldung. Alle Adressen + Koordinaten stehen auch in der Spots-Übersicht oben.</div></details>
+    <details class="faq__item"><summary>Gibt es WCs und Wasser an den Spots?</summary><div class="answer">Homebase Pleißenhof, Heizhaus und Skatepark Leipzig (AOK) haben WC. Für Stadtspots nutzen wir Gastronomie (Blaza, Biomare, Moritzbastei) oder öffentliche Anlagen am Augustusplatz. Wasser: Mehrwegflasche mitbringen, in Leipzig läuft Trinkwasser aus allen Hähnen.</div></details>
+    <details class="faq__item"><summary>Wie weit sind die Spots voneinander?</summary><div class="answer">Innenstadt-Spots (Blaza, Moritzbastei, Augustusplatz, Propsteikirche, Biomare) liegen in ≤ 2 km. Heizhaus ↔ Giezer DIY: 4 km. Homebase ↔ Innenstadt: 8 km. Die Tages-Routen auf der Karte zeigen die tatsächlich gefahrene Reihenfolge mit Pfeilen.</div></details>
+    <details class="faq__item"><summary>Parke ich mein Auto sicher auf der Homebase?</summary><div class="answer">Pleißenhof hat Stellplätze auf dem Gelände. Keine Garage, aber umzäunt. Wertsachen nicht im Auto lassen — besser auf dem Zeltplatz oder im Hauptgebäude. Für Innenstadt-Anreise besser Auto auf der Homebase stehen lassen und ÖPNV/Einrad nehmen.</div></details>
   </div>
 </section>
 
@@ -499,13 +553,18 @@ body::after{content:"";position:fixed;inset:0;z-index:8999;pointer-events:none;b
   <div class="join__inner reveal">
     <div class="join__content">
       <div>
-        <div class="section__eyebrow">Anmeldung</div>
+        <div class="section__eyebrow">Anmeldung · Direkt</div>
         <h2>Bock <em>dabei</em><br>zu sein?</h2>
-        <p>Schreib Folke direkt — eine Mail mit vorausgefülltem Formular. Antwort meist innerhalb von 48 Stunden. Plätze werden in Reihenfolge der Eingänge vergeben.</p>
+        <p>Ein Klick → Mail-Programm öffnet sich mit fertig ausgefülltem Formular an Folke. Oder kopiere die Vorlage per Button und nutze dein bevorzugtes Mail-Tool. Antwort meist innerhalb von 48 h.</p>
         <div class="join__cta">
-          <button class="btn btn--primary" id="joinCTA"><span>Mail an Folke<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
-          <div class="meta">An: <b>folke.kleinrad@gmail.com</b> · Vorlage inklusive</div>
+          <div class="join__actions">
+            <button class="btn btn--primary" id="joinCTA" type="button"><span>Mail-Programm öffnen<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
+            <button class="btn btn--ghost" id="copyMailBtn" type="button"><span>Adresse kopieren</span></button>
+            <button class="btn btn--ghost" id="copyBodyBtn" type="button"><span>Vorlage kopieren</span></button>
+          </div>
+          <div class="meta">An: <b id="mailAddrShow">folke.kleinrad@gmail.com</b> · Betreff: Anmeldung · Leipzig Invitation 2026</div>
         </div>
+        <details class="mail-preview"><summary>Vorschau der Mail-Vorlage</summary><pre id="mailBodyShow"></pre></details>
       </div>
       <div class="join__stats">
         <div class="join__stat"><b>35</b><span>Plätze</span></div>
@@ -516,6 +575,9 @@ body::after{content:"";position:fixed;inset:0;z-index:8999;pointer-events:none;b
     </div>
   </div>
 </section>
+
+<button class="join-sticky" id="joinSticky" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 6h16v12H4zM4 6l8 7 8-7"/></svg>Jetzt anmelden</button>
+<div class="toast" id="toast">Kopiert ✓</div>
 
 <footer class="footer">
   <div class="footer__glow"></div>
@@ -557,15 +619,52 @@ ich möchte bei der Leipzig Invitation 2026 (08.–16.08.2026) dabei sein.
 — Sonstiges:
 
 Cheers`;
+function mailUrl(){
+  return `mailto:${MAIL}?subject=${encodeURIComponent(MAIL_SUBJECT)}&body=${encodeURIComponent(MAIL_BODY)}`;
+}
 function openMail(e){
   if(e) e.preventDefault();
-  const url = `mailto:${MAIL}?subject=${encodeURIComponent(MAIL_SUBJECT)}&body=${encodeURIComponent(MAIL_BODY)}`;
-  window.location.href = url;
+  const a = document.createElement("a");
+  a.href = mailUrl();
+  a.rel = "noopener";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => { try{ window.location.href = mailUrl(); }catch(_){}},  120);
 }
-["joinBtn","joinHero","joinCTA","footerMail"].forEach(id => {
+const toast = document.getElementById("toast");
+function showToast(msg){
+  toast.textContent = msg;
+  toast.classList.add("show");
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => toast.classList.remove("show"), 2200);
+}
+async function copyText(txt, label){
+  try{
+    if(navigator.clipboard && window.isSecureContext){
+      await navigator.clipboard.writeText(txt);
+    } else {
+      const ta = document.createElement("textarea");
+      ta.value = txt; ta.style.position="fixed"; ta.style.opacity="0";
+      document.body.appendChild(ta); ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+    }
+    showToast(label + " kopiert ✓");
+  }catch(err){
+    showToast("Kopieren nicht möglich – bitte manuell");
+  }
+}
+["joinBtn","joinHero","joinCTA","footerMail","joinSticky"].forEach(id => {
   const el = document.getElementById(id);
   if(el) el.addEventListener("click", openMail);
 });
+const copyMailBtn = document.getElementById("copyMailBtn");
+if(copyMailBtn) copyMailBtn.addEventListener("click", () => copyText(MAIL, "Adresse"));
+const copyBodyBtn = document.getElementById("copyBodyBtn");
+if(copyBodyBtn) copyBodyBtn.addEventListener("click", () => copyText(`An: ${MAIL}\nBetreff: ${MAIL_SUBJECT}\n\n${MAIL_BODY}`, "Vorlage"));
+const mailBodyShow = document.getElementById("mailBodyShow");
+if(mailBodyShow) mailBodyShow.textContent = `An: ${MAIL}\nBetreff: ${MAIL_SUBJECT}\n\n${MAIL_BODY}`;
 
 /* ============ DATA ============ */
 const accommodations = [
@@ -902,22 +1001,40 @@ document.addEventListener("keydown", e => {
 
 /* ============ LEAFLET ============ */
 const map = L.map("map", { zoomControl:true, scrollWheelZoom:false, attributionControl:true }).setView([51.330, 12.370], 12);
-L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png", {
   attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> · &copy; <a href="https://carto.com/attributions">CARTO</a>',
   subdomains:"abcd", maxZoom:19
+}).addTo(map);
+map.createPane("labels-pane");
+map.getPane("labels-pane").classList.add("labels-pane");
+L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_only_labels/{z}/{x}/{y}{r}.png", {
+  attribution:"", subdomains:"abcd", maxZoom:19, pane:"labels-pane"
 }).addTo(map);
 map.on("click", () => map.scrollWheelZoom.enable());
 map.on("mouseout", () => map.scrollWheelZoom.disable());
 
-function makePin(num, isHome){
+function makePin(num, isHome, seq){
+  const seqHtml = seq ? `<div class="pin__seq">${seq}</div>` : "";
   return L.divIcon({ className:"", iconSize:[40,40], iconAnchor:[20,38], popupAnchor:[0,-34],
-    html:`<div class="pin ${isHome?'pin--home':''}"><div class="pin__body"></div><div class="pin__num">${num}</div></div>` });
+    html:`<div class="pin ${isHome?'pin--home':''}"><div class="pin__body"></div><div class="pin__num">${num}</div>${seqHtml}</div>` });
 }
-function popupHtml(s, dayLabel){
+function popupHtml(s, dayLabel, seq){
+  const seqLine = seq ? `<div class="pop__time">Stop ${seq} im Tag</div>` : "";
   return `<div class="pop"><img class="pop__img" src="${s.img}" alt="" />
     <div class="pop__body"><div class="pop__eyebrow">Spot ${s.id} · ${dayLabel}</div>
-      <h3>${s.title}</h3>${s.time?`<div class="pop__time">${s.time}</div>`:''}<p>${s.desc}</p>
+      <h3>${s.title}</h3>${s.time?`<div class="pop__time">${s.time}</div>`:''}${seqLine}<p>${s.desc}</p>
       <a class="pop__nav" href="${s.mapsUrl}" target="_blank" rel="noopener">Navigation →</a></div></div>`;
+}
+function bearingDeg(a, b){
+  const toRad = d => d*Math.PI/180, toDeg = r => r*180/Math.PI;
+  const y = Math.sin(toRad(b[1]-a[1]))*Math.cos(toRad(b[0]));
+  const x = Math.cos(toRad(a[0]))*Math.sin(toRad(b[0])) - Math.sin(toRad(a[0]))*Math.cos(toRad(b[0]))*Math.cos(toRad(b[1]-a[1]));
+  return (toDeg(Math.atan2(y,x)) + 360) % 360;
+}
+function midPoint(a, b){ return [(a[0]+b[0])/2, (a[1]+b[1])/2]; }
+function arrowIcon(angle){
+  return L.divIcon({ className:"", iconSize:[24,24], iconAnchor:[12,12],
+    html:`<div class="route-arrow" style="transform:rotate(${angle-90}deg)"></div>` });
 }
 
 const dayLayers = [];
@@ -925,14 +1042,22 @@ let activeDayIdx = -1;
 eventDays.forEach(d => {
   const group = L.layerGroup();
   const latlngs = [];
-  d.stops.forEach(s => {
-    const marker = L.marker(s.coords, { icon:makePin(s.id, !!s.home) });
-    marker.bindPopup(popupHtml(s, `Tag ${d.n}`), { maxWidth:300, minWidth:280 });
+  d.stops.forEach((s, si) => {
+    const seq = d.stops.length > 1 ? (si+1) : null;
+    const marker = L.marker(s.coords, { icon:makePin(s.id, !!s.home, seq) });
+    marker.bindPopup(popupHtml(s, `Tag ${d.n}`, seq), { maxWidth:300, minWidth:280 });
     marker.addTo(group);
     latlngs.push(s.coords);
   });
   if(latlngs.length > 1){
-    L.polyline(latlngs, { color:"#ff2a9d", weight:3, opacity:.9, dashArray:"8 10", lineJoin:"round", lineCap:"round" }).addTo(group);
+    L.polyline(latlngs, { color:"#ff2a9d", weight:5, opacity:.35, lineJoin:"round", lineCap:"round" }).addTo(group);
+    L.polyline(latlngs, { color:"#ff0040", weight:3, opacity:.95, lineJoin:"round", lineCap:"round", className:"route-main" }).addTo(group);
+    for(let i=1; i<latlngs.length; i++){
+      const a = latlngs[i-1], b = latlngs[i];
+      const mid = midPoint(a,b);
+      const ang = bearingDeg(a,b);
+      L.marker(mid, { icon: arrowIcon(ang), interactive:false }).addTo(group);
+    }
   }
   dayLayers.push(group);
 });
@@ -1012,6 +1137,63 @@ const io = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add("is-visible"); io.unobserve(e.target); } });
 }, { threshold:0.1, rootMargin:"0px 0px -60px 0px" });
 document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+/* ============ SECTION TITLE WORD SPLIT ============ */
+document.querySelectorAll(".section__title").forEach(h => {
+  const frag = document.createDocumentFragment();
+  h.childNodes.forEach(n => {
+    if(n.nodeType === 3){
+      n.textContent.split(/(\s+)/).forEach(part => {
+        if(/^\s+$/.test(part)){ frag.appendChild(document.createTextNode(part)); return; }
+        if(!part) return;
+        const w = document.createElement("span"); w.className="w";
+        const s = document.createElement("span"); s.textContent = part;
+        w.appendChild(s); frag.appendChild(w);
+      });
+    } else if(n.nodeType === 1){
+      const w = document.createElement("span"); w.className="w";
+      const clone = n.cloneNode(true);
+      w.appendChild(clone); frag.appendChild(w);
+    }
+  });
+  h.innerHTML=""; h.appendChild(frag);
+  io.observe(h);
+});
+
+/* ============ SCROLL-SPY NAV ============ */
+const navA = Array.from(document.querySelectorAll(".nav__links a"));
+const spyIds = ["overview","stay","days","spots","map","faq"];
+const spyIO = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      navA.forEach(a => a.classList.toggle("is-section-active", a.getAttribute("href") === "#" + e.target.id));
+    }
+  });
+}, { threshold:.25, rootMargin:"-40% 0px -50% 0px" });
+spyIds.forEach(id => { const s = document.getElementById(id); if(s) spyIO.observe(s); });
+
+/* ============ DAY TILT (desktop) ============ */
+if(matchMedia("(hover:hover) and (pointer:fine)").matches){
+  document.querySelectorAll(".day").forEach(el => {
+    el.addEventListener("mousemove", e => {
+      const r = el.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - .5;
+      const y = (e.clientY - r.top) / r.height - .5;
+      el.style.setProperty("--ty", (x * 3.5).toFixed(2) + "deg");
+      el.style.setProperty("--tx", (-y * 2.5).toFixed(2) + "deg");
+    });
+    el.addEventListener("mouseleave", () => { el.style.setProperty("--tx","0deg"); el.style.setProperty("--ty","0deg"); });
+  });
+  document.querySelectorAll(".btn--primary").forEach(b => {
+    b.addEventListener("mousemove", e => {
+      const r = b.getBoundingClientRect();
+      const x = (e.clientX - r.left - r.width/2) * .25;
+      const y = (e.clientY - r.top - r.height/2) * .25;
+      b.style.transform = `translate(${x}px, ${y}px)`;
+    });
+    b.addEventListener("mouseleave", () => { b.style.transform = ""; });
+  });
+}
 
 /* ============ HERO PARALLAX ============ */
 const heroImg = document.getElementById("heroImg");
