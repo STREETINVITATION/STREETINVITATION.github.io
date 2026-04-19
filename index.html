@@ -237,13 +237,17 @@ body::after{content:"";position:fixed;inset:0;z-index:8999;pointer-events:none;b
 .day__spots li .info em{color:var(--text-dim);font-style:normal;font-size:.78rem}
 .day__spots li .time{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;color:var(--text);background:var(--grad);padding:.22rem .5rem;border-radius:4px;flex-shrink:0;font-weight:700}
 
-.day__gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:.35rem}
-.day__gallery button{aspect-ratio:1;overflow:hidden;border-radius:8px;position:relative;border:1px solid var(--line);transition:transform .35s var(--ease),border-color .35s;cursor:pointer}
-.day__gallery button img{width:100%;height:100%;object-fit:cover;filter:grayscale(.4) contrast(1.15);transition:transform .6s var(--ease),filter .4s}
-.day__gallery button:hover{transform:scale(1.05);border-color:var(--pink)}
-.day__gallery button:hover img{transform:scale(1.15);filter:grayscale(0) contrast(1.2) saturate(1.1)}
-.day__gallery button::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,transparent 60%,rgba(255,0,64,.3));opacity:0;transition:opacity .3s}
-.day__gallery button:hover::after{opacity:1}
+.day__gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem}
+.gal-item{aspect-ratio:1;overflow:hidden;border-radius:10px;position:relative;border:1px solid var(--line);transition:transform .35s var(--ease),border-color .35s;cursor:pointer;background:var(--bg-3);padding:0}
+.gal-item img,.gal-item video{width:100%;height:100%;object-fit:cover;filter:grayscale(.35) contrast(1.12);transition:transform .6s var(--ease),filter .4s;display:block}
+.gal-item:hover{transform:scale(1.04);border-color:var(--pink);z-index:2}
+.gal-item:hover img,.gal-item:hover video{transform:scale(1.12);filter:grayscale(0) contrast(1.2) saturate(1.1)}
+.gal-item__label{position:absolute;left:0;right:0;bottom:0;padding:.6rem .55rem .45rem;display:flex;align-items:center;gap:.4rem;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:linear-gradient(180deg,transparent 0%,rgba(3,3,5,.92) 90%);line-height:1.1;text-align:left;pointer-events:none}
+.gal-item__pin{flex-shrink:0;width:18px;height:18px;border-radius:50%;background:var(--grad);color:#fff;display:grid;place-items:center;font-family:var(--font-head);font-weight:700;font-size:.62rem;box-shadow:0 0 0 1.5px rgba(255,255,255,.85)}
+.gal-item__play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:rgba(5,5,7,.7);backdrop-filter:blur(6px);border:1.5px solid rgba(255,255,255,.6);display:grid;place-items:center;color:#fff;transition:all .3s;pointer-events:none}
+.gal-item__play svg{width:18px;height:18px;margin-left:2px}
+.gal-item--video:hover .gal-item__play{background:var(--grad);border-color:transparent;transform:translate(-50%,-50%) scale(1.12);box-shadow:var(--glow-red)}
+.gal-empty{grid-column:1/-1;padding:1.25rem;border:1px dashed var(--line);border-radius:10px;color:var(--text-mute);font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;text-align:center;line-height:1.5;background:rgba(255,255,255,.015)}
 
 .day__actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:auto}
 .day__actions .btn{padding:.8rem 1.25rem;font-size:.7rem}
@@ -259,7 +263,9 @@ body::after{content:"";position:fixed;inset:0;z-index:8999;pointer-events:none;b
 .spots{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem}
 .spot-card{position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);background:var(--bg-2);display:flex;flex-direction:column;transition:transform .4s var(--ease),border-color .4s;cursor:pointer;min-height:360px}
 .spot-card:hover{transform:translateY(-6px);border-color:var(--red);box-shadow:var(--glow-red)}
-.spot-card__media{position:relative;aspect-ratio:4/3;overflow:hidden}
+.spot-card__media{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--bg-3)}
+.spot-card__media--empty{background:linear-gradient(135deg,#15151a 0%,#0a0a0c 60%,#1a0a14 100%)}
+.spot-card__ghost{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--font-head);font-weight:600;font-size:clamp(4rem,12vw,7rem);letter-spacing:-.05em;color:transparent;-webkit-text-stroke:1.5px rgba(255,0,64,.35);line-height:1;opacity:.9}
 .spot-card__media img{width:100%;height:100%;object-fit:cover;filter:grayscale(.6) contrast(1.2) brightness(.85);transition:transform .8s var(--ease),filter .5s}
 .spot-card:hover .spot-card__media img{transform:scale(1.1);filter:grayscale(.1) contrast(1.25) saturate(1.15)}
 .spot-card__media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(5,5,7,.9) 100%),linear-gradient(120deg,rgba(255,0,64,.35) 0%,transparent 50%,rgba(255,42,157,.25) 100%)}
@@ -289,6 +295,13 @@ body::after{content:"";position:fixed;inset:0;z-index:8999;pointer-events:none;b
 .lightbox__next{right:-1.5rem;top:50%;transform:translateY(-50%)}
 .lightbox__prev:hover,.lightbox__next:hover{transform:translateY(-50%) scale(1.1)}
 @media (max-width:700px){.lightbox__prev{left:.5rem}.lightbox__next{right:.5rem}}
+.lightbox__video{width:100%;max-height:78vh;background:#000;border-radius:var(--radius);display:none;animation:lbIn .5s var(--ease-out)}
+.lightbox__info{position:absolute;top:-2.7rem;left:.25rem;right:3.5rem;display:flex;align-items:center;gap:.55rem;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.12em;color:var(--text);text-transform:uppercase;line-height:1.2}
+.lightbox__info .lb-pin{flex-shrink:0;width:24px;height:24px;border-radius:50%;background:var(--grad);color:#fff;display:grid;place-items:center;font-family:var(--font-head);font-weight:700;font-size:.72rem;letter-spacing:0;box-shadow:var(--glow-red)}
+.lightbox__info .lb-label{color:var(--text);letter-spacing:.1em}
+.lightbox__info .lb-nav{margin-left:auto;padding:.35rem .7rem;border-radius:999px;border:1px solid var(--line);color:var(--pink);letter-spacing:.18em;font-size:.65rem;transition:all .25s}
+.lightbox__info .lb-nav:hover{background:var(--grad);color:#fff;border-color:transparent;box-shadow:var(--glow-red)}
+@media (max-width:700px){.lightbox__info{position:static;margin-bottom:.5rem;flex-wrap:wrap;font-size:.66rem}.lightbox__info .lb-nav{margin-left:0}}
 .lightbox__counter{position:absolute;bottom:-2.5rem;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:.72rem;letter-spacing:.22em;color:var(--text-dim)}
 
 /* MAP */
@@ -327,6 +340,8 @@ body::after{content:"";position:fixed;inset:0;z-index:8999;pointer-events:none;b
 .leaflet-popup-close-button:hover{opacity:1;color:var(--red)!important}
 
 .pop__img{width:100%;height:140px;object-fit:cover;display:block}
+.pop__img--ghost{display:grid;place-items:center;background:linear-gradient(135deg,#222 0%,#111 50%,#2a0610 100%);color:transparent;-webkit-text-stroke:1.5px rgba(255,0,64,.55);font-family:var(--font-head);font-weight:600;font-size:4rem;letter-spacing:-.04em}
+.pop__img--ghost span{line-height:1}
 .pop__body{padding:.95rem 1.1rem 1.1rem;color:#111}
 .pop__eyebrow{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--red);margin-bottom:.35rem;font-weight:600}
 .pop h3{font-family:var(--font-head);font-size:1.05rem;letter-spacing:-.01em;margin-bottom:.35rem;color:#111;font-weight:600}
@@ -582,9 +597,11 @@ body::after{content:"";position:fixed;inset:0;z-index:8999;pointer-events:none;b
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
   <div class="lightbox__stage">
     <img class="lightbox__img" id="lbImg" alt="" />
+    <video class="lightbox__video" id="lbVideo" controls playsinline></video>
     <button class="lightbox__close" id="lbClose" aria-label="Schließen">✕</button>
     <button class="lightbox__prev" id="lbPrev" aria-label="Zurück">‹</button>
     <button class="lightbox__next" id="lbNext" aria-label="Weiter">›</button>
+    <div class="lightbox__info" id="lbInfo"></div>
     <div class="lightbox__counter" id="lbCounter"></div>
   </div>
 </div>
@@ -699,92 +716,101 @@ const VID = {
 
 const spotsMaster = {
   1:  { title:"Pleißenhof · Homebase",          addr:"Bornaische Str. 68, Markkleeberg",     coords:[51.2778,12.3692], desc:"Zelten, kochen, chillen. Community-Tisch, Feuerstelle, Platz für 25 Rider. See 300 m entfernt.",    mapsUrl:"https://maps.app.goo.gl/weCVkzvTJEUxFYG77",          img:IMG.folke, home:true },
-  2:  { title:"Blaza · Wagner-Platz",           addr:"Richard-Wagner-Platz 1, 04109 Leipzig", coords:[51.3446,12.3757], desc:"Startpunkt City-Ride. Weite Plaza, Granit-Ledges, Treppen, Innenstadt-Cruise.",                  mapsUrl:"https://maps.app.goo.gl/dd29GXX65ni8C1LT8",          img:IMG.bg },
+  2:  { title:"Blaza · Wagner-Platz",           addr:"Richard-Wagner-Platz 1, 04109 Leipzig", coords:[51.3446,12.3757], desc:"Startpunkt City-Ride. Weite Plaza, Granit-Ledges, Treppen, Innenstadt-Cruise.",                  mapsUrl:"https://maps.app.goo.gl/dd29GXX65ni8C1LT8",          img:null },
   3:  { title:"Heizhaus · Indoor",              addr:"Alte Salzstraße 63, 04209 Leipzig",    coords:[51.3185,12.2838], desc:"Indoor-Street & Flat. Ramps, Rails, Free Ride, Game of Uni. Die Indoor-Homebase.",              mapsUrl:"https://maps.app.goo.gl/JShsajAzJpGFTfQu9?g_st=ac", img:IMG.heiz1 },
   4:  { title:"Giezer Skatespot DIY",           addr:"Naumburger Str. 44, 04229 Leipzig",    coords:[51.3110,12.3380], desc:"Selbstgebauter Beton von der Community. Raue Surfaces, Hips, Banks — echter DIY-Charakter.",    mapsUrl:"https://maps.app.goo.gl/FfhY9LhZF2jNgfQh6?g_st=ac", img:IMG.geizer1 },
   5:  { title:"Biomare Südvorstadt",            addr:"Karl-Liebknecht-Str. 27, 04107 Leipzig", coords:[51.3292,12.3742], desc:"Flat & Street. Zwei 3er-Stairs plus 7-Stair mit Downrail. Technisches Gelände.",                mapsUrl:"https://maps.app.goo.gl/Qh9e5h8DKNPHF5BK7",         img:IMG.biomare },
-  6:  { title:"Propsteikirche Trinitatis",      addr:"Nonnenmühlgasse 2, 04107 Leipzig",     coords:[51.3353,12.3735], desc:"Moderne Sakralarchitektur. Geschliffene Kanten, lange Lines, glattes Pflaster.",               mapsUrl:"https://maps.app.goo.gl/n7dXYNUHT4Hd77uZ6?g_st=ac", img:IMG.bg },
-  7:  { title:"Moritzbastei",                   addr:"Kurt-Masur-Platz 1, 04109 Leipzig",    coords:[51.3387,12.3795], desc:"Historische Festungsmauer, Stein-Ledges, Treppen. Mitten im Zentrum.",                         mapsUrl:"https://maps.app.goo.gl/m18f2n53uQgcfMo48",         img:IMG.titel },
-  8:  { title:"Augustusplatz",                  addr:"Augustusplatz, 04109 Leipzig",         coords:[51.3396,12.3810], desc:"Großer Platz im Stadtzentrum. Weite Flächen für Flat, Kanten für Street.",                     mapsUrl:"https://maps.app.goo.gl/Km7ESNiwQyAfe6mk9",         img:IMG.bg },
-  9:  { title:"Skatepark Leipzig · AOK",        addr:"Anton-Bruckner-Allee 1, 04229 Leipzig", coords:[51.3267,12.3547], desc:"Offener Skatepark. Bowl, Street-Plaza, Rails. Feuerstelle am AOK-Spielplatz direkt nebenan.",   mapsUrl:"https://maps.app.goo.gl/3BtepMxP2pX6VbKQ6",         img:IMG.geizer2 },
+  6:  { title:"Propsteikirche Trinitatis",      addr:"Nonnenmühlgasse 2, 04107 Leipzig",     coords:[51.3353,12.3735], desc:"Moderne Sakralarchitektur. Geschliffene Kanten, lange Lines, glattes Pflaster.",               mapsUrl:"https://maps.app.goo.gl/n7dXYNUHT4Hd77uZ6?g_st=ac", img:null },
+  7:  { title:"Moritzbastei",                   addr:"Kurt-Masur-Platz 1, 04109 Leipzig",    coords:[51.3387,12.3795], desc:"Historische Festungsmauer, Stein-Ledges, Treppen. Mitten im Zentrum.",                         mapsUrl:"https://maps.app.goo.gl/m18f2n53uQgcfMo48",         img:null, videoPoster:true },
+  8:  { title:"Augustusplatz",                  addr:"Augustusplatz, 04109 Leipzig",         coords:[51.3396,12.3810], desc:"Großer Platz im Stadtzentrum. Weite Flächen für Flat, Kanten für Street.",                     mapsUrl:"https://maps.app.goo.gl/Km7ESNiwQyAfe6mk9",         img:null },
+  9:  { title:"Skatepark Leipzig · AOK",        addr:"Anton-Bruckner-Allee 1, 04229 Leipzig", coords:[51.3267,12.3547], desc:"Offener Skatepark. Bowl, Street-Plaza, Rails. Feuerstelle am AOK-Spielplatz direkt nebenan.",   mapsUrl:"https://maps.app.goo.gl/3BtepMxP2pX6VbKQ6",         img:null },
   10: { title:"Conne Island",                   addr:"Koburger Str. 3, 04277 Leipzig",       coords:[51.3130,12.3744], desc:"Legendäres Kulturzentrum. Raues Gelände, Charakter, Chill-Territorium.",                       mapsUrl:"https://maps.app.goo.gl/1WTkLsJX3HB9veBb6?g_st=ac", img:IMG.conne },
-  11: { title:"Spielplatz Herderstr.",          addr:"Herderstraße 5, 04277 Leipzig",        coords:[51.3152,12.3782], desc:"Connewitz. Entspanntes Gelände für gemeinsames Essen und lockeres Riden.",                     mapsUrl:"https://maps.app.goo.gl/6nTxkcr9vXWAtRrH9",         img:IMG.see },
+  11: { title:"Spielplatz Herderstr.",          addr:"Herderstraße 5, 04277 Leipzig",        coords:[51.3152,12.3782], desc:"Connewitz. Entspanntes Gelände für gemeinsames Essen und lockeres Riden.",                     mapsUrl:"https://maps.app.goo.gl/6nTxkcr9vXWAtRrH9",         img:null },
   12: { title:"MDR Leipzig",                    addr:"04103 Leipzig",                        coords:[51.3384,12.3946], desc:"MDR-Areal. Hard Surfaces, Kanten, urbane Architektur. Kurzer gezielter Stop.",                 mapsUrl:"https://maps.app.goo.gl/cNaJeusZk9FMrQNa9",         img:IMG.mdr1 },
-  13: { title:"DNB Magazinturm · Alte Messe",   addr:"Deutscher Pl. 1, 04103 Leipzig",       coords:[51.3242,12.3949], desc:"Deutsche Nationalbibliothek Magazinturm. Brutalismus, offene Plazas, Street & Flat.",          mapsUrl:"https://maps.app.goo.gl/Va54MWz71W3Wjvmw7?g_st=ac", img:IMG.mdr2 },
-  14: { title:"Reudnitz Skatepark",             addr:"Fröschelstraße 4, 04317 Leipzig",      coords:[51.3380,12.4205], desc:"Großer Park, solide Obstacles. Rails, Quarters, Ledges. Street bis in den Abend.",             mapsUrl:"https://maps.app.goo.gl/MfE7mifyHYmtSYvt7?g_st=ac", img:IMG.mdr3 }
+  13: { title:"DNB Magazinturm · Alte Messe",   addr:"Deutscher Pl. 1, 04103 Leipzig",       coords:[51.3242,12.3949], desc:"Deutsche Nationalbibliothek Magazinturm. Brutalismus, offene Plazas, Street & Flat.",          mapsUrl:"https://maps.app.goo.gl/Va54MWz71W3Wjvmw7?g_st=ac", img:null },
+  14: { title:"Reudnitz Skatepark",             addr:"Fröschelstraße 4, 04317 Leipzig",      coords:[51.3380,12.4205], desc:"Großer Park, solide Obstacles. Rails, Quarters, Ledges. Street bis in den Abend.",             mapsUrl:"https://maps.app.goo.gl/MfE7mifyHYmtSYvt7?g_st=ac", img:null }
 };
 function spot(id, time){ return { ...spotsMaster[id], id, time } }
+
+/* Medien-Zuordnung pro Spot: nur Material vom jeweiligen Ort */
+const spotMedia = {
+  1:  { img:[IMG.folke, IMG.dyn, IMG.see], vid:[] },
+  2:  { img:[], vid:[] },
+  3:  { img:[IMG.heiz1, IMG.heiz2], vid:[VID.heiz1, VID.heiz2] },
+  4:  { img:[IMG.geizer1, IMG.geizer2], vid:[] },
+  5:  { img:[IMG.biomare], vid:[] },
+  6:  { img:[], vid:[] },
+  7:  { img:[], vid:[VID.moritz1, VID.moritz2, VID.moritz3] },
+  8:  { img:[], vid:[] },
+  9:  { img:[], vid:[] },
+  10: { img:[IMG.conne], vid:[VID.conne1, VID.conne2, VID.conne3] },
+  11: { img:[], vid:[] },
+  12: { img:[IMG.mdr1, IMG.mdr2, IMG.mdr3, IMG.mdr4, IMG.mdr5, IMG.mdr6], vid:[] },
+  13: { img:[], vid:[] },
+  14: { img:[], vid:[] }
+};
 
 const eventDays = [
   { id:"day-1", n:1, date:"Sa · 08.08.2026", tag:"ANKOMMEN", title:"Arrival &amp; <span class='accent'>Set-Up</span>",
     description:"Ankunft an der Homebase nach der Unicon. Zelte auf, Equipment sortieren, Crew kennenlernen. Am Abend Selbstverpflegung, Foodliste für Tag 2.",
     pretext:"Tag null zählt auch.",
-    image:IMG.folke, videos:[],
-    gallery:[IMG.folke, IMG.dyn, IMG.titel, IMG.see, IMG.bg],
+    image:IMG.folke,
     summary:[{k:"Treffpunkt",v:"Pleißenhof"},{k:"Ankunft",v:"flexibel"},{k:"Verpflegung",v:"Selbst"},{k:"Vibe",v:"Set-Up"}],
     stops:[ spot(1,"ab Nachmittag") ] },
 
   { id:"day-2", n:2, date:"So · 09.08.2026", tag:"FIRST DAY", title:"City Ride &amp; <span class='accent'>Heizhaus</span>",
     description:"Community-Frühstück. 12 Uhr Roll-Start am Richard-Wagner-Platz, Sport-Exploring durch die Innenstadt. Nachmittag Heizhaus — Street und Flat indoor. Ab 20 Uhr Homebase.",
     pretext:"Erster echter Ride-Tag.",
-    image:IMG.heiz1, videos:[VID.heiz1, VID.heiz2],
-    gallery:[IMG.heiz1, IMG.heiz2, IMG.bg, IMG.titel],
+    image:IMG.heiz1,
     summary:[{k:"12:00",v:"Blaza"},{k:"Nachmittag",v:"Heizhaus"},{k:"Stil",v:"Street · Flat"},{k:"Return",v:"20:00"}],
     stops:[ spot(2,"12:00"), spot(3,"Nachmittag"), spot(1,"ab 20:00") ] },
 
   { id:"day-3", n:3, date:"Mo · 10.08.2026", tag:"STREET DAY", title:"Giezer DIY &amp; <span class='accent'>Game of Uni</span>",
     description:"12 Uhr Giezer Skatespot DIY für fünf Stunden Street-Action. 17 Uhr Heizhaus: Free Ride und Game of Uni, Street-Style, bis die Luft raus ist. 21 Uhr Homebase.",
     pretext:"Pure Street.",
-    image:IMG.geizer1, videos:[VID.heiz2, VID.heiz1],
-    gallery:[IMG.geizer1, IMG.geizer2, IMG.heiz1, IMG.heiz2],
+    image:IMG.geizer1,
     summary:[{k:"12:00",v:"Giezer DIY"},{k:"17:00",v:"Heizhaus"},{k:"Dauer",v:"≈ 9 h"},{k:"Format",v:"Game of Uni"}],
     stops:[ spot(4,"12:00"), spot(3,"17:00"), spot(1,"21:00") ] },
 
   { id:"day-4", n:4, date:"Di · 11.08.2026", tag:"STREET DAY", title:"Südvorstadt &amp; <span class='accent'>Innenstadt Lines</span>",
     description:"Big Day. Biomare Stairs, Propsteikirche, Moritzbastei, Augustusplatz, Skatepark Leipzig. Abends Grillen. 23 Uhr zurück.",
     pretext:"Fünf Spots. Ein Tag.",
-    image:IMG.biomare, videos:[VID.moritz1, VID.moritz2, VID.moritz3],
-    gallery:[IMG.biomare, IMG.mdr4, IMG.bg, IMG.mdr5, IMG.titel, IMG.geizer2, IMG.see, IMG.mdr6],
+    image:IMG.biomare,
     summary:[{k:"Spots",v:"5 × Leipzig"},{k:"Highlight",v:"7-Stair Downrail"},{k:"21:00",v:"Grillen"},{k:"Return",v:"23:00"}],
     stops:[ spot(5,"12:00"), spot(6,"13:00"), spot(7,"15:00"), spot(8,"16:00"), spot(9,"17:00"), spot(1,"23:00") ] },
 
   { id:"day-5", n:5, date:"Mi · 12.08.2026", tag:"CHILL DAY", title:"Conne Island &amp; <span class='accent'>Connewitz</span>",
     description:"14 Uhr Conne Island. Chill all day, Gelände erkunden, locker rollen. 18 Uhr gemeinsames Essen an der Herderstraße. 20 Uhr Homebase.",
     pretext:"Recovery. Crew Time.",
-    image:IMG.conne, videos:[VID.conne1, VID.conne2, VID.conne3],
-    gallery:[IMG.conne, IMG.see, IMG.biomare, IMG.titel],
+    image:IMG.conne,
     summary:[{k:"14:00",v:"Conne Island"},{k:"18:00",v:"Essen"},{k:"Level",v:"Chill"},{k:"Return",v:"20:00"}],
     stops:[ spot(10,"14:00"), spot(11,"18:00"), spot(1,"20:00") ] },
 
   { id:"day-6", n:6, date:"Do · 13.08.2026", tag:"TOUR DAY", title:"MDR &amp; <span class='accent'>Reudnitz</span>",
     description:"MDR Leipzig für eine Stunde, dann Alte Messe / DNB Magazinturm für zwei Stunden Street und Flat. Abschluss: Reudnitz Skatepark bis 20 Uhr.",
     pretext:"Tour durch drei Welten.",
-    image:IMG.mdr1, videos:[],
-    gallery:[IMG.mdr1, IMG.mdr2, IMG.mdr3, IMG.mdr4, IMG.mdr5, IMG.mdr6],
+    image:IMG.mdr1,
     summary:[{k:"12:00",v:"MDR"},{k:"13:00",v:"Alte Messe"},{k:"bis 20:00",v:"Reudnitz"},{k:"Stil",v:"Tour"}],
     stops:[ spot(12,"12:00"), spot(13,"13:00"), spot(14,"bis 20:00"), spot(1,"21:00") ] },
 
   { id:"day-7", n:7, date:"Fr · 14.08.2026", tag:"HEAVY", title:"Heizhaus &amp; <span class='accent'>DIY Return</span>",
     description:"Rückkehr zu den Schwergewichten. Heizhaus vier Stunden, Giezer DIY fünf Stunden. Pure Progression.",
     pretext:"Heavy Session.",
-    image:IMG.heiz2, videos:[VID.heiz1, VID.heiz2],
-    gallery:[IMG.heiz1, IMG.heiz2, IMG.geizer1, IMG.geizer2],
+    image:IMG.heiz2,
     summary:[{k:"12:00",v:"Heizhaus (4h)"},{k:"17:00",v:"Giezer (5h)"},{k:"Fokus",v:"Progression"},{k:"Return",v:"22:00"}],
     stops:[ spot(3,"12:00"), spot(4,"17:00"), spot(1,"22:00") ] },
 
   { id:"day-8", n:8, date:"Sa · 15.08.2026", tag:"FINALE", title:"Ride Together &amp; <span class='accent'>Final Jam</span>",
     description:"Schredderei-Tour — alle zusammen, BMX, Skate, Roller, Einrad. Sechs Stunden durch Leipzig. 18 Uhr gemeinsames Essen. 19 Uhr Final Jam open end.",
     pretext:"Das Finale.",
-    image:IMG.titel, videos:[VID.conne3, VID.conne1, VID.conne2],
-    gallery:[IMG.titel, IMG.bg, IMG.biomare, IMG.conne, IMG.geizer1, IMG.heiz1],
+    image:IMG.folke,
     summary:[{k:"12:00",v:"Schredderei"},{k:"Dauer",v:"6 h ride"},{k:"18:00",v:"Essen"},{k:"19:00+",v:"Open end"}],
     stops:[ spot(11,"18:00"), spot(1,"19:00") ] },
 
   { id:"day-9", n:9, date:"So · 16.08.2026", tag:"ABREISE", title:"Last <span class='accent'>Breakfast</span>",
     description:"Letztes Frühstück am Community-Tisch. Lager abbauen. 12 Uhr Abreise. Danke Leipzig.",
     pretext:"Danke.",
-    image:IMG.see, videos:[],
-    gallery:[IMG.see, IMG.titel, IMG.bg, IMG.biomare],
+    image:IMG.see,
     summary:[{k:"Start",v:"Frühstück"},{k:"12:00",v:"Abreise"},{k:"Ort",v:"Pleißenhof"},{k:"Next",v:"2027?"}],
     stops:[ spot(1,"bis 12:00") ] }
 ];
@@ -794,6 +820,20 @@ eventDays.forEach(d => d.stops.forEach(s => {
   if(!spotDayMap[s.id]) spotDayMap[s.id] = new Set();
   spotDayMap[s.id].add(d.n);
 }));
+
+/* Gallery & Videos pro Tag automatisch aus den Spots-Medien zusammenstellen */
+eventDays.forEach(d => {
+  d._gallery = [];
+  d._videos = [];
+  const seen = new Set();
+  d.stops.forEach(s => {
+    const m = spotMedia[s.id] || {img:[],vid:[]};
+    const label = spotsMaster[s.id].title;
+    const mapsUrl = spotsMaster[s.id].mapsUrl;
+    m.img.forEach(src => { if(!seen.has(src)){ d._gallery.push({src,type:"img",label,mapsUrl,spotId:s.id}); seen.add(src); }});
+    m.vid.forEach(src => { if(!seen.has(src)){ d._gallery.push({src,type:"vid",label,mapsUrl,spotId:s.id}); d._videos.push(src); seen.add(src); }});
+  });
+});
 
 /* ============ RENDER · Accommodations ============ */
 const stayGrid = document.getElementById("stayGrid");
@@ -817,7 +857,7 @@ accommodations.forEach(a => {
 const daysList = document.getElementById("daysList");
 eventDays.forEach((d, i) => {
   const sec = document.createElement("article");
-  sec.className = "day reveal" + (d.videos.length ? " has-video" : "");
+  sec.className = "day reveal" + (d._videos.length ? " has-video" : "");
   sec.id = d.id;
 
   const spotsHtml = d.stops.map(s => `
@@ -827,17 +867,26 @@ eventDays.forEach((d, i) => {
       <div class="time">${s.time||""}</div>
     </li>`).join("");
 
-  const gallery = d.gallery.map((src, idx) => `
-    <button data-day="${i}" data-idx="${idx}" aria-label="Bild ${idx+1}">
-      <img src="${src}" alt="" loading="lazy" />
-    </button>`).join("");
+  const gallery = d._gallery.length ? d._gallery.map((it, idx) => {
+    if(it.type === "vid"){
+      return `<button class="gal-item gal-item--video" data-day="${i}" data-idx="${idx}" aria-label="Video: ${it.label}">
+        <video src="${it.src}" muted playsinline preload="metadata"></video>
+        <div class="gal-item__play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
+        <div class="gal-item__label"><span class="gal-item__pin">${it.spotId}</span>${it.label}</div>
+      </button>`;
+    }
+    return `<button class="gal-item" data-day="${i}" data-idx="${idx}" aria-label="${it.label}">
+      <img src="${it.src}" alt="${it.label}" loading="lazy" />
+      <div class="gal-item__label"><span class="gal-item__pin">${it.spotId}</span>${it.label}</div>
+    </button>`;
+  }).join("") : `<div class="gal-empty">Von diesen Orten liegt aktuell kein eigenes Material vor. Bilder/Videos kommen beim Event dazu.</div>`;
 
   const summary = d.summary.map(s => `<div class="chip"><b>${s.k}</b><span>${s.v}</span></div>`).join("");
 
   sec.innerHTML = `
     <div class="day__photo">
       <img src="${d.image}" alt="" loading="lazy" />
-      ${d.videos.length ? `<video class="day__video" muted playsinline preload="none" crossorigin="anonymous"></video>` : ""}
+      ${d._videos.length ? `<video class="day__video" muted playsinline preload="none" crossorigin="anonymous"></video>` : ""}
       <div class="day__photo-overlay"></div>
       <div class="day__photo-scan"></div>
     </div>
@@ -865,17 +914,17 @@ eventDays.forEach((d, i) => {
   daysList.appendChild(sec);
 
   // Video playlist controller
-  if(d.videos.length){
+  if(d._videos.length){
     const videoEl = sec.querySelector(".day__video");
     let vi = 0;
     let hovering = false;
     function loadNext(){
-      vi = (vi + 1) % d.videos.length;
-      videoEl.src = d.videos[vi];
+      vi = (vi + 1) % d._videos.length;
+      videoEl.src = d._videos[vi];
       videoEl.load();
       if(hovering) videoEl.play().catch(()=>{});
     }
-    videoEl.src = d.videos[0];
+    videoEl.src = d._videos[0];
     videoEl.playbackRate = 1.0;
     videoEl.addEventListener("ended", loadNext);
     sec.addEventListener("mouseenter", () => {
@@ -922,8 +971,8 @@ Object.entries(spotsMaster).forEach(([id, s]) => {
   card.dataset.lng = s.coords[1];
   card.dataset.spot = nId;
   card.innerHTML = `
-    <div class="spot-card__media">
-      <img src="${s.img}" alt="" loading="lazy" />
+    <div class="spot-card__media${s.img?'':' spot-card__media--empty'}">
+      ${s.img?`<img src="${s.img}" alt="" loading="lazy" />`:`<div class="spot-card__ghost" aria-hidden="true">${id}</div>`}
       <div class="spot-card__num">${id}</div>
       ${s.home?'<div class="spot-card__home">Homebase</div>':''}
     </div>
@@ -952,16 +1001,35 @@ Object.entries(spotsMaster).forEach(([id, s]) => {
   spotsGrid.appendChild(card);
 });
 
-/* ============ LIGHTBOX ============ */
+/* ============ LIGHTBOX (img + video) ============ */
 const lb = document.getElementById("lightbox");
 const lbImg = document.getElementById("lbImg");
+const lbVideo = document.getElementById("lbVideo");
 const lbCounter = document.getElementById("lbCounter");
+const lbInfo = document.getElementById("lbInfo");
 let lbDay = 0, lbIdx = 0;
+function lbRender(){
+  const items = eventDays[lbDay]._gallery;
+  const it = items[lbIdx];
+  if(it.type === "vid"){
+    lbImg.style.display = "none";
+    lbVideo.style.display = "block";
+    lbVideo.src = it.src;
+    lbVideo.play().catch(()=>{});
+  } else {
+    try{ lbVideo.pause(); }catch(_){}
+    lbVideo.removeAttribute("src");
+    lbVideo.load();
+    lbVideo.style.display = "none";
+    lbImg.style.display = "block";
+    lbImg.src = it.src;
+  }
+  lbInfo.innerHTML = `<span class="lb-pin">${it.spotId}</span><span class="lb-label">${it.label}</span> <a class="lb-nav" href="${it.mapsUrl}" target="_blank" rel="noopener">Navigation ↗</a>`;
+  lbCounter.textContent = `${lbIdx+1} / ${items.length} · Tag ${eventDays[lbDay].n}`;
+}
 function openLightbox(dayIdx, idx){
   lbDay = dayIdx; lbIdx = idx;
-  const imgs = eventDays[dayIdx].gallery;
-  lbImg.src = imgs[idx];
-  lbCounter.textContent = `${idx+1} / ${imgs.length} · Tag ${eventDays[dayIdx].n}`;
+  lbRender();
   lb.classList.add("open");
   lb.setAttribute("aria-hidden","false");
   document.body.style.overflow = "hidden";
@@ -970,12 +1038,14 @@ function closeLightbox(){
   lb.classList.remove("open");
   lb.setAttribute("aria-hidden","true");
   document.body.style.overflow = "";
+  try{ lbVideo.pause(); }catch(_){}
+  lbVideo.removeAttribute("src");
+  lbVideo.load();
 }
 function lbShift(dir){
-  const imgs = eventDays[lbDay].gallery;
-  lbIdx = (lbIdx + dir + imgs.length) % imgs.length;
-  lbImg.src = imgs[lbIdx];
-  lbCounter.textContent = `${lbIdx+1} / ${imgs.length} · Tag ${eventDays[lbDay].n}`;
+  const items = eventDays[lbDay]._gallery;
+  lbIdx = (lbIdx + dir + items.length) % items.length;
+  lbRender();
 }
 document.addEventListener("click", e => {
   const t = e.target.closest("[data-day][data-idx]");
@@ -1008,7 +1078,10 @@ function makePin(num, isHome, seq){
 }
 function popupHtml(s, dayLabel, seq){
   const seqLine = seq ? `<div class="pop__time">Stop ${seq} im Tag</div>` : "";
-  return `<div class="pop"><img class="pop__img" src="${s.img}" alt="" />
+  const media = s.img
+    ? `<img class="pop__img" src="${s.img}" alt="" />`
+    : `<div class="pop__img pop__img--ghost"><span>${s.id}</span></div>`;
+  return `<div class="pop">${media}
     <div class="pop__body"><div class="pop__eyebrow">Spot ${s.id} · ${dayLabel}</div>
       <h3>${s.title}</h3>${s.time?`<div class="pop__time">${s.time}</div>`:''}${seqLine}<p>${s.desc}</p>
       <a class="pop__nav" href="${s.mapsUrl}" target="_blank" rel="noopener">Navigation →</a></div></div>`;
@@ -1193,8 +1266,8 @@ if(matchMedia("(hover:hover) and (pointer:fine)").matches){
   let tx=0,ty=0,cx=0,cy=0;
   window.addEventListener("mousemove", e => { tx=e.clientX; ty=e.clientY; });
   (function loop(){ cx += (tx-cx)*.25; cy += (ty-cy)*.25; cursor.style.transform = `translate(${cx}px, ${cy}px) translate(-50%,-50%)`; requestAnimationFrame(loop); })();
-  document.addEventListener("mouseover", e => { if(e.target.closest("a, button, summary, input, .leaflet-interactive, .spot-card, .day__spots li, .day__gallery button, .stay__card, .overview-cell")) cursor.classList.add("is-active"); });
-  document.addEventListener("mouseout", e => { if(e.target.closest("a, button, summary, input, .leaflet-interactive, .spot-card, .day__spots li, .day__gallery button, .stay__card, .overview-cell")) cursor.classList.remove("is-active"); });
+  document.addEventListener("mouseover", e => { if(e.target.closest("a, button, summary, input, .leaflet-interactive, .spot-card, .day__spots li, .gal-item, .stay__card, .overview-cell")) cursor.classList.add("is-active"); });
+  document.addEventListener("mouseout", e => { if(e.target.closest("a, button, summary, input, .leaflet-interactive, .spot-card, .day__spots li, .gal-item, .stay__card, .overview-cell")) cursor.classList.remove("is-active"); });
 }
 
 /* ============ LOADER ============ */
