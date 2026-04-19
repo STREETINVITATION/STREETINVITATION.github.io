@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>LEIPZIG INVITATION 2026 — Street Unicycle</title>
+<meta name="description" content="Leipzig Invitation — 9 Tage Street Unicycle nach der Unicon. 08.–16.08.2026." />
+
+<link rel="preconnect" href="https://fonts.bunny.net" crossorigin />
+<link href="https://fonts.bunny.net/css?family=archivo-black:400|space-grotesk:300,400,500,600,700|jetbrains-mono:400,500,700|bebas-neue:400&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+<style>
+:root{
+  --bg:#08080a;--bg-2:#0e0e11;--bg-3:#16161a;--line:#24242a;
+  --text:#f5f5f0;--text-dim:#a5a5a5;--text-mute:#5a5a5a;
+  --red:#ff0040;--red-deep:#c4001f;--pink:#ff2a9d;--pink-soft:#ff6bc1;--ink:#050507;
+  --grad:linear-gradient(100deg,#ff0040 0%,#ff2a9d 100%);
+  --grad-soft:linear-gradient(100deg,rgba(255,0,64,.18),rgba(255,42,157,.18));
+  --radius:14px;--radius-lg:24px;
+  --shadow:0 30px 80px -20px rgba(0,0,0,.75),0 8px 30px -10px rgba(0,0,0,.6);
+  --glow-red:0 0 40px rgba(255,0,64,.35);
+  --glow-pink:0 0 40px rgba(255,42,157,.35);
+  --font-head:"Archivo Black","Helvetica Neue",system-ui,sans-serif;
+  --font-disp:"Bebas Neue","Helvetica Neue Condensed",system-ui,sans-serif;
+  --font-body:"Space Grotesk","Helvetica Neue",system-ui,sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,monospace;
+  --ease:cubic-bezier(.2,.8,.2,1);--ease-out:cubic-bezier(.16,1,.3,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);line-height:1.55;overflow-x:hidden;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+img{max-width:100%;display:block;height:auto}
+video{display:block}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:inherit;text-decoration:none}
+
+body::before{content:"";position:fixed;inset:0;z-index:9000;pointer-events:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");opacity:.06;mix-blend-mode:overlay}
+body::after{content:"";position:fixed;inset:0;z-index:8999;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.015) 0 1px,transparent 1px 3px);mix-blend-mode:overlay}
+
+::selection{background:var(--red);color:#fff}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--red);border-radius:10px}
+::-webkit-scrollbar-thumb:hover{background:var(--pink)}
+
+/* LOADER */
+.loader{position:fixed;inset:0;z-index:9999;background:var(--ink);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1.5rem;transition:opacity .9s var(--ease),visibility .9s;overflow:hidden}
+.loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.loader::before{content:"";position:absolute;inset:-50%;background:radial-gradient(circle at 50% 50%,rgba(255,0,64,.3),transparent 50%);animation:loaderPulse 3s ease-in-out infinite}
+@keyframes loaderPulse{0%,100%{transform:scale(.8);opacity:.5}50%{transform:scale(1.1);opacity:1}}
+.loader__mark{width:clamp(160px,22vw,260px);height:auto;position:relative;z-index:1;filter:drop-shadow(0 0 40px rgba(255,0,64,.6));animation:markSpin 4s linear infinite,markPulse 1.8s ease-in-out infinite}
+@keyframes markSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes markPulse{0%,100%{filter:drop-shadow(0 0 40px rgba(255,0,64,.6))}50%{filter:drop-shadow(0 0 70px rgba(255,42,157,.8))}}
+.loader__brand{font-family:var(--font-head);font-size:clamp(1.8rem,5vw,3.2rem);letter-spacing:-.04em;line-height:.9;color:var(--text);display:flex;flex-direction:column;align-items:center;position:relative;z-index:1}
+.loader__brand span:nth-child(1){background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.loader__bar{width:min(420px,60vw);height:2px;background:var(--line);overflow:hidden;position:relative;z-index:1}
+.loader__bar::after{content:"";position:absolute;inset:0;left:-100%;background:var(--grad);animation:sweep 1.4s var(--ease-out) infinite}
+.loader__meta{font-family:var(--font-mono);font-size:.72rem;color:var(--text-mute);letter-spacing:.35em;text-transform:uppercase;position:relative;z-index:1}
+@keyframes sweep{to{left:100%}}
+
+.cursor{position:fixed;top:0;left:0;width:22px;height:22px;border:1.5px solid var(--red);border-radius:50%;pointer-events:none;z-index:9500;mix-blend-mode:difference;transform:translate(-50%,-50%);transition:width .25s var(--ease),height .25s var(--ease),background .25s var(--ease);display:none}
+.cursor.is-active{width:64px;height:64px;background:var(--pink);border-color:var(--pink)}
+@media (hover:hover) and (pointer:fine){.cursor{display:block}body{cursor:none}}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:.9rem 1.25rem;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);background:rgba(8,8,10,.55);border-bottom:1px solid transparent;transition:border-color .3s,background .3s}
+.nav.is-scrolled{border-bottom-color:var(--line);background:rgba(8,8,10,.85)}
+.nav__brand{font-family:var(--font-head);font-size:1rem;letter-spacing:-.02em;display:flex;align-items:center;gap:.6rem}
+.nav__brand i{width:10px;height:10px;background:var(--red);border-radius:50%;box-shadow:var(--glow-red);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1;box-shadow:0 0 0 0 rgba(255,0,64,.7)}50%{transform:scale(1.35);opacity:.7;box-shadow:0 0 0 12px rgba(255,0,64,0)}}
+.nav__links{display:flex;gap:.1rem;align-items:center}
+.nav__links a{padding:.55rem .9rem;font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;color:var(--text-dim);position:relative;transition:color .25s}
+.nav__links a:hover{color:var(--text)}
+.nav__links a::after{content:"";position:absolute;left:.9rem;right:.9rem;bottom:.3rem;height:1px;background:var(--red);transform:scaleX(0);transform-origin:left;transition:transform .35s var(--ease)}
+.nav__links a:hover::after{transform:scaleX(1)}
+.nav__cta{padding:.65rem 1.1rem;background:var(--grad);color:#fff;font-weight:700;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;border-radius:999px;box-shadow:var(--glow-red);transition:transform .3s var(--ease),box-shadow .3s;cursor:pointer}
+.nav__cta:hover{transform:translateY(-2px) scale(1.03);box-shadow:var(--glow-pink)}
+.nav__burger{display:none;width:40px;height:40px;border-radius:8px;position:relative}
+.nav__burger span{position:absolute;left:8px;right:8px;height:2px;background:var(--text);transition:transform .3s,top .3s,opacity .3s}
+.nav__burger span:nth-child(1){top:13px}
+.nav__burger span:nth-child(2){top:19px}
+.nav__burger span:nth-child(3){top:25px}
+.nav.is-open .nav__burger span:nth-child(1){top:19px;transform:rotate(45deg);background:var(--red)}
+.nav.is-open .nav__burger span:nth-child(2){opacity:0}
+.nav.is-open .nav__burger span:nth-child(3){top:19px;transform:rotate(-45deg);background:var(--red)}
+@media (max-width:900px){
+  .nav__burger{display:block}
+  .nav__links{position:fixed;top:60px;left:0;right:0;flex-direction:column;align-items:stretch;background:rgba(5,5,7,.98);backdrop-filter:blur(20px);padding:1rem;gap:.15rem;border-bottom:1px solid var(--line);transform:translateY(-10px);opacity:0;visibility:hidden;transition:transform .3s,opacity .3s,visibility .3s}
+  .nav.is-open .nav__links{transform:translateY(0);opacity:1;visibility:visible}
+  .nav__links a{padding:.9rem 1rem;font-size:.95rem}
+  .nav__cta{align-self:flex-start;margin-top:.5rem}
+}
+
+/* HERO */
+.hero{position:relative;min-height:100svh;overflow:hidden;padding:7rem 1.25rem 3rem;display:flex;align-items:flex-end;background:radial-gradient(60% 55% at 75% 30%,rgba(255,42,157,.12),transparent 60%),radial-gradient(45% 40% at 20% 85%,rgba(255,0,64,.14),transparent 60%),linear-gradient(180deg,var(--ink) 0%,var(--bg) 100%)}
+.hero__grid{position:absolute;inset:0;z-index:0;opacity:.4;background-image:linear-gradient(to right,rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(to bottom,rgba(255,255,255,.035) 1px,transparent 1px);background-size:70px 70px;mask-image:radial-gradient(ellipse at center,black 30%,transparent 75%)}
+.hero__image{position:absolute;inset:0;z-index:1;overflow:hidden}
+.hero__image img{width:100%;height:100%;object-fit:cover;filter:grayscale(.7) contrast(1.25) brightness(.5) hue-rotate(-8deg);mix-blend-mode:screen;opacity:.65;transform:translateY(var(--parallax,0)) scale(1.08);transition:transform .2s linear}
+.hero__image::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,5,7,.85) 0%,rgba(5,5,7,.3) 50%,rgba(5,5,7,.0) 100%);z-index:2}
+.hero__image::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(255,0,64,.35) 0%,transparent 40%,rgba(255,42,157,.35) 100%);mix-blend-mode:color;z-index:3}
+
+.hero__inner{position:relative;z-index:4;width:100%;max-width:1400px;margin:0 auto}
+.hero__meta{display:flex;gap:1.25rem;flex-wrap:wrap;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:var(--text-dim);margin-bottom:1.75rem}
+.hero__meta span{display:flex;align-items:center;gap:.5rem}
+.hero__meta span::before{content:"";width:6px;height:6px;background:var(--red);border-radius:50%;box-shadow:0 0 10px var(--red)}
+
+.hero__title{font-family:var(--font-head);font-size:clamp(3.2rem,15vw,13rem);line-height:.82;letter-spacing:-.045em;text-transform:uppercase;margin-bottom:1.25rem;color:var(--text)}
+.hero__title .l{display:block;overflow:hidden;padding:.08em 0}
+.hero__title .l>span{display:inline-block;transform:translateY(110%);animation:lift 1.05s var(--ease-out) forwards}
+.hero__title .l:nth-child(1)>span{animation-delay:.25s}
+.hero__title .l:nth-child(2)>span{animation-delay:.4s;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero__title .l:nth-child(2)>span i{font-style:italic;color:var(--text);-webkit-text-fill-color:var(--text)}
+@keyframes lift{to{transform:translateY(0)}}
+
+.hero__tag{max-width:640px;font-size:clamp(1rem,1.3vw,1.2rem);color:var(--text-dim);margin-bottom:2.25rem;line-height:1.6;opacity:0;transform:translateY(20px);animation:fadeUp 1s var(--ease-out) .8s forwards}
+@keyframes fadeUp{to{opacity:1;transform:none}}
+.hero__cta{display:flex;gap:.75rem;flex-wrap:wrap;opacity:0;transform:translateY(20px);animation:fadeUp 1s var(--ease-out) .95s forwards}
+
+.btn{padding:1rem 1.6rem;border-radius:999px;font-weight:700;font-size:.76rem;letter-spacing:.22em;text-transform:uppercase;display:inline-flex;align-items:center;gap:.6rem;position:relative;overflow:hidden;transition:transform .3s var(--ease),box-shadow .3s;cursor:pointer}
+.btn--primary{background:var(--grad);color:#fff;box-shadow:var(--glow-red)}
+.btn--primary:hover{transform:translateY(-3px) scale(1.02);box-shadow:var(--glow-pink)}
+.btn--primary::before{content:"";position:absolute;inset:0;background:linear-gradient(100deg,#ff2a9d,#ff0040);opacity:0;transition:opacity .4s}
+.btn--primary:hover::before{opacity:1}
+.btn--primary span{position:relative;z-index:1;display:inline-flex;align-items:center;gap:.6rem}
+.btn--ghost{border:1px solid var(--line);color:var(--text)}
+.btn--ghost:hover{border-color:var(--red);color:var(--red);transform:translateY(-3px)}
+.btn svg{width:14px;height:14px;transition:transform .3s}
+.btn:hover svg{transform:translateX(4px)}
+
+.hero__stats{display:grid;grid-auto-flow:column;gap:2rem;margin-top:3.5rem;padding-top:2rem;border-top:1px solid var(--line);font-family:var(--font-mono);opacity:0;transform:translateY(20px);animation:fadeUp 1s var(--ease-out) 1.1s forwards}
+.hero__stat{min-width:90px;position:relative}
+.hero__stat b{display:block;font-size:clamp(1.8rem,3vw,2.6rem);font-family:var(--font-head);line-height:1;letter-spacing:-.03em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero__stat span{font-size:.66rem;letter-spacing:.22em;text-transform:uppercase;color:var(--text-dim);margin-top:.35rem;display:block}
+
+@media (max-width:640px){.hero__stats{grid-auto-flow:row;grid-template-columns:repeat(2,1fr);gap:1.25rem}}
+
+/* TICKER */
+.ticker{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--ink);overflow:hidden;padding:1.1rem 0;position:relative}
+.ticker::before{content:"";position:absolute;left:0;top:0;bottom:0;width:80px;background:linear-gradient(to right,var(--ink),transparent);z-index:2;pointer-events:none}
+.ticker::after{content:"";position:absolute;right:0;top:0;bottom:0;width:80px;background:linear-gradient(to left,var(--ink),transparent);z-index:2;pointer-events:none}
+.ticker__track{display:flex;gap:3rem;white-space:nowrap;animation:tick 32s linear infinite;font-family:var(--font-head);font-size:clamp(1.1rem,2.4vw,2rem);letter-spacing:-.02em;text-transform:uppercase}
+.ticker__track span{display:inline-flex;align-items:center;gap:3rem}
+.ticker__track span::after{content:"";width:10px;height:10px;background:var(--grad);border-radius:50%;flex-shrink:0}
+.ticker__track span.hot{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.ticker:hover .ticker__track{animation-play-state:paused}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* SECTION */
+.section{position:relative;padding:clamp(4rem,8vw,7rem) 1.25rem;max-width:1400px;margin:0 auto}
+.section__head{display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;margin-bottom:3rem;flex-wrap:wrap}
+.section__eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;color:var(--red);display:flex;align-items:center;gap:.75rem;margin-bottom:1rem}
+.section__eyebrow::before{content:"";width:32px;height:1px;background:var(--grad)}
+.section__title{font-family:var(--font-head);font-size:clamp(2.4rem,6.5vw,4.8rem);line-height:.88;letter-spacing:-.035em;text-transform:uppercase;max-width:14ch}
+.section__title em{font-style:italic;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.section__lede{max-width:440px;color:var(--text-dim);font-size:1rem;line-height:1.65}
+
+/* OVERVIEW */
+.overview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden}
+.overview-cell{padding:2rem 1.75rem;background:var(--bg-2);display:flex;flex-direction:column;justify-content:space-between;min-height:180px;transition:background .4s var(--ease);position:relative;overflow:hidden}
+.overview-cell::before{content:"";position:absolute;inset:auto 0 0 0;height:2px;background:var(--grad);transform:scaleX(0);transform-origin:left;transition:transform .6s var(--ease)}
+.overview-cell:hover{background:var(--bg-3)}
+.overview-cell:hover::before{transform:scaleX(1)}
+.overview-cell b{font-family:var(--font-head);font-size:clamp(2rem,4vw,3rem);line-height:1;display:block;margin-bottom:.4rem;letter-spacing:-.02em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.overview-cell .label{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.26em;text-transform:uppercase;color:var(--text);font-weight:600}
+.overview-cell .desc{font-size:.88rem;color:var(--text-dim);margin-top:.9rem;line-height:1.5}
+
+/* STAY */
+.stay{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem}
+.stay__card{position:relative;padding:2rem;border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(180deg,var(--bg-2) 0%,var(--bg) 100%);overflow:hidden;transition:transform .5s var(--ease),border-color .4s}
+.stay__card::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .4s;background:radial-gradient(400px 220px at var(--mx,50%) var(--my,50%),rgba(255,42,157,.12),transparent 70%)}
+.stay__card::after{content:"";position:absolute;top:0;left:-100%;height:2px;width:100%;background:var(--grad);transition:left .6s var(--ease)}
+.stay__card:hover{transform:translateY(-5px);border-color:var(--red)}
+.stay__card:hover::before{opacity:1}
+.stay__card:hover::after{left:0}
+.stay__card h3{font-family:var(--font-head);font-size:1.35rem;letter-spacing:-.01em;text-transform:uppercase;margin-bottom:.5rem}
+.stay__card .pill{display:inline-block;padding:.3rem .7rem;background:var(--bg-3);border:1px solid var(--line);border-radius:999px;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-dim);margin-bottom:1rem}
+.stay__card .pill.pill--free{color:var(--red);border-color:var(--red);background:rgba(255,0,64,.08)}
+.stay__card p{color:var(--text-dim);font-size:.92rem;line-height:1.6;margin-bottom:1.25rem}
+.stay__card p strong{color:var(--text)}
+.stay__card a{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--pink);display:inline-flex;gap:.4rem;align-items:center}
+.stay__card a:hover{color:var(--text);text-shadow:0 0 12px var(--pink)}
+
+/* DAYS */
+.days{display:flex;flex-direction:column;gap:2rem}
+.day{position:relative;min-height:560px;overflow:hidden;border-radius:var(--radius-lg);background:var(--ink);isolation:isolate}
+.day::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(60% 60% at 90% 10%,rgba(255,42,157,.2),transparent 60%),radial-gradient(55% 55% at 10% 90%,rgba(255,0,64,.22),transparent 60%)}
+.day:nth-child(even)::before{background:radial-gradient(60% 60% at 10% 10%,rgba(255,42,157,.22),transparent 60%),radial-gradient(55% 55% at 90% 90%,rgba(255,0,64,.2),transparent 60%)}
+
+.day__photo{position:absolute;inset:0;z-index:0;overflow:hidden}
+.day__photo img,.day__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.day__photo img{filter:grayscale(1) contrast(1.35) brightness(.42);transform:scale(1.05);transition:transform 1.2s var(--ease),filter .8s,opacity .6s}
+.day:hover .day__photo img{transform:scale(1.12) rotate(.4deg);filter:grayscale(.9) contrast(1.4) brightness(.5)}
+.day__video{opacity:0;filter:grayscale(1) contrast(1.4) brightness(.45) saturate(1.1);transform:scale(1.04);transition:opacity .5s var(--ease),transform 8s var(--ease);pointer-events:none;z-index:1}
+.day__video.playing{opacity:1;transform:scale(1.12)}
+.day.has-video:hover .day__photo img{opacity:0}
+.day.has-video::after{content:"VIDEO · HOVER";position:absolute;top:1rem;left:1rem;z-index:4;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.28em;color:#fff;background:var(--grad);padding:.3rem .55rem;border-radius:999px;box-shadow:var(--glow-red);opacity:.85;pointer-events:none;animation:videoTag 2s ease-in-out infinite}
+@keyframes videoTag{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+.day__photo-overlay{position:absolute;inset:0;z-index:2;background:linear-gradient(120deg,rgba(5,5,7,.96) 0%,rgba(5,5,7,.75) 35%,rgba(255,0,64,.35) 75%,rgba(255,42,157,.45) 100%)}
+.day:nth-child(even) .day__photo-overlay{background:linear-gradient(60deg,rgba(5,5,7,.96) 0%,rgba(5,5,7,.75) 35%,rgba(255,42,157,.35) 75%,rgba(255,0,64,.45) 100%)}
+.day__photo-scan{position:absolute;inset:0;z-index:3;background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.02) 0 1px,transparent 1px 4px);mix-blend-mode:overlay;pointer-events:none}
+
+.day__big{position:absolute;z-index:1;pointer-events:none;top:-3rem;right:-2rem;font-family:var(--font-head);font-size:clamp(14rem,30vw,30rem);line-height:.78;letter-spacing:-.06em;color:transparent;-webkit-text-stroke:2px rgba(255,0,64,.22);mix-blend-mode:screen}
+.day:nth-child(even) .day__big{right:auto;left:-2rem;-webkit-text-stroke-color:rgba(255,42,157,.22)}
+
+.day__content{position:relative;z-index:4;display:grid;grid-template-columns:1.15fr .85fr;gap:2.5rem;padding:clamp(2rem,4vw,3.5rem);min-height:560px;align-items:start}
+.day:nth-child(even) .day__content{grid-template-columns:.85fr 1.15fr}
+.day:nth-child(even) .day__text{order:2}
+.day:nth-child(even) .day__side{order:1}
+
+.day__text{display:flex;flex-direction:column;gap:1.25rem;justify-content:space-between;min-height:100%}
+.day__top{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.day__num{font-family:var(--font-head);font-size:3rem;line-height:.85;letter-spacing:-.04em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.day__date{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:var(--text);display:flex;align-items:center;gap:.7rem;padding:.4rem .8rem;border:1px solid var(--line);background:rgba(0,0,0,.35);border-radius:999px;backdrop-filter:blur(8px)}
+.day__date b{color:var(--red);font-weight:700}
+
+.day__title{font-family:var(--font-head);font-size:clamp(2.2rem,5.2vw,4.2rem);line-height:.88;letter-spacing:-.035em;text-transform:uppercase;margin-top:.25rem}
+.day__title .accent{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;font-style:italic}
+
+.day__lead{font-size:clamp(.95rem,1.1vw,1.05rem);line-height:1.65;color:var(--text);max-width:55ch}
+.day__lead .pretext{display:inline;background:linear-gradient(180deg,transparent 65%,rgba(255,0,64,.4) 65%,rgba(255,42,157,.4) 100%);padding:0 .15em;font-weight:600}
+
+.day__summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.45rem}
+.day__summary .chip{padding:.6rem .75rem;background:rgba(10,10,14,.7);border:1px solid var(--line);border-radius:10px;backdrop-filter:blur(8px);transition:border-color .3s,transform .3s;display:flex;flex-direction:column;gap:.1rem}
+.day__summary .chip:hover{border-color:var(--red);transform:translateY(-2px)}
+.day__summary .chip b{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--pink);font-weight:600}
+.day__summary .chip span{font-size:.88rem;color:var(--text);font-weight:500;line-height:1.2}
+
+.day__side{display:flex;flex-direction:column;gap:1rem}
+.day__spots{list-style:none;display:flex;flex-direction:column;gap:.3rem}
+.day__spots li{display:flex;gap:.75rem;align-items:center;padding:.7rem .85rem;border-radius:10px;border:1px solid var(--line);background:rgba(8,8,12,.65);backdrop-filter:blur(8px);font-size:.88rem;line-height:1.35;cursor:pointer;transition:border-color .3s,background .3s,transform .3s}
+.day__spots li:hover{border-color:var(--red);background:rgba(255,0,64,.08);transform:translateX(4px)}
+.day__spots li .idx{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--grad);color:#fff;font-family:var(--font-head);font-weight:400;font-size:.78rem;display:grid;place-items:center;box-shadow:var(--glow-red)}
+.day__spots li .info{flex:1;min-width:0}
+.day__spots li .info b{display:block;color:var(--text);font-weight:600;font-size:.9rem}
+.day__spots li .info em{color:var(--text-dim);font-style:normal;font-size:.78rem}
+.day__spots li .time{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;color:var(--text);background:var(--grad);padding:.22rem .5rem;border-radius:4px;flex-shrink:0;font-weight:700}
+
+.day__gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:.35rem}
+.day__gallery button{aspect-ratio:1;overflow:hidden;border-radius:8px;position:relative;border:1px solid var(--line);transition:transform .35s var(--ease),border-color .35s;cursor:pointer}
+.day__gallery button img{width:100%;height:100%;object-fit:cover;filter:grayscale(.4) contrast(1.15);transition:transform .6s var(--ease),filter .4s}
+.day__gallery button:hover{transform:scale(1.05);border-color:var(--pink)}
+.day__gallery button:hover img{transform:scale(1.15);filter:grayscale(0) contrast(1.2) saturate(1.1)}
+.day__gallery button::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,transparent 60%,rgba(255,0,64,.3));opacity:0;transition:opacity .3s}
+.day__gallery button:hover::after{opacity:1}
+
+.day__actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:auto}
+.day__actions .btn{padding:.8rem 1.25rem;font-size:.7rem}
+
+@media (max-width:900px){
+  .day__content,.day:nth-child(even) .day__content{grid-template-columns:1fr;gap:1.75rem}
+  .day:nth-child(even) .day__text,.day:nth-child(even) .day__side{order:0}
+  .day{min-height:auto}
+  .day__big{font-size:14rem;top:-1.5rem;right:-1rem;opacity:.6}
+}
+
+/* SPOTS */
+.spots{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.25rem}
+.spot-card{position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);background:var(--bg-2);display:flex;flex-direction:column;transition:transform .4s var(--ease),border-color .4s;cursor:pointer;min-height:360px}
+.spot-card:hover{transform:translateY(-6px);border-color:var(--red);box-shadow:var(--glow-red)}
+.spot-card__media{position:relative;aspect-ratio:4/3;overflow:hidden}
+.spot-card__media img{width:100%;height:100%;object-fit:cover;filter:grayscale(.6) contrast(1.2) brightness(.85);transition:transform .8s var(--ease),filter .5s}
+.spot-card:hover .spot-card__media img{transform:scale(1.1);filter:grayscale(.1) contrast(1.25) saturate(1.15)}
+.spot-card__media::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(5,5,7,.9) 100%),linear-gradient(120deg,rgba(255,0,64,.35) 0%,transparent 50%,rgba(255,42,157,.25) 100%)}
+.spot-card__num{position:absolute;top:.75rem;left:.75rem;z-index:2;width:42px;height:42px;border-radius:50%;background:var(--grad);color:#fff;font-family:var(--font-head);font-size:1rem;display:grid;place-items:center;box-shadow:var(--glow-red)}
+.spot-card__home{position:absolute;top:.75rem;right:.75rem;z-index:2;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;padding:.3rem .55rem;border-radius:999px;background:rgba(5,5,7,.85);border:1px solid var(--red);color:var(--red)}
+.spot-card__body{padding:1.15rem 1.25rem 1.25rem;display:flex;flex-direction:column;gap:.5rem;flex:1}
+.spot-card__body h3{font-family:var(--font-head);font-size:1.1rem;letter-spacing:-.01em;text-transform:uppercase;line-height:1.1}
+.spot-card__body .addr{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.15em;text-transform:uppercase;color:var(--pink)}
+.spot-card__body p{font-size:.88rem;color:var(--text-dim);line-height:1.55;flex:1}
+.spot-card__foot{display:flex;justify-content:space-between;align-items:center;gap:.5rem;padding-top:.5rem;border-top:1px solid var(--line);margin-top:.25rem}
+.spot-card__foot a{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text);display:inline-flex;gap:.3rem;align-items:center}
+.spot-card__foot a:hover{color:var(--red)}
+.spot-card__foot .days-in{display:flex;gap:.2rem;flex-wrap:wrap}
+.spot-card__foot .days-in b{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.1em;padding:.18rem .4rem;border-radius:4px;background:var(--bg-3);color:var(--text-dim);border:1px solid var(--line);font-weight:600}
+.spot-card__foot .days-in b.day-active{background:var(--grad);color:#fff;border-color:transparent}
+
+/* LIGHTBOX */
+.lightbox{position:fixed;inset:0;z-index:9000;background:rgba(3,3,5,.95);backdrop-filter:blur(20px);display:grid;place-items:center;padding:4rem 1rem 3rem;opacity:0;visibility:hidden;transition:opacity .4s,visibility .4s}
+.lightbox.open{opacity:1;visibility:visible}
+.lightbox__stage{position:relative;max-width:min(1100px,92vw);max-height:78vh;width:100%}
+.lightbox__img{width:100%;max-height:78vh;object-fit:contain;border-radius:var(--radius);animation:lbIn .5s var(--ease-out)}
+@keyframes lbIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+.lightbox__close,.lightbox__prev,.lightbox__next{position:absolute;background:rgba(15,15,18,.85);border:1px solid var(--line);color:var(--text);width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-size:1.3rem;transition:all .3s;cursor:pointer}
+.lightbox__close:hover,.lightbox__prev:hover,.lightbox__next:hover{background:var(--grad);color:#fff;border-color:transparent;transform:scale(1.1);box-shadow:var(--glow-red)}
+.lightbox__close{top:1rem;right:1rem}
+.lightbox__prev{left:-1.5rem;top:50%;transform:translateY(-50%)}
+.lightbox__next{right:-1.5rem;top:50%;transform:translateY(-50%)}
+.lightbox__prev:hover,.lightbox__next:hover{transform:translateY(-50%) scale(1.1)}
+@media (max-width:700px){.lightbox__prev{left:.5rem}.lightbox__next{right:.5rem}}
+.lightbox__counter{position:absolute;bottom:-2.5rem;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:.72rem;letter-spacing:.22em;color:var(--text-dim)}
+
+/* MAP */
+.map-wrap{position:relative;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:var(--bg-2)}
+.map-tabs{display:flex;gap:.35rem;overflow-x:auto;padding:1rem;border-bottom:1px solid var(--line);background:rgba(8,8,10,.75);backdrop-filter:blur(10px);scrollbar-width:thin}
+.map-tabs::-webkit-scrollbar{height:4px}
+.map-tab{flex-shrink:0;padding:.55rem 1rem;border-radius:999px;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-dim);background:var(--bg-3);border:1px solid var(--line);transition:all .3s var(--ease);white-space:nowrap;cursor:pointer}
+.map-tab:hover{color:var(--text);border-color:var(--red)}
+.map-tab.is-active{background:var(--grad);color:#fff;border-color:transparent;font-weight:700;box-shadow:var(--glow-red)}
+#map{width:100%;height:clamp(440px,70vh,720px);background:var(--bg-2)}
+
+.leaflet-container{background:#0a0a0d!important;font-family:var(--font-body)!important}
+.leaflet-control-zoom a{background:var(--bg-3)!important;color:var(--text)!important;border:1px solid var(--line)!important}
+.leaflet-control-zoom a:hover{background:var(--red)!important;color:#fff!important;border-color:var(--red)!important}
+.leaflet-control-attribution{background:rgba(8,8,10,.75)!important;color:var(--text-mute)!important;font-size:10px!important;padding:2px 6px!important;border-radius:4px!important}
+.leaflet-control-attribution a{color:var(--text-dim)!important}
+
+.pin{width:40px;height:40px;position:relative;filter:drop-shadow(0 6px 16px rgba(255,0,64,.45))}
+.pin__body{position:absolute;inset:0;background:var(--grad);border:2px solid #fff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);transition:transform .25s var(--ease)}
+.pin__num{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--font-head);font-size:.95rem;color:#fff;font-weight:700}
+.pin:hover .pin__body{transform:rotate(-45deg) scale(1.2)}
+.pin--home .pin__body{background:#fff;border-color:var(--red)}
+.pin--home .pin__num{color:var(--red)}
+
+.leaflet-popup-content-wrapper{background:var(--bg-2)!important;color:var(--text)!important;border-radius:var(--radius)!important;border:1px solid var(--line);box-shadow:var(--shadow)!important;padding:0!important;overflow:hidden}
+.leaflet-popup-content{margin:0!important;width:280px!important;font-family:var(--font-body)!important}
+.leaflet-popup-tip{background:var(--bg-2)!important;border:1px solid var(--line)}
+.leaflet-popup-close-button{color:var(--text)!important;font-size:22px!important;padding:6px 10px 0 0!important;opacity:.7}
+.leaflet-popup-close-button:hover{opacity:1;color:var(--red)!important}
+
+.pop__img{width:100%;height:130px;object-fit:cover;display:block;filter:grayscale(.3) contrast(1.15)}
+.pop__body{padding:.95rem 1.1rem 1.1rem}
+.pop__eyebrow{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:var(--red);margin-bottom:.3rem}
+.pop h3{font-family:var(--font-head);font-size:1.05rem;letter-spacing:-.01em;text-transform:uppercase;margin-bottom:.35rem;color:var(--text)}
+.pop p{font-size:.82rem;color:var(--text-dim);line-height:1.5;margin-bottom:.85rem}
+.pop__time{display:inline-block;padding:.2rem .5rem;background:var(--bg-3);border:1px solid var(--line);border-radius:6px;font-family:var(--font-mono);font-size:.68rem;color:var(--text);margin-bottom:.75rem}
+.pop__nav{display:inline-flex;gap:.4rem;align-items:center;padding:.55rem .9rem;background:var(--grad);color:#fff;border-radius:999px;font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;font-weight:700;transition:transform .25s,box-shadow .25s}
+.pop__nav:hover{transform:translateX(3px);box-shadow:var(--glow-red)}
+
+/* FAQ */
+.faq{display:flex;flex-direction:column;gap:.5rem}
+.faq__item{border:1px solid var(--line);border-radius:var(--radius);background:var(--bg-2);overflow:hidden;transition:border-color .3s}
+.faq__item:hover{border-color:var(--text-mute)}
+.faq__item[open]{border-color:var(--red);background:linear-gradient(180deg,var(--bg-2),rgba(255,0,64,.04))}
+.faq__item summary{padding:1.1rem 1.25rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem;font-weight:600;font-size:1rem;list-style:none}
+.faq__item summary::-webkit-details-marker{display:none}
+.faq__item summary::after{content:"+";font-family:var(--font-head);font-size:1.5rem;color:var(--red);transition:transform .3s var(--ease);flex-shrink:0}
+.faq__item[open] summary::after{transform:rotate(45deg);color:var(--pink)}
+.faq__item .answer{padding:0 1.25rem 1.25rem;color:var(--text-dim);font-size:.95rem;line-height:1.65}
+
+/* JOIN CTA */
+.join{position:relative;overflow:hidden;padding:clamp(4rem,8vw,7rem) 1.25rem;max-width:1400px;margin:0 auto}
+.join__inner{position:relative;border-radius:var(--radius-lg);padding:clamp(2.5rem,6vw,5rem);background:linear-gradient(120deg,var(--bg-2) 0%,var(--ink) 60%);border:1px solid var(--line);overflow:hidden}
+.join__inner::before{content:"";position:absolute;inset:-50%;background:conic-gradient(from 0deg,transparent 0%,rgba(255,0,64,.25) 15%,transparent 30%,rgba(255,42,157,.25) 55%,transparent 70%,rgba(255,0,64,.25) 85%,transparent 100%);animation:joinSpin 14s linear infinite;pointer-events:none}
+.join__inner::after{content:"";position:absolute;inset:1.5px;border-radius:calc(var(--radius-lg) - 1px);background:linear-gradient(120deg,var(--bg-2) 0%,var(--ink) 60%);pointer-events:none}
+@keyframes joinSpin{to{transform:rotate(360deg)}}
+.join__content{position:relative;z-index:2;display:grid;grid-template-columns:1.3fr 1fr;gap:3rem;align-items:center}
+@media (max-width:900px){.join__content{grid-template-columns:1fr}}
+.join__content h2{font-family:var(--font-head);font-size:clamp(2.4rem,6vw,4.5rem);line-height:.9;letter-spacing:-.035em;text-transform:uppercase}
+.join__content h2 em{font-style:italic;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.join__content p{margin:1.25rem 0 2rem;color:var(--text-dim);font-size:1.05rem;line-height:1.65;max-width:48ch}
+.join__cta{display:flex;flex-direction:column;gap:1rem;align-items:flex-start}
+.join__cta .btn{font-size:.82rem;padding:1.15rem 1.8rem}
+.join__cta .meta{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.2em;color:var(--text-mute);text-transform:uppercase}
+.join__cta .meta b{color:var(--pink);font-weight:500}
+.join__stats{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;padding:1.5rem;border:1px solid var(--line);border-radius:var(--radius);background:rgba(10,10,14,.6);backdrop-filter:blur(8px)}
+.join__stat{display:flex;flex-direction:column;gap:.2rem}
+.join__stat b{font-family:var(--font-head);font-size:2rem;line-height:1;letter-spacing:-.02em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.join__stat span{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--text-dim)}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--line);padding:4rem 1.25rem 2rem;background:var(--ink);text-align:center;position:relative;overflow:hidden}
+.footer__glow{position:absolute;inset:-50%;background:radial-gradient(circle at 50% 100%,rgba(255,0,64,.18),transparent 55%);pointer-events:none}
+.footer__title{font-family:var(--font-head);font-size:clamp(3rem,12vw,9rem);line-height:.82;letter-spacing:-.045em;text-transform:uppercase;background:linear-gradient(180deg,var(--text) 0%,var(--bg-2) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;position:relative;z-index:1;margin-bottom:2rem}
+.footer__meta{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.28em;text-transform:uppercase;color:var(--text-mute);position:relative;z-index:1}
+.footer__meta span{color:var(--pink);margin:0 .6rem}
+.footer__contact{margin-top:1.5rem;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-dim);position:relative;z-index:1}
+.footer__contact a{color:var(--red)}
+.footer__contact a:hover{color:var(--pink);text-shadow:0 0 10px var(--pink)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .9s var(--ease-out),transform .9s var(--ease-out)}
+.reveal.is-visible{opacity:1;transform:none}
+.reveal--2{transition-delay:.12s}
+.reveal--3{transition-delay:.22s}
+
+@media (max-width:700px){
+  .nav{padding:.75rem 1rem}
+  .section{padding:3rem 1rem}
+  .spots{grid-template-columns:1fr}
+  .overview-cell{padding:1.5rem 1.25rem;min-height:140px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;animation-iteration-count:1!important}.ticker__track{animation:none}}
+</style>
+</head>
+<body>
+
+<div class="loader" id="loader" aria-hidden="true">
+  <img class="loader__mark" src="Bilder/Load.png" alt="" />
+  <div class="loader__brand"><span>LEIPZIG</span><span>INVITATION</span></div>
+  <div class="loader__bar"></div>
+  <div class="loader__meta">08 — 16 · 08 · 2026</div>
+</div>
+
+<div class="cursor" id="cursor" aria-hidden="true"></div>
+
+<header class="nav" id="nav">
+  <a href="#top" class="nav__brand"><i></i>LEIPZIG/INV.26</a>
+  <nav class="nav__links" id="navLinks">
+    <a href="#overview">Event</a>
+    <a href="#stay">Stay</a>
+    <a href="#days">Lineup</a>
+    <a href="#spots">Spots</a>
+    <a href="#map">Map</a>
+    <a href="#faq">FAQ</a>
+    <button class="nav__cta" id="joinBtn">Join</button>
+  </nav>
+  <button class="nav__burger" id="burger" aria-label="Menü"><span></span><span></span><span></span></button>
+</header>
+
+<section class="hero" id="top">
+  <div class="hero__grid"></div>
+  <div class="hero__image" id="heroImg">
+    <img src="Bilder/Titelbild.jpg" alt="" />
+  </div>
+  <div class="hero__inner">
+    <div class="hero__meta"><span>Post-Unicon Ride Trip</span><span>Leipzig · Markkleeberg</span><span>35 Plätze</span></div>
+    <h1 class="hero__title">
+      <span class="l"><span>Leipzig</span></span>
+      <span class="l"><span>Invita<i>tion</i></span></span>
+    </h1>
+    <p class="hero__tag">Neun Tage Street-Einrad. Eine Stadt, vierzehn Spots, eine Crew. Rohe Lines, präzise Kontrolle, echte Trickarbeit — und nach Sonnenuntergang zurück zur Homebase.</p>
+    <div class="hero__cta">
+      <button class="btn btn--primary" id="joinHero"><span>Anmelden<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
+      <a href="#days" class="btn btn--ghost">Lineup</a>
+      <a href="#spots" class="btn btn--ghost">14 Spots</a>
+    </div>
+    <div class="hero__stats">
+      <div class="hero__stat"><b>09</b><span>Tage</span></div>
+      <div class="hero__stat"><b>14</b><span>Spots</span></div>
+      <div class="hero__stat"><b>35</b><span>Rider</span></div>
+      <div class="hero__stat"><b>∞</b><span>Lines</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="ticker" aria-hidden="true"><div class="ticker__track" id="ticker"></div></div>
+
+<section class="section" id="overview">
+  <header class="section__head">
+    <div><div class="section__eyebrow reveal">Das Event</div><h2 class="section__title reveal">Street. <em>Flow.</em><br>Community.</h2></div>
+    <p class="section__lede reveal reveal--2">Road Trip direkt nach der Unicon. Neun Tage rollen, trainieren, filmen, feiern. Kein Contest-Zirkus — Lines, Sessions, gemeinsames Essen, Spots, die sich lohnen.</p>
+  </header>
+  <div class="overview-grid reveal">
+    <div class="overview-cell"><b>08–16</b><div><div class="label">August 2026</div><div class="desc">Samstag zu Sonntag. Ankommen, riden, abreisen.</div></div></div>
+    <div class="overview-cell"><b>14</b><div><div class="label">Spots in Leipzig</div><div class="desc">Innenstadt, Südvorstadt, Connewitz, Reudnitz, DIY.</div></div></div>
+    <div class="overview-cell"><b>35</b><div><div class="label">Plätze maximal</div><div class="desc">Kleine Crew. Ab Platz 36 eigene Unterkunft.</div></div></div>
+    <div class="overview-cell"><b>0 €</b><div><div class="label">Homebase Pleißenhof</div><div class="desc">Selbstverpflegung, Zelt aufbauen, See 300 m.</div></div></div>
+  </div>
+</section>
+
+<section class="section" id="stay">
+  <header class="section__head">
+    <div><div class="section__eyebrow reveal">Unterkunft</div><h2 class="section__title reveal">Wo du <em>schläfst.</em></h2></div>
+    <p class="section__lede reveal reveal--2">Selbstverpflegung, selbst kümmern. Homebase gestellt — der Rest ist eigene Entscheidung.</p>
+  </header>
+  <div class="stay" id="stayGrid"></div>
+</section>
+
+<section class="section" id="days">
+  <header class="section__head">
+    <div><div class="section__eyebrow reveal">Lineup · 9 Days</div><h2 class="section__title reveal">Jeder Tag<br>eine <em>Line.</em></h2></div>
+    <p class="section__lede reveal reveal--2">Jeder Tag ist eine eigene Bühne. Hover über eine Tages-Karte startet das Video, Klick auf ein Thumbnail öffnet die Galerie.</p>
+  </header>
+  <div class="days" id="daysList"></div>
+</section>
+
+<section class="section" id="spots">
+  <header class="section__head">
+    <div><div class="section__eyebrow reveal">Spots · 14 Locations</div><h2 class="section__title reveal">Alle Spots<br>im <em>Detail.</em></h2></div>
+    <p class="section__lede reveal reveal--2">Von DIY-Beton bis zu offiziellen Skateparks. Jeder Spot mit Adresse, Beschreibung, Navigation. Klick auf eine Karte zoomt die Leaflet-Karte auf den Spot.</p>
+  </header>
+  <div class="spots" id="spotsGrid"></div>
+</section>
+
+<section class="section" id="map">
+  <header class="section__head">
+    <div><div class="section__eyebrow reveal">The Map</div><h2 class="section__title reveal">Alle Spots.<br><em>Alle Tage.</em></h2></div>
+    <p class="section__lede reveal reveal--2">Nummerierte Pins, Tages-Routen, Google-Maps-Navigation. Tab wählen, um nur einen Tag zu zeigen.</p>
+  </header>
+  <div class="map-wrap reveal"><div class="map-tabs" id="mapTabs"></div><div id="map"></div></div>
+</section>
+
+<section class="section" id="faq">
+  <header class="section__head"><div><div class="section__eyebrow reveal">FAQ</div><h2 class="section__title reveal">Good to <em>know.</em></h2></div></header>
+  <div class="faq reveal">
+    <details class="faq__item"><summary>Muss ich Tricks können?</summary><div class="answer">Nein. Wir haben Spots für Flat, Street, technisches Riden und Chill-Sessions. Wichtiger als Level ist Motivation und Respekt vor den Spots.</div></details>
+    <details class="faq__item"><summary>Wie läuft Verpflegung?</summary><div class="answer">Selbstverpflegung. Am Ankunftstag gibt's eine Foodliste für Tag 2. Danach organisiert sich die Crew über den Community-Tisch. Frühstück gemeinsam, Abends wird gegrillt wenn geplant.</div></details>
+    <details class="faq__item"><summary>Was kostet es?</summary><div class="answer">Homebase Pleißenhof: kostenlos (25 Plätze). Heizhaus: 10€ (10 Plätze). Ab Platz 36 selbst organisiert – Campingplatz, Hostel, Hotel oder Jugendherberge.</div></details>
+    <details class="faq__item"><summary>Ist Transport zwischen den Spots organisiert?</summary><div class="answer">Nein — wir rollen. Das ist ein Ride-Trip, also Einrad als primäres Fortbewegungsmittel zwischen den Spots. ÖPNV Leipzig ist solide, falls mal länger.</div></details>
+    <details class="faq__item"><summary>Kann ich auch nur ein paar Tage kommen?</summary><div class="answer">Grundsätzlich ja. Meld dich früh, damit wir einen Platz freihalten können — besonders auf der Homebase sind Plätze begrenzt.</div></details>
+    <details class="faq__item"><summary>Welche Ausrüstung brauche ich?</summary><div class="answer">Dein Einrad (ideal 19" oder 24/26" Street-Setup), Protektoren (Shin, Knee empfehlen wir strong), Helm. Zelt + Schlafsack für die Homebase, Kochzeug. Eventuell Reserve-Pedale und Pumpe.</div></details>
+  </div>
+</section>
+
+<section class="join" id="join">
+  <div class="join__inner reveal">
+    <div class="join__content">
+      <div>
+        <div class="section__eyebrow">Anmeldung</div>
+        <h2>Bock <em>dabei</em><br>zu sein?</h2>
+        <p>Schreib Folke direkt — eine Mail mit vorausgefülltem Formular. Antwort meist innerhalb von 48 Stunden. Plätze werden in Reihenfolge der Eingänge vergeben.</p>
+        <div class="join__cta">
+          <button class="btn btn--primary" id="joinCTA"><span>Mail an Folke<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
+          <div class="meta">An: <b>folke.kleinrad@gmail.com</b> · Vorlage inklusive</div>
+        </div>
+      </div>
+      <div class="join__stats">
+        <div class="join__stat"><b>35</b><span>Plätze</span></div>
+        <div class="join__stat"><b>9</b><span>Tage</span></div>
+        <div class="join__stat"><b>14</b><span>Spots</span></div>
+        <div class="join__stat"><b>0€</b><span>ab Homebase</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__glow"></div>
+  <div class="footer__title reveal">Leipzig Invitation</div>
+  <div class="footer__meta"><span>08 — 16 · 08 · 2026</span>·<span>Post Unicon Ride Trip</span>·<span>Street / Flat / Tricks</span></div>
+  <div class="footer__contact">Host: Folke · <a href="#" id="footerMail">folke.kleinrad@gmail.com</a></div>
+</footer>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="lightbox__stage">
+    <img class="lightbox__img" id="lbImg" alt="" />
+    <button class="lightbox__close" id="lbClose" aria-label="Schließen">✕</button>
+    <button class="lightbox__prev" id="lbPrev" aria-label="Zurück">‹</button>
+    <button class="lightbox__next" id="lbNext" aria-label="Weiter">›</button>
+    <div class="lightbox__counter" id="lbCounter"></div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+/* ============ MAILTO JOIN ============ */
+const MAIL = "folke.kleinrad@gmail.com";
+const MAIL_SUBJECT = "Anmeldung · Leipzig Invitation 2026";
+const MAIL_BODY = `Hey Folke,
+
+ich möchte bei der Leipzig Invitation 2026 (08.–16.08.2026) dabei sein.
+
+— Name:
+— Alter:
+— Riding-Level (Beginner / Intermediate / Advanced):
+— Fokus (Street / Flat / beides):
+— Einrad-Setup:
+— Anreise-Datum:
+— Abreise-Datum:
+— Unterkunft (Pleißenhof kostenlos / Heizhaus 10€ / selbst organisiert):
+— Anfahrt (Auto / ÖPNV):
+— Allergien / Ernährung:
+— Instagram / Kontakt:
+— Sonstiges:
+
+Cheers`;
+function openMail(e){
+  if(e) e.preventDefault();
+  const url = `mailto:${MAIL}?subject=${encodeURIComponent(MAIL_SUBJECT)}&body=${encodeURIComponent(MAIL_BODY)}`;
+  window.location.href = url;
+}
+["joinBtn","joinHero","joinCTA","footerMail"].forEach(id => {
+  const el = document.getElementById(id);
+  if(el) el.addEventListener("click", openMail);
+});
+
+/* ============ DATA ============ */
+const accommodations = [
+  { name:"Pleißenhof · Homebase", city:"Markkleeberg", address:"Bornaische Str. 68, 04416 Markkleeberg", cost:"free", slots:25, note:"See zum Baden in 300 m Entfernung — Strandhaus direkt am Wasser.", mapsUrl:"https://maps.app.goo.gl/weCVkzvTJEUxFYG77" },
+  { name:"Heizhaus", city:"Leipzig West", address:"Alte Salzstraße 63, 04209 Leipzig", cost:"10 €", slots:10, note:"Direkter Zugriff auf Street- & Flat-Session-Location.", mapsUrl:"https://maps.app.goo.gl/JShsajAzJpGFTfQu9?g_st=ac" },
+  { name:"Selbst organisieren", city:"ab Platz 36", address:"Campingplatz · Hostel · Hotel · Jugendherberge", cost:"variabel", slots:"∞", note:"Sobald die Homebase voll ist, regelt sich jeder selbst.", mapsUrl:"https://www.google.com/maps/search/Leipzig+Hostel+Hotel" }
+];
+
+const IMG = {
+  bg: "Bilder/BG.jpg",
+  dyn: "Bilder/Dynamisch.jpg",
+  folke: "Bilder/Folke.jpg",
+  titel: "Bilder/Titelbild.jpg",
+  see: "Bilder/See/Markkleeberger%20See.jpg",
+  biomare: "Bilder/Biomare/Biomare.jpg",
+  conne: "Bilder/Conne%20Island/Conne_Island_p_1.jpg",
+  geizer1: "Bilder/Geizer/Geizer_p_1.jpg",
+  geizer2: "Bilder/Geizer/Geizer_p_2.jpg",
+  heiz1: "Bilder/Heizhaus/Heizhaus_P_1.jpg",
+  heiz2: "Bilder/Heizhaus/Heizhaus_p_2.jpg",
+  mdr1: "Bilder/MRD_SPOT/MDR_SPOT_p_1.jpg",
+  mdr2: "Bilder/MRD_SPOT/MDR_SPOT_P_2.jpg",
+  mdr3: "Bilder/MRD_SPOT/MDR_SPOT_P_3.jpg",
+  mdr4: "Bilder/MRD_SPOT/MDR_SPOT_P_4.jpg",
+  mdr5: "Bilder/MRD_SPOT/MRD_SPOT_P_5.jpg",
+  mdr6: "Bilder/MRD_SPOT/MRD_SPOT_P_6.jpg"
+};
+
+const VID = {
+  heiz1: "Bilder/Heizhaus/Heizhaus_vid_1.mp4",
+  heiz2: "Bilder/Heizhaus/Heizhaus_vid_2.mp4",
+  conne1: "Bilder/Conne%20Island/Conne_Island_vid_1.mp4",
+  conne2: "Bilder/Conne%20Island/Conne_Island_vid_2.mp4",
+  conne3: "Bilder/Conne%20Island/Conne_Island_vid_3.mp4",
+  moritz1: "Bilder/Moritz%20bastei/Moritz%20Bastei_vid_1.mp4",
+  moritz2: "Bilder/Moritz%20bastei/Moritz_Bastei_vid_2.mp4",
+  moritz3: "Bilder/Moritz%20bastei/Moritz_bastei_vid_1.mp4"
+};
+
+const spotsMaster = {
+  1:  { title:"Pleißenhof · Homebase",          addr:"Bornaische Str. 68, Markkleeberg",     coords:[51.2778,12.3692], desc:"Zelten, kochen, chillen. Community-Tisch, Feuerstelle, Platz für 25 Rider. See 300 m entfernt.",    mapsUrl:"https://maps.app.goo.gl/weCVkzvTJEUxFYG77",          img:IMG.folke, home:true },
+  2:  { title:"Blaza · Wagner-Platz",           addr:"Richard-Wagner-Platz 1, 04109 Leipzig", coords:[51.3446,12.3757], desc:"Startpunkt City-Ride. Weite Plaza, Granit-Ledges, Treppen, Innenstadt-Cruise.",                  mapsUrl:"https://maps.app.goo.gl/dd29GXX65ni8C1LT8",          img:IMG.bg },
+  3:  { title:"Heizhaus · Indoor",              addr:"Alte Salzstraße 63, 04209 Leipzig",    coords:[51.3185,12.2838], desc:"Indoor-Street & Flat. Ramps, Rails, Free Ride, Game of Uni. Die Indoor-Homebase.",              mapsUrl:"https://maps.app.goo.gl/JShsajAzJpGFTfQu9?g_st=ac", img:IMG.heiz1 },
+  4:  { title:"Giezer Skatespot DIY",           addr:"Naumburger Str. 44, 04229 Leipzig",    coords:[51.3110,12.3380], desc:"Selbstgebauter Beton von der Community. Raue Surfaces, Hips, Banks — echter DIY-Charakter.",    mapsUrl:"https://maps.app.goo.gl/FfhY9LhZF2jNgfQh6?g_st=ac", img:IMG.geizer1 },
+  5:  { title:"Biomare Südvorstadt",            addr:"Karl-Liebknecht-Str. 27, 04107 Leipzig", coords:[51.3292,12.3742], desc:"Flat & Street. Zwei 3er-Stairs plus 7-Stair mit Downrail. Technisches Gelände.",                mapsUrl:"https://maps.app.goo.gl/Qh9e5h8DKNPHF5BK7",         img:IMG.biomare },
+  6:  { title:"Propsteikirche Trinitatis",      addr:"Nonnenmühlgasse 2, 04107 Leipzig",     coords:[51.3353,12.3735], desc:"Moderne Sakralarchitektur. Geschliffene Kanten, lange Lines, glattes Pflaster.",               mapsUrl:"https://maps.app.goo.gl/n7dXYNUHT4Hd77uZ6?g_st=ac", img:IMG.dyn },
+  7:  { title:"Moritzbastei",                   addr:"Kurt-Masur-Platz 1, 04109 Leipzig",    coords:[51.3387,12.3795], desc:"Historische Festungsmauer, Stein-Ledges, Treppen. Mitten im Zentrum.",                         mapsUrl:"https://maps.app.goo.gl/m18f2n53uQgcfMo48",         img:IMG.titel },
+  8:  { title:"Augustusplatz",                  addr:"Augustusplatz, 04109 Leipzig",         coords:[51.3396,12.3810], desc:"Großer Platz im Stadtzentrum. Weite Flächen für Flat, Kanten für Street.",                     mapsUrl:"https://maps.app.goo.gl/Km7ESNiwQyAfe6mk9",         img:IMG.bg },
+  9:  { title:"Skatepark Leipzig · AOK",        addr:"Anton-Bruckner-Allee 1, 04229 Leipzig", coords:[51.3267,12.3547], desc:"Offener Skatepark. Bowl, Street-Plaza, Rails. Feuerstelle am AOK-Spielplatz direkt nebenan.",   mapsUrl:"https://maps.app.goo.gl/3BtepMxP2pX6VbKQ6",         img:IMG.geizer2 },
+  10: { title:"Conne Island",                   addr:"Koburger Str. 3, 04277 Leipzig",       coords:[51.3130,12.3744], desc:"Legendäres Kulturzentrum. Raues Gelände, Charakter, Chill-Territorium.",                       mapsUrl:"https://maps.app.goo.gl/1WTkLsJX3HB9veBb6?g_st=ac", img:IMG.conne },
+  11: { title:"Spielplatz Herderstr.",          addr:"Herderstraße 5, 04277 Leipzig",        coords:[51.3152,12.3782], desc:"Connewitz. Entspanntes Gelände für gemeinsames Essen und lockeres Riden.",                     mapsUrl:"https://maps.app.goo.gl/6nTxkcr9vXWAtRrH9",         img:IMG.see },
+  12: { title:"MDR Leipzig",                    addr:"04103 Leipzig",                        coords:[51.3384,12.3946], desc:"MDR-Areal. Hard Surfaces, Kanten, urbane Architektur. Kurzer gezielter Stop.",                 mapsUrl:"https://maps.app.goo.gl/cNaJeusZk9FMrQNa9",         img:IMG.mdr1 },
+  13: { title:"DNB Magazinturm · Alte Messe",   addr:"Deutscher Pl. 1, 04103 Leipzig",       coords:[51.3242,12.3949], desc:"Deutsche Nationalbibliothek Magazinturm. Brutalismus, offene Plazas, Street & Flat.",          mapsUrl:"https://maps.app.goo.gl/Va54MWz71W3Wjvmw7?g_st=ac", img:IMG.mdr2 },
+  14: { title:"Reudnitz Skatepark",             addr:"Fröschelstraße 4, 04317 Leipzig",      coords:[51.3380,12.4205], desc:"Großer Park, solide Obstacles. Rails, Quarters, Ledges. Street bis in den Abend.",             mapsUrl:"https://maps.app.goo.gl/MfE7mifyHYmtSYvt7?g_st=ac", img:IMG.mdr3 }
+};
+function spot(id, time){ return { ...spotsMaster[id], id, time } }
+
+const eventDays = [
+  { id:"day-1", n:1, date:"Sa · 08.08.2026", tag:"ANKOMMEN", title:"Arrival &amp; <span class='accent'>Set-Up</span>",
+    description:"Ankunft an der Homebase nach der Unicon. Zelte auf, Equipment sortieren, Crew kennenlernen. Am Abend Selbstverpflegung, Foodliste für Tag 2.",
+    pretext:"Tag null zählt auch.",
+    image:IMG.bg, videos:[],
+    gallery:[IMG.titel, IMG.see, IMG.folke, IMG.bg],
+    summary:[{k:"Treffpunkt",v:"Pleißenhof"},{k:"Ankunft",v:"flexibel"},{k:"Verpflegung",v:"Selbst"},{k:"Vibe",v:"Set-Up"}],
+    stops:[ spot(1,"ab Nachmittag") ] },
+
+  { id:"day-2", n:2, date:"So · 09.08.2026", tag:"FIRST DAY", title:"City Ride &amp; <span class='accent'>Heizhaus</span>",
+    description:"Community-Frühstück. 12 Uhr Roll-Start am Richard-Wagner-Platz, Sport-Exploring durch die Innenstadt. Nachmittag Heizhaus — Street und Flat indoor. Ab 20 Uhr Homebase.",
+    pretext:"Erster echter Ride-Tag.",
+    image:IMG.heiz1, videos:[VID.heiz1, VID.heiz2],
+    gallery:[IMG.heiz1, IMG.heiz2, IMG.bg, IMG.dyn],
+    summary:[{k:"12:00",v:"Blaza"},{k:"Nachmittag",v:"Heizhaus"},{k:"Stil",v:"Street · Flat"},{k:"Return",v:"20:00"}],
+    stops:[ spot(2,"12:00"), spot(3,"Nachmittag"), spot(1,"ab 20:00") ] },
+
+  { id:"day-3", n:3, date:"Mo · 10.08.2026", tag:"STREET DAY", title:"Giezer DIY &amp; <span class='accent'>Game of Uni</span>",
+    description:"12 Uhr Giezer Skatespot DIY für fünf Stunden Street-Action. 17 Uhr Heizhaus: Free Ride und Game of Uni, Street-Style, bis die Luft raus ist. 21 Uhr Homebase.",
+    pretext:"Pure Street.",
+    image:IMG.geizer1, videos:[VID.heiz2, VID.heiz1],
+    gallery:[IMG.geizer1, IMG.geizer2, IMG.heiz1, IMG.heiz2],
+    summary:[{k:"12:00",v:"Giezer DIY"},{k:"17:00",v:"Heizhaus"},{k:"Dauer",v:"≈ 9 h"},{k:"Format",v:"Game of Uni"}],
+    stops:[ spot(4,"12:00"), spot(3,"17:00"), spot(1,"21:00") ] },
+
+  { id:"day-4", n:4, date:"Di · 11.08.2026", tag:"STREET DAY", title:"Südvorstadt &amp; <span class='accent'>Innenstadt Lines</span>",
+    description:"Big Day. Biomare Stairs, Propsteikirche, Moritzbastei, Augustusplatz, Skatepark Leipzig. Abends Grillen. 23 Uhr zurück.",
+    pretext:"Fünf Spots. Ein Tag.",
+    image:IMG.biomare, videos:[VID.moritz1, VID.moritz2, VID.moritz3],
+    gallery:[IMG.biomare, IMG.dyn, IMG.bg, IMG.folke, IMG.mdr4, IMG.titel, IMG.geizer2, IMG.see],
+    summary:[{k:"Spots",v:"5 × Leipzig"},{k:"Highlight",v:"7-Stair Downrail"},{k:"21:00",v:"Grillen"},{k:"Return",v:"23:00"}],
+    stops:[ spot(5,"12:00"), spot(6,"13:00"), spot(7,"15:00"), spot(8,"16:00"), spot(9,"17:00"), spot(1,"23:00") ] },
+
+  { id:"day-5", n:5, date:"Mi · 12.08.2026", tag:"CHILL DAY", title:"Conne Island &amp; <span class='accent'>Connewitz</span>",
+    description:"14 Uhr Conne Island. Chill all day, Gelände erkunden, locker rollen. 18 Uhr gemeinsames Essen an der Herderstraße. 20 Uhr Homebase.",
+    pretext:"Recovery. Crew Time.",
+    image:IMG.conne, videos:[VID.conne1, VID.conne2, VID.conne3],
+    gallery:[IMG.conne, IMG.see, IMG.folke, IMG.dyn],
+    summary:[{k:"14:00",v:"Conne Island"},{k:"18:00",v:"Essen"},{k:"Level",v:"Chill"},{k:"Return",v:"20:00"}],
+    stops:[ spot(10,"14:00"), spot(11,"18:00"), spot(1,"20:00") ] },
+
+  { id:"day-6", n:6, date:"Do · 13.08.2026", tag:"TOUR DAY", title:"MDR &amp; <span class='accent'>Reudnitz</span>",
+    description:"MDR Leipzig für eine Stunde, dann Alte Messe / DNB Magazinturm für zwei Stunden Street und Flat. Abschluss: Reudnitz Skatepark bis 20 Uhr.",
+    pretext:"Tour durch drei Welten.",
+    image:IMG.mdr1, videos:[],
+    gallery:[IMG.mdr1, IMG.mdr2, IMG.mdr3, IMG.mdr4, IMG.mdr5, IMG.mdr6],
+    summary:[{k:"12:00",v:"MDR"},{k:"13:00",v:"Alte Messe"},{k:"bis 20:00",v:"Reudnitz"},{k:"Stil",v:"Tour"}],
+    stops:[ spot(12,"12:00"), spot(13,"13:00"), spot(14,"bis 20:00"), spot(1,"21:00") ] },
+
+  { id:"day-7", n:7, date:"Fr · 14.08.2026", tag:"HEAVY", title:"Heizhaus &amp; <span class='accent'>DIY Return</span>",
+    description:"Rückkehr zu den Schwergewichten. Heizhaus vier Stunden, Giezer DIY fünf Stunden. Pure Progression.",
+    pretext:"Heavy Session.",
+    image:IMG.heiz2, videos:[VID.heiz1, VID.heiz2],
+    gallery:[IMG.heiz1, IMG.heiz2, IMG.geizer1, IMG.geizer2],
+    summary:[{k:"12:00",v:"Heizhaus (4h)"},{k:"17:00",v:"Giezer (5h)"},{k:"Fokus",v:"Progression"},{k:"Return",v:"22:00"}],
+    stops:[ spot(3,"12:00"), spot(4,"17:00"), spot(1,"22:00") ] },
+
+  { id:"day-8", n:8, date:"Sa · 15.08.2026", tag:"FINALE", title:"Ride Together &amp; <span class='accent'>Final Jam</span>",
+    description:"Schredderei-Tour — alle zusammen, BMX, Skate, Roller, Einrad. Sechs Stunden durch Leipzig. 18 Uhr gemeinsames Essen. 19 Uhr Final Jam open end.",
+    pretext:"Das Finale.",
+    image:IMG.dyn, videos:[VID.conne3, VID.conne1, VID.conne2],
+    gallery:[IMG.dyn, IMG.folke, IMG.titel, IMG.bg, IMG.biomare, IMG.conne],
+    summary:[{k:"12:00",v:"Schredderei"},{k:"Dauer",v:"6 h ride"},{k:"18:00",v:"Essen"},{k:"19:00+",v:"Open end"}],
+    stops:[ spot(11,"18:00"), spot(1,"19:00") ] },
+
+  { id:"day-9", n:9, date:"So · 16.08.2026", tag:"ABREISE", title:"Last <span class='accent'>Breakfast</span>",
+    description:"Letztes Frühstück am Community-Tisch. Lager abbauen. 12 Uhr Abreise. Danke Leipzig.",
+    pretext:"Danke.",
+    image:IMG.see, videos:[],
+    gallery:[IMG.see, IMG.folke, IMG.titel, IMG.bg],
+    summary:[{k:"Start",v:"Frühstück"},{k:"12:00",v:"Abreise"},{k:"Ort",v:"Pleißenhof"},{k:"Next",v:"2027?"}],
+    stops:[ spot(1,"bis 12:00") ] }
+];
+
+const spotDayMap = {};
+eventDays.forEach(d => d.stops.forEach(s => {
+  if(!spotDayMap[s.id]) spotDayMap[s.id] = new Set();
+  spotDayMap[s.id].add(d.n);
+}));
+
+/* ============ RENDER · Accommodations ============ */
+const stayGrid = document.getElementById("stayGrid");
+accommodations.forEach(a => {
+  const c = document.createElement("article");
+  c.className = "stay__card reveal";
+  c.innerHTML = `
+    <h3>${a.name}</h3>
+    <span class="pill ${a.cost==='free'?'pill--free':''}">${a.cost} · ${a.slots} Plätze</span>
+    <p><strong>${a.city}</strong> — ${a.address}<br>${a.note}</p>
+    <a href="${a.mapsUrl}" target="_blank" rel="noopener">Route öffnen →</a>`;
+  c.addEventListener("mousemove", e => {
+    const r = c.getBoundingClientRect();
+    c.style.setProperty("--mx", `${e.clientX - r.left}px`);
+    c.style.setProperty("--my", `${e.clientY - r.top}px`);
+  });
+  stayGrid.appendChild(c);
+});
+
+/* ============ RENDER · Days ============ */
+const daysList = document.getElementById("daysList");
+eventDays.forEach((d, i) => {
+  const sec = document.createElement("article");
+  sec.className = "day reveal" + (d.videos.length ? " has-video" : "");
+  sec.id = d.id;
+
+  const spotsHtml = d.stops.map(s => `
+    <li data-lat="${s.coords[0]}" data-lng="${s.coords[1]}" data-spot="${s.id}">
+      <div class="idx">${s.id}</div>
+      <div class="info"><b>${s.title}</b><em>${s.addr}</em></div>
+      <div class="time">${s.time||""}</div>
+    </li>`).join("");
+
+  const gallery = d.gallery.map((src, idx) => `
+    <button data-day="${i}" data-idx="${idx}" aria-label="Bild ${idx+1}">
+      <img src="${src}" alt="" loading="lazy" />
+    </button>`).join("");
+
+  const summary = d.summary.map(s => `<div class="chip"><b>${s.k}</b><span>${s.v}</span></div>`).join("");
+
+  sec.innerHTML = `
+    <div class="day__photo">
+      <img src="${d.image}" alt="" loading="lazy" />
+      ${d.videos.length ? `<video class="day__video" muted playsinline preload="none" crossorigin="anonymous"></video>` : ""}
+      <div class="day__photo-overlay"></div>
+      <div class="day__photo-scan"></div>
+    </div>
+    <div class="day__big" aria-hidden="true">${String(d.n).padStart(2,'0')}</div>
+    <div class="day__content">
+      <div class="day__text">
+        <div>
+          <div class="day__top">
+            <div class="day__num">${String(d.n).padStart(2,'0')}</div>
+            <div class="day__date"><b>${d.tag}</b> · ${d.date}</div>
+          </div>
+          <h2 class="day__title">${d.title}</h2>
+        </div>
+        <p class="day__lead"><span class="pretext">${d.pretext}</span> ${d.description}</p>
+        <div class="day__summary">${summary}</div>
+        <div class="day__actions">
+          <button class="btn btn--primary" data-focus-day="${i}"><span>Auf Karte zeigen<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
+        </div>
+      </div>
+      <div class="day__side">
+        <ul class="day__spots">${spotsHtml}</ul>
+        <div class="day__gallery">${gallery}</div>
+      </div>
+    </div>`;
+  daysList.appendChild(sec);
+
+  // Video playlist controller
+  if(d.videos.length){
+    const videoEl = sec.querySelector(".day__video");
+    let vi = 0;
+    let hovering = false;
+    function loadNext(){
+      vi = (vi + 1) % d.videos.length;
+      videoEl.src = d.videos[vi];
+      videoEl.load();
+      if(hovering) videoEl.play().catch(()=>{});
+    }
+    videoEl.src = d.videos[0];
+    videoEl.playbackRate = 1.0;
+    videoEl.addEventListener("ended", loadNext);
+    sec.addEventListener("mouseenter", () => {
+      hovering = true;
+      videoEl.classList.add("playing");
+      videoEl.play().catch(()=>{});
+    });
+    sec.addEventListener("mouseleave", () => {
+      hovering = false;
+      videoEl.classList.remove("playing");
+      videoEl.pause();
+    });
+    // Touch / mobile: play when in viewport
+    const mobileIO = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if(!matchMedia("(hover:none)").matches) return;
+        if(e.isIntersecting){
+          videoEl.classList.add("playing");
+          videoEl.play().catch(()=>{});
+          hovering = true;
+        } else {
+          videoEl.classList.remove("playing");
+          videoEl.pause();
+          hovering = false;
+        }
+      });
+    }, { threshold:0.5 });
+    mobileIO.observe(sec);
+  }
+});
+
+/* ============ RENDER · Spots ============ */
+const spotsGrid = document.getElementById("spotsGrid");
+Object.entries(spotsMaster).forEach(([id, s]) => {
+  const nId = +id;
+  const daysList = Array.from(spotDayMap[nId] || []).sort((a,b)=>a-b);
+  const daysHtml = Array.from({length:9}, (_,i) => {
+    const n = i+1;
+    return `<b class="${daysList.includes(n)?'day-active':''}">${n}</b>`;
+  }).join("");
+  const card = document.createElement("article");
+  card.className = "spot-card reveal";
+  card.dataset.lat = s.coords[0];
+  card.dataset.lng = s.coords[1];
+  card.dataset.spot = nId;
+  card.innerHTML = `
+    <div class="spot-card__media">
+      <img src="${s.img}" alt="" loading="lazy" />
+      <div class="spot-card__num">${id}</div>
+      ${s.home?'<div class="spot-card__home">Homebase</div>':''}
+    </div>
+    <div class="spot-card__body">
+      <h3>${s.title}</h3>
+      <div class="addr">${s.addr}</div>
+      <p>${s.desc}</p>
+      <div class="spot-card__foot">
+        <a href="${s.mapsUrl}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Navigation →</a>
+        <div class="days-in">${daysHtml}</div>
+      </div>
+    </div>`;
+  card.addEventListener("click", () => {
+    const lat = +card.dataset.lat, lng = +card.dataset.lng;
+    showDay(-1);
+    setTimeout(() => {
+      map.flyTo([lat,lng], 16, { duration:.9 });
+      document.getElementById("map").scrollIntoView({ behavior:"smooth", block:"start" });
+      setTimeout(() => {
+        allLayer.eachLayer(l => {
+          if(l.getLatLng && Math.abs(l.getLatLng().lat-lat)<.001 && Math.abs(l.getLatLng().lng-lng)<.001) l.openPopup();
+        });
+      }, 900);
+    }, 50);
+  });
+  spotsGrid.appendChild(card);
+});
+
+/* ============ LIGHTBOX ============ */
+const lb = document.getElementById("lightbox");
+const lbImg = document.getElementById("lbImg");
+const lbCounter = document.getElementById("lbCounter");
+let lbDay = 0, lbIdx = 0;
+function openLightbox(dayIdx, idx){
+  lbDay = dayIdx; lbIdx = idx;
+  const imgs = eventDays[dayIdx].gallery;
+  lbImg.src = imgs[idx];
+  lbCounter.textContent = `${idx+1} / ${imgs.length} · Tag ${eventDays[dayIdx].n}`;
+  lb.classList.add("open");
+  lb.setAttribute("aria-hidden","false");
+  document.body.style.overflow = "hidden";
+}
+function closeLightbox(){
+  lb.classList.remove("open");
+  lb.setAttribute("aria-hidden","true");
+  document.body.style.overflow = "";
+}
+function lbShift(dir){
+  const imgs = eventDays[lbDay].gallery;
+  lbIdx = (lbIdx + dir + imgs.length) % imgs.length;
+  lbImg.src = imgs[lbIdx];
+  lbCounter.textContent = `${lbIdx+1} / ${imgs.length} · Tag ${eventDays[lbDay].n}`;
+}
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-day][data-idx]");
+  if(t){ openLightbox(+t.dataset.day, +t.dataset.idx); }
+});
+document.getElementById("lbClose").addEventListener("click", closeLightbox);
+document.getElementById("lbPrev").addEventListener("click", () => lbShift(-1));
+document.getElementById("lbNext").addEventListener("click", () => lbShift(1));
+lb.addEventListener("click", e => { if(e.target === lb) closeLightbox(); });
+document.addEventListener("keydown", e => {
+  if(!lb.classList.contains("open")) return;
+  if(e.key === "Escape") closeLightbox();
+  if(e.key === "ArrowLeft") lbShift(-1);
+  if(e.key === "ArrowRight") lbShift(1);
+});
+
+/* ============ LEAFLET ============ */
+const map = L.map("map", { zoomControl:true, scrollWheelZoom:false, attributionControl:true }).setView([51.330, 12.370], 12);
+L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+  attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> · &copy; <a href="https://carto.com/attributions">CARTO</a>',
+  subdomains:"abcd", maxZoom:19
+}).addTo(map);
+map.on("click", () => map.scrollWheelZoom.enable());
+map.on("mouseout", () => map.scrollWheelZoom.disable());
+
+function makePin(num, isHome){
+  return L.divIcon({ className:"", iconSize:[40,40], iconAnchor:[20,38], popupAnchor:[0,-34],
+    html:`<div class="pin ${isHome?'pin--home':''}"><div class="pin__body"></div><div class="pin__num">${num}</div></div>` });
+}
+function popupHtml(s, dayLabel){
+  return `<div class="pop"><img class="pop__img" src="${s.img}" alt="" />
+    <div class="pop__body"><div class="pop__eyebrow">Spot ${s.id} · ${dayLabel}</div>
+      <h3>${s.title}</h3>${s.time?`<div class="pop__time">${s.time}</div>`:''}<p>${s.desc}</p>
+      <a class="pop__nav" href="${s.mapsUrl}" target="_blank" rel="noopener">Navigation →</a></div></div>`;
+}
+
+const dayLayers = [];
+let activeDayIdx = -1;
+eventDays.forEach(d => {
+  const group = L.layerGroup();
+  const latlngs = [];
+  d.stops.forEach(s => {
+    const marker = L.marker(s.coords, { icon:makePin(s.id, !!s.home) });
+    marker.bindPopup(popupHtml(s, `Tag ${d.n}`), { maxWidth:300, minWidth:280 });
+    marker.addTo(group);
+    latlngs.push(s.coords);
+  });
+  if(latlngs.length > 1){
+    L.polyline(latlngs, { color:"#ff2a9d", weight:3, opacity:.9, dashArray:"8 10", lineJoin:"round", lineCap:"round" }).addTo(group);
+  }
+  dayLayers.push(group);
+});
+const allLayer = L.layerGroup();
+Object.entries(spotsMaster).forEach(([id, s]) => {
+  const marker = L.marker(s.coords, { icon:makePin(+id, !!s.home) });
+  marker.bindPopup(popupHtml({...s, id:+id}, "Alle Tage"), { maxWidth:300, minWidth:280 });
+  marker.addTo(allLayer);
+});
+function showDay(idx){
+  activeDayIdx = idx;
+  dayLayers.forEach(l => map.removeLayer(l));
+  map.removeLayer(allLayer);
+  if(idx === -1){
+    allLayer.addTo(map);
+    map.flyToBounds(L.latLngBounds(Object.values(spotsMaster).map(s=>s.coords)).pad(0.15), { duration:.9 });
+  } else {
+    dayLayers[idx].addTo(map);
+    const bounds = L.latLngBounds(eventDays[idx].stops.map(s=>s.coords));
+    map.flyToBounds(bounds.pad(0.25), { duration:.9 });
+  }
+  document.querySelectorAll(".map-tab").forEach((t,ti) => {
+    t.classList.toggle("is-active", (ti===0 && idx===-1) || (ti-1===idx));
+  });
+}
+const mapTabs = document.getElementById("mapTabs");
+const allTab = document.createElement("button");
+allTab.className = "map-tab is-active";
+allTab.textContent = "Alle Spots";
+allTab.addEventListener("click", () => showDay(-1));
+mapTabs.appendChild(allTab);
+eventDays.forEach((d, i) => {
+  const b = document.createElement("button");
+  b.className = "map-tab";
+  b.textContent = `Tag ${d.n} · ${d.tag}`;
+  b.addEventListener("click", () => showDay(i));
+  mapTabs.appendChild(b);
+});
+allLayer.addTo(map);
+
+document.querySelectorAll("[data-focus-day]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    showDay(+btn.dataset.focusDay);
+    document.getElementById("map").scrollIntoView({ behavior:"smooth", block:"start" });
+  });
+});
+document.querySelectorAll(".day__spots li").forEach(li => {
+  li.addEventListener("click", () => {
+    const lat = +li.dataset.lat, lng = +li.dataset.lng;
+    map.flyTo([lat,lng], 15, { duration:.8 });
+    document.getElementById("map").scrollIntoView({ behavior:"smooth", block:"start" });
+    setTimeout(() => {
+      (activeDayIdx===-1?allLayer:dayLayers[activeDayIdx]).eachLayer(l => {
+        if(l.getLatLng && Math.abs(l.getLatLng().lat-lat)<.001 && Math.abs(l.getLatLng().lng-lng)<.001) l.openPopup();
+      });
+    }, 650);
+  });
+});
+
+/* ============ TICKER ============ */
+const tickerEl = document.getElementById("ticker");
+const words = ["LEIPZIG INVITATION 26","STREET LINES","FLAT · FLOW","14 SPOTS","35 RIDER","9 DAYS","POST UNICON","TRICKS / SESSIONS","MARKKLEEBERG · LEIPZIG","HOMEBASE PLEISSENHOF"];
+const hot = new Set([1,3,5,7,9]);
+const html = words.map((w,i)=>`<span class="${hot.has(i)?'hot':''}">${w}</span>`).join("");
+tickerEl.innerHTML = html + html;
+
+/* ============ NAV ============ */
+const nav = document.getElementById("nav");
+const burger = document.getElementById("burger");
+const navLinks = document.getElementById("navLinks");
+window.addEventListener("scroll", () => nav.classList.toggle("is-scrolled", window.scrollY > 50), { passive:true });
+burger.addEventListener("click", () => nav.classList.toggle("is-open"));
+navLinks.querySelectorAll("a, button").forEach(a => a.addEventListener("click", () => nav.classList.remove("is-open")));
+
+/* ============ REVEAL ============ */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add("is-visible"); io.unobserve(e.target); } });
+}, { threshold:0.1, rootMargin:"0px 0px -60px 0px" });
+document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+/* ============ HERO PARALLAX ============ */
+const heroImg = document.getElementById("heroImg");
+window.addEventListener("scroll", () => {
+  const y = Math.min(window.scrollY, 700);
+  heroImg.style.setProperty("--parallax", `${y * 0.18}px`);
+}, { passive:true });
+
+/* ============ CURSOR ============ */
+const cursor = document.getElementById("cursor");
+if(matchMedia("(hover:hover) and (pointer:fine)").matches){
+  let tx=0,ty=0,cx=0,cy=0;
+  window.addEventListener("mousemove", e => { tx=e.clientX; ty=e.clientY; });
+  (function loop(){ cx += (tx-cx)*.25; cy += (ty-cy)*.25; cursor.style.transform = `translate(${cx}px, ${cy}px) translate(-50%,-50%)`; requestAnimationFrame(loop); })();
+  document.addEventListener("mouseover", e => { if(e.target.closest("a, button, summary, input, .leaflet-interactive, .spot-card, .day__spots li, .day__gallery button, .stay__card, .overview-cell")) cursor.classList.add("is-active"); });
+  document.addEventListener("mouseout", e => { if(e.target.closest("a, button, summary, input, .leaflet-interactive, .spot-card, .day__spots li, .day__gallery button, .stay__card, .overview-cell")) cursor.classList.remove("is-active"); });
+}
+
+/* ============ LOADER ============ */
+window.addEventListener("load", () => setTimeout(() => document.getElementById("loader").classList.add("hidden"), 800));
+</script>
+</body>
+</html>
