@@ -305,33 +305,111 @@ body::after{content:"";position:fixed;inset:0;z-index:8999;pointer-events:none;b
 .lightbox__counter{position:absolute;bottom:-2.5rem;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:.72rem;letter-spacing:.22em;color:var(--text-dim)}
 
 /* MAP */
-.map-wrap{position:relative;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:var(--bg-2)}
-.map-tabs{display:flex;gap:.35rem;overflow-x:auto;padding:1rem;border-bottom:1px solid var(--line);background:rgba(8,8,10,.75);backdrop-filter:blur(10px);scrollbar-width:thin}
-.map-tabs::-webkit-scrollbar{height:4px}
-.map-tab{flex-shrink:0;padding:.55rem 1rem;border-radius:999px;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text-dim);background:var(--bg-3);border:1px solid var(--line);transition:all .3s var(--ease);white-space:nowrap;cursor:pointer}
-.map-tab:hover{color:var(--text);border-color:var(--red)}
-.map-tab.is-active{background:var(--grad);color:#fff;border-color:transparent;font-weight:700;box-shadow:var(--glow-red)}
-#map{width:100%;height:clamp(440px,70vh,720px);background:var(--bg-2)}
+.map-wrap{position:relative;display:grid;grid-template-columns:minmax(300px,340px) 1fr;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:var(--bg-2);min-height:clamp(600px,82vh,860px)}
+@media (max-width:960px){.map-wrap{grid-template-columns:1fr;grid-template-rows:auto 1fr;min-height:auto}}
+
+.map-panel{display:flex;flex-direction:column;background:linear-gradient(180deg,var(--bg-3),var(--bg-2));border-right:1px solid var(--line);min-height:0;min-width:0}
+@media (max-width:960px){.map-panel{border-right:0;border-bottom:1px solid var(--line);max-height:420px}}
+.map-panel__head{display:flex;align-items:center;gap:.45rem;padding:.85rem .9rem;border-bottom:1px solid var(--line);background:rgba(5,5,8,.55);flex-shrink:0}
+.map-panel__title{flex:1;font-family:var(--font-head);font-size:.9rem;letter-spacing:-.005em;text-align:center;line-height:1.15;font-weight:600}
+.map-panel__title b{display:block;font-family:var(--font-mono);font-size:.58rem;letter-spacing:.22em;color:var(--text-mute);font-weight:500;text-transform:uppercase;margin-bottom:.15rem}
+.map-panel__nav{width:32px;height:32px;border:1px solid var(--line);border-radius:50%;color:var(--text);background:var(--bg-3);display:grid;place-items:center;font-size:1.05rem;transition:all .25s;cursor:pointer;flex-shrink:0}
+.map-panel__nav:hover:not(:disabled){background:var(--grad);color:#fff;border-color:transparent;box-shadow:var(--glow-red)}
+.map-panel__nav:disabled{opacity:.35;cursor:default}
+
+.map-panel__body{flex:1;overflow-y:auto;padding:.55rem .6rem;display:flex;flex-direction:column;gap:.35rem;min-height:0}
+.map-panel__body::-webkit-scrollbar{width:6px}
+.map-panel__body::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px}
+
+.dayCard{position:relative;padding:.65rem .8rem .6rem 1.1rem;border-radius:9px;background:var(--bg-2);border:1px solid var(--line);transition:all .25s;cursor:pointer;text-align:left;display:block;width:100%;font:inherit;color:inherit}
+.dayCard::before{content:"";position:absolute;left:.35rem;top:.55rem;bottom:.55rem;width:3px;border-radius:3px;background:var(--dc,var(--red))}
+.dayCard:hover{border-color:var(--dc,var(--red));transform:translateX(2px)}
+.dayCard.is-active{border-color:var(--dc);background:linear-gradient(95deg,rgba(255,255,255,.02),var(--bg-3));box-shadow:0 6px 22px -8px var(--dc)}
+.dayCard__top{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+.dayCard__n{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.22em;color:var(--dc,var(--red));font-weight:700}
+.dayCard__date{font-family:var(--font-mono);font-size:.58rem;letter-spacing:.1em;color:var(--text-mute)}
+.dayCard__title{font-family:var(--font-head);font-size:.85rem;line-height:1.15;margin:.25rem 0 .3rem;font-weight:600}
+.dayCard__title em{font-style:italic;color:var(--dc,var(--pink))}
+.dayCard__tag{display:inline-block;padding:.12rem .4rem;border-radius:4px;background:var(--dc,var(--red));color:#fff;font-family:var(--font-mono);font-size:.55rem;letter-spacing:.18em;font-weight:700;text-transform:uppercase}
+.dayCard__stats{display:flex;gap:.65rem;margin-top:.35rem;font-family:var(--font-mono);font-size:.58rem;letter-spacing:.05em;color:var(--text-dim);flex-wrap:wrap}
+.dayCard__stats b{color:var(--text);font-weight:600}
+.dayCard__stops{margin:.55rem -.35rem 0;padding-top:.45rem;border-top:1px dashed var(--line);display:none;flex-direction:column;gap:.1rem;max-height:0;overflow:hidden;transition:max-height .35s ease}
+.dayCard.is-active .dayCard__stops{display:flex;max-height:400px}
+.dayCard__stop{display:flex;align-items:center;gap:.45rem;padding:.3rem .35rem;border-radius:6px;cursor:pointer;transition:background .2s;text-align:left;background:transparent;border:0;color:inherit;font:inherit;width:100%}
+.dayCard__stop:hover{background:rgba(255,255,255,.04)}
+.dayCard__stopPin{flex-shrink:0;width:22px;height:22px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--dc);border:2px solid #fff;display:grid;place-items:center;position:relative;box-shadow:0 2px 4px rgba(0,0,0,.4)}
+.dayCard__stopPin span{transform:rotate(45deg);color:#fff;font-family:var(--font-head);font-weight:700;font-size:.6rem;line-height:1}
+.dayCard__stopInfo{flex:1;line-height:1.1;min-width:0}
+.dayCard__stopName{font-size:.76rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dayCard__stopTime{font-family:var(--font-mono);font-size:.58rem;color:var(--text-mute);letter-spacing:.08em;margin-top:.1rem}
+
+.allCard{border:1px solid var(--line);border-radius:9px;padding:.7rem .85rem;background:linear-gradient(100deg,rgba(255,0,64,.08),rgba(255,42,157,.08));cursor:pointer;text-align:left;width:100%;font:inherit;color:inherit;transition:all .25s;margin-bottom:.2rem}
+.allCard:hover,.allCard.is-active{border-color:var(--red);box-shadow:0 6px 22px -8px var(--red)}
+.allCard__top{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.22em;color:var(--pink);font-weight:700;text-transform:uppercase}
+.allCard__title{font-family:var(--font-head);font-size:.95rem;font-weight:600;margin-top:.15rem}
+.allCard__meta{font-family:var(--font-mono);font-size:.58rem;letter-spacing:.08em;color:var(--text-dim);margin-top:.25rem}
+
+.map-panel__foot{border-top:1px solid var(--line);padding:.7rem .75rem;background:rgba(5,5,8,.5);display:flex;flex-direction:column;gap:.55rem;flex-shrink:0}
+.map-poi-toggle{display:flex;gap:.35rem}
+.poi-btn{flex:1;padding:.5rem .5rem;display:flex;align-items:center;justify-content:center;gap:.4rem;border-radius:8px;background:var(--bg-3);border:1px solid var(--line);color:var(--text-dim);font-family:var(--font-mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;transition:all .25s;cursor:pointer}
+.poi-btn:hover{color:var(--text);border-color:var(--text-mute)}
+.poi-btn[aria-pressed="true"]{background:var(--bg);color:var(--text);border-color:var(--poi-c)}
+.poi-btn[aria-pressed="true"] .poi-btn__ic{background:var(--poi-c);color:#fff}
+.poi-btn--food{--poi-c:#ff7a00}
+.poi-btn--wc{--poi-c:#1e88e5}
+.poi-btn__ic{width:18px;height:18px;border-radius:50%;background:#fff;color:#111;display:grid;place-items:center;font-family:var(--font-head);font-weight:700;font-size:.6rem;border:1.5px solid var(--poi-c);transition:all .25s}
+.poi-btn__count{font-family:var(--font-mono);font-size:.58rem;color:var(--text-mute);letter-spacing:.08em}
+
+.map-stage{position:relative;display:flex;flex-direction:column;min-height:0;min-width:0}
+.map-bar{display:flex;gap:.3rem;overflow-x:auto;padding:.6rem .75rem;border-bottom:1px solid var(--line);background:rgba(8,8,10,.72);backdrop-filter:blur(10px);scrollbar-width:thin;flex-shrink:0}
+.map-bar::-webkit-scrollbar{height:4px}
+.map-bar__btn{flex-shrink:0;padding:.4rem .75rem;border-radius:999px;font-family:var(--font-mono);font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-dim);background:transparent;border:1px solid var(--line);display:inline-flex;align-items:center;gap:.35rem;transition:all .25s;cursor:pointer;white-space:nowrap}
+.map-bar__btn i{width:8px;height:8px;border-radius:50%;background:var(--dc,var(--text-mute));flex-shrink:0;box-shadow:0 0 0 1.5px rgba(255,255,255,.08)}
+.map-bar__btn:hover{color:var(--text);border-color:var(--dc,var(--red))}
+.map-bar__btn.is-active{background:var(--bg-3);color:var(--text);border-color:var(--dc,var(--red));font-weight:700;box-shadow:0 3px 10px -4px var(--dc,var(--red))}
+.map-bar__btn--all{background:var(--grad);color:#fff;border-color:transparent}
+.map-bar__btn--all.is-active{background:var(--grad);color:#fff;border-color:transparent;box-shadow:var(--glow-red)}
+
+#map{width:100%;flex:1;min-height:420px;background:#eef1f5}
 
 .leaflet-container{background:#eef1f5!important;font-family:var(--font-body)!important}
-.leaflet-tile-pane{filter:saturate(.92) contrast(1.05)}
+.leaflet-tile-pane{filter:saturate(.95) contrast(1.03)}
 .leaflet-control-zoom a{background:#fff!important;color:#111!important;border:1px solid rgba(0,0,0,.18)!important;box-shadow:0 4px 12px rgba(0,0,0,.15)}
 .leaflet-control-zoom a:hover{background:var(--red)!important;color:#fff!important;border-color:var(--red)!important}
 .leaflet-control-attribution{background:rgba(255,255,255,.9)!important;color:#444!important;font-size:10px!important;padding:2px 6px!important;border-radius:4px!important}
 .leaflet-control-attribution a{color:#111!important}
 
-.pin{width:44px;height:44px;position:relative;filter:drop-shadow(0 4px 10px rgba(0,0,0,.45))}
-.pin__body{position:absolute;inset:0;background:var(--grad);border:3px solid #fff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);transition:transform .3s var(--ease);box-shadow:0 0 0 1.5px rgba(0,0,0,.25)}
-.pin__num{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--font-head);font-size:1rem;color:#fff;font-weight:700;text-shadow:0 1px 2px rgba(0,0,0,.4)}
+.map-legend{position:absolute;bottom:.85rem;right:.85rem;z-index:500;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border:1px solid rgba(0,0,0,.12);border-radius:10px;padding:.6rem .75rem;box-shadow:0 10px 25px rgba(0,0,0,.2);max-width:230px;max-height:min(360px,55%);overflow-y:auto}
+.map-legend h4{font-family:var(--font-head);font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:#222;margin-bottom:.35rem;font-weight:600}
+.map-legend .row{display:flex;align-items:center;gap:.45rem;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.04em;color:#222;margin-bottom:.22rem;line-height:1.2}
+.map-legend .row i{width:10px;height:10px;border-radius:50%;background:var(--dc);flex-shrink:0;box-shadow:0 0 0 1.5px rgba(255,255,255,.9),0 0 0 2.2px rgba(0,0,0,.18)}
+.map-legend .row i.sq{border-radius:2px;width:12px;height:6px}
+.map-legend .row--muted{color:#666}
+.map-legend hr{border:0;border-top:1px dashed rgba(0,0,0,.15);margin:.4rem 0}
+@media (max-width:600px){.map-legend{position:static;max-width:none;margin:.6rem;box-shadow:none}}
+
+.pin{width:40px;height:40px;position:relative;filter:drop-shadow(0 3px 8px rgba(0,0,0,.4))}
+.pin__body{position:absolute;inset:0;background:var(--dc,var(--red));border:3px solid #fff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);transition:transform .3s var(--ease);box-shadow:0 0 0 1.5px rgba(0,0,0,.25)}
+.pin__num{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--font-head);font-size:.92rem;color:#fff;font-weight:700;text-shadow:0 1px 2px rgba(0,0,0,.45);line-height:1}
 .pin:hover{z-index:600}
-.pin:hover .pin__body{transform:rotate(-45deg) scale(1.25)}
-.pin--home .pin__body{background:#fff;border-color:var(--red)}
-.pin--home .pin__num{color:var(--red)}
-.pin__seq{position:absolute;top:-10px;right:-10px;min-width:24px;height:24px;padding:0 5px;border-radius:999px;background:#fff;color:var(--red);font-family:var(--font-head);font-size:.78rem;font-weight:700;display:grid;place-items:center;border:2px solid var(--red);box-shadow:0 3px 8px rgba(0,0,0,.4);z-index:2}
-.route-arrow{width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;border-bottom:16px solid var(--red);filter:drop-shadow(0 0 2px #fff) drop-shadow(0 2px 4px rgba(0,0,0,.5));transform-origin:center}
-.route-flow{stroke:var(--pink);stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 0 8px rgba(255,42,157,.6))}
-.leaflet-interactive.route-main{stroke-dasharray:2 12;animation:routeFlow 1.2s linear infinite}
-@keyframes routeFlow{to{stroke-dashoffset:-28}}
+.pin:hover .pin__body{transform:rotate(-45deg) scale(1.2)}
+.pin--home .pin__body{background:#fff;border-color:var(--dc,var(--red))}
+.pin--home .pin__num{color:var(--dc,var(--red))}
+.pin__seq{position:absolute;top:-9px;right:-9px;min-width:22px;height:22px;padding:0 5px;border-radius:999px;background:#fff;color:var(--dc,var(--red));font-family:var(--font-head);font-size:.7rem;font-weight:700;display:grid;place-items:center;border:2px solid var(--dc,var(--red));box-shadow:0 2px 6px rgba(0,0,0,.4);z-index:2}
+.pin__start,.pin__end{position:absolute;bottom:-4px;right:-4px;width:18px;height:18px;border-radius:50%;background:#fff;border:2px solid var(--dc);display:grid;place-items:center;z-index:3;box-shadow:0 2px 5px rgba(0,0,0,.35)}
+.pin__start{background:#fff;color:var(--dc)}
+.pin__end{background:var(--dc);color:#fff}
+.pin__start::before{content:"▶";font-size:.55rem;margin-left:1px}
+.pin__end::before{content:"■";font-size:.55rem}
+
+.route-arrow{width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:14px solid var(--dc,var(--red));filter:drop-shadow(0 0 2px #fff) drop-shadow(0 2px 3px rgba(0,0,0,.4));transform-origin:center}
+.leaflet-interactive.route-main{stroke-dasharray:2 10;animation:routeFlow 1.2s linear infinite}
+@keyframes routeFlow{to{stroke-dashoffset:-24}}
+
+.poi-marker{width:26px;height:26px;border-radius:50%;background:#fff;border:2.5px solid;display:grid;place-items:center;font-family:var(--font-head);font-weight:700;font-size:.78rem;box-shadow:0 3px 8px rgba(0,0,0,.35);transition:transform .25s}
+.poi-marker:hover{transform:scale(1.2);z-index:500}
+.poi-marker--food{border-color:#ff7a00;color:#ff7a00}
+.poi-marker--wc{border-color:#1e88e5;color:#1e88e5}
 
 .leaflet-popup-content-wrapper{background:#fff!important;color:#111!important;border-radius:var(--radius)!important;border:1px solid rgba(0,0,0,.12);box-shadow:0 20px 50px -10px rgba(0,0,0,.35)!important;padding:0!important;overflow:hidden}
 .leaflet-popup-content{margin:0!important;width:280px!important;font-family:var(--font-body)!important}
@@ -532,10 +610,30 @@ body::after{content:"";position:fixed;inset:0;z-index:8999;pointer-events:none;b
 
 <section class="section" id="map">
   <header class="section__head">
-    <div><div class="section__eyebrow reveal">The Map</div><h2 class="section__title reveal">Alle Spots.<br><em>Alle Tage.</em></h2></div>
-    <p class="section__lede reveal reveal--2">Nummerierte Pins, Tages-Routen, Google-Maps-Navigation. Tab wählen, um nur einen Tag zu zeigen.</p>
+    <div><div class="section__eyebrow reveal">The Map</div><h2 class="section__title reveal">Jeder Tag.<br><em>Eigene Farbe.</em></h2></div>
+    <p class="section__lede reveal reveal--2">Links Tag wählen — rechts die Route in der Tagesfarbe. Nummerierte Pins zeigen Reihenfolge. Essen &amp; WCs in der Nähe lassen sich zuschalten. Klick auf einen Stop zoomt die Karte.</p>
   </header>
-  <div class="map-wrap reveal"><div class="map-tabs" id="mapTabs"></div><div id="map"></div></div>
+  <div class="map-wrap reveal">
+    <aside class="map-panel" aria-label="Tagesauswahl">
+      <div class="map-panel__head">
+        <button class="map-panel__nav" id="mapPrev" aria-label="Vorheriger Tag">‹</button>
+        <div class="map-panel__title" id="mapPanelTitle"><b>Ansicht</b>Alle Spots</div>
+        <button class="map-panel__nav" id="mapNext" aria-label="Nächster Tag">›</button>
+      </div>
+      <div class="map-panel__body" id="mapPanelBody"></div>
+      <div class="map-panel__foot">
+        <div class="map-poi-toggle">
+          <button class="poi-btn poi-btn--food" data-poi="food" aria-pressed="false"><span class="poi-btn__ic">F</span>Essen <span class="poi-btn__count" id="poiCountFood"></span></button>
+          <button class="poi-btn poi-btn--wc" data-poi="wc" aria-pressed="false"><span class="poi-btn__ic">W</span>WC <span class="poi-btn__count" id="poiCountWc"></span></button>
+        </div>
+      </div>
+    </aside>
+    <div class="map-stage">
+      <div class="map-bar" id="mapBar"></div>
+      <div id="map"></div>
+      <div class="map-legend" id="mapLegend"></div>
+    </div>
+  </div>
 </section>
 
 <section class="section" id="faq">
@@ -1063,6 +1161,66 @@ document.addEventListener("keydown", e => {
 });
 
 /* ============ LEAFLET ============ */
+const dayColors = ['#e6194b','#f58231','#ffb400','#3cb44b','#009688','#1e88e5','#7c3aed','#e91e63','#6c757d'];
+function dayColor(n){ return dayColors[Math.max(0, Math.min(8, n-1))]; }
+
+/* Primäre Tagesfarbe pro Spot (erster Tag, an dem er vorkommt) */
+const spotPrimaryDay = {};
+eventDays.forEach((d, i) => d.stops.forEach(s => {
+  if(spotPrimaryDay[s.id] === undefined) spotPrimaryDay[s.id] = d.n;
+}));
+
+/* Quality-of-life POIs · kuratierte Vorschläge */
+const pois = [
+  { type:"food", name:"Seehaus am Markkleeberger See", coords:[51.2799,12.3703], note:"Biergarten am Wasser, Snacks & warmes Essen", mapsUrl:"https://www.google.com/maps/search/Seehaus+Markkleeberger+See" },
+  { type:"food", name:"Strandhaus am See", coords:[51.2790,12.3718], note:"Direkt am Strand, offen bei warmem Wetter", mapsUrl:"https://maps.app.goo.gl/9x3vtyWNHKamvns59?g_st=ac" },
+  { type:"wc", name:"WC Strandbad Markkleeberg", coords:[51.2806,12.3699], note:"Öffentliche Toiletten am Badestrand", mapsUrl:"https://www.google.com/maps/search/Strandbad+Markkleeberg+WC" },
+  { type:"wc", name:"WC Pleißenhof", coords:[51.2780,12.3694], note:"Homebase, während Aufenthalt", mapsUrl:"https://maps.app.goo.gl/weCVkzvTJEUxFYG77" },
+
+  { type:"food", name:"Ludwig im Rosental", coords:[51.3404,12.3760], note:"Biergarten nah Wagner-Platz", mapsUrl:"https://www.google.com/maps/search/Ludwig+Leipzig+Rosental" },
+  { type:"food", name:"Pasta e Basta", coords:[51.3428,12.3740], note:"Schnelle Pasta, Innenstadt", mapsUrl:"https://www.google.com/maps/search/Pasta+e+Basta+Leipzig" },
+  { type:"food", name:"Moritzbastei Café", coords:[51.3389,12.3801], note:"Snacks, Kaffee, Studentenklassiker", mapsUrl:"https://www.google.com/maps/search/Moritzbastei+Cafe" },
+  { type:"wc", name:"WC Hauptbahnhof", coords:[51.3452,12.3821], note:"24/7 · kostenpflichtig", mapsUrl:"https://www.google.com/maps/search/Leipzig+Hauptbahnhof+WC" },
+  { type:"wc", name:"WC Augustusplatz / Oper", coords:[51.3398,12.3820], note:"Öffentlich am Platz", mapsUrl:"https://www.google.com/maps/search/Augustusplatz+Leipzig+WC" },
+
+  { type:"food", name:"Biomare Bistro", coords:[51.3292,12.3742], note:"Bio, Salate, warme Küche", mapsUrl:"https://www.google.com/maps/search/Biomare+Leipzig" },
+  { type:"food", name:"Killiwilly", coords:[51.3258,12.3728], note:"Pub, lange offen, Karli", mapsUrl:"https://www.google.com/maps/search/Killiwilly+Leipzig" },
+  { type:"food", name:"Pano Brot & Kaffee", coords:[51.3312,12.3749], note:"Frühstück, Brote", mapsUrl:"https://www.google.com/maps/search/Pano+Leipzig" },
+
+  { type:"food", name:"Westwerk Kantine", coords:[51.3320,12.3349], note:"Tagesküche, günstig", mapsUrl:"https://www.google.com/maps/search/Westwerk+Kantine+Leipzig" },
+  { type:"food", name:"Noch Besser Leben", coords:[51.3329,12.3339], note:"Kneipe mit Küche, Plagwitz", mapsUrl:"https://www.google.com/maps/search/Noch+besser+leben+Leipzig" },
+  { type:"food", name:"Kumpel & Keule", coords:[51.3326,12.3371], note:"Burger & Bier, Plagwitz", mapsUrl:"https://www.google.com/maps/search/Kumpel+Keule+Leipzig" },
+  { type:"wc", name:"WC Heizhaus", coords:[51.3186,12.2840], note:"Im Heizhaus während Sessions", mapsUrl:"https://maps.app.goo.gl/JShsajAzJpGFTfQu9?g_st=ac" },
+
+  { type:"food", name:"Conne Island Küche", coords:[51.3129,12.3746], note:"VoKü, meist vegan", mapsUrl:"https://maps.app.goo.gl/1WTkLsJX3HB9veBb6?g_st=ac" },
+  { type:"food", name:"Café Puschkin", coords:[51.3176,12.3778], note:"Kaffee & Kuchen, Connewitz", mapsUrl:"https://www.google.com/maps/search/Cafe+Puschkin+Leipzig" },
+  { type:"wc", name:"WC Conne Island", coords:[51.3131,12.3744], note:"Während Veranstaltungen", mapsUrl:"https://www.google.com/maps/search/Conne+Island+Leipzig" },
+
+  { type:"wc", name:"WC Skatepark / AOK", coords:[51.3271,12.3548], note:"Nähe Skatepark Leipzig", mapsUrl:"https://www.google.com/maps/search/AOK+Skatepark+Leipzig" },
+  { type:"food", name:"Imbiss Anton-Bruckner-Allee", coords:[51.3279,12.3561], note:"Snacks in Laufweite zum Park", mapsUrl:"https://www.google.com/maps/search/Anton-Bruckner-Allee+Leipzig+Imbiss" },
+
+  { type:"food", name:"Café Alte Messe", coords:[51.3258,12.3937], note:"Kaffee, Tagesküche, Alte Messe", mapsUrl:"https://www.google.com/maps/search/Alte+Messe+Leipzig+Cafe" },
+  { type:"wc", name:"WC DNB / Alte Messe", coords:[51.3244,12.3948], note:"Nationalbibliothek, Öffnungszeiten", mapsUrl:"https://www.google.com/maps/search/Deutsche+Nationalbibliothek+Leipzig" },
+
+  { type:"food", name:"Pizzeria Reudnitz", coords:[51.3377,12.4198], note:"Nah Reudnitz Skatepark", mapsUrl:"https://www.google.com/maps/search/Pizzeria+Reudnitz+Leipzig" },
+  { type:"wc", name:"WC Reudnitz Skatepark", coords:[51.3378,12.4203], note:"Öffentlich am Park", mapsUrl:"https://www.google.com/maps/search/Reudnitz+Skatepark" }
+];
+
+function haversineKm(a, b){
+  const R=6371, toRad=d=>d*Math.PI/180;
+  const dLat=toRad(b[0]-a[0]), dLon=toRad(b[1]-a[1]);
+  const lat1=toRad(a[0]), lat2=toRad(b[0]);
+  const h=Math.sin(dLat/2)**2 + Math.cos(lat1)*Math.cos(lat2)*Math.sin(dLon/2)**2;
+  return 2*R*Math.asin(Math.sqrt(h));
+}
+function routeKm(latlngs){
+  let km=0; for(let i=1;i<latlngs.length;i++) km += haversineKm(latlngs[i-1], latlngs[i]); return km;
+}
+function poiNearDay(d, radiusKm){
+  const stopsCoords = d.stops.map(s=>s.coords);
+  return pois.filter(p => stopsCoords.some(c => haversineKm(c, p.coords) <= radiusKm));
+}
+
 const map = L.map("map", { zoomControl:true, scrollWheelZoom:false, attributionControl:true }).setView([51.330, 12.370], 12);
 L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
   attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> · &copy; <a href="https://carto.com/attributions">CARTO</a>',
@@ -1071,10 +1229,12 @@ L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r
 map.on("click", () => map.scrollWheelZoom.enable());
 map.on("mouseout", () => map.scrollWheelZoom.disable());
 
-function makePin(num, isHome, seq){
+function makePin(num, isHome, seq, color, role){
+  const c = color || '#e6194b';
   const seqHtml = seq ? `<div class="pin__seq">${seq}</div>` : "";
+  const roleHtml = role==="start" ? `<div class="pin__start" aria-hidden="true"></div>` : role==="end" ? `<div class="pin__end" aria-hidden="true"></div>` : "";
   return L.divIcon({ className:"", iconSize:[40,40], iconAnchor:[20,38], popupAnchor:[0,-34],
-    html:`<div class="pin ${isHome?'pin--home':''}"><div class="pin__body"></div><div class="pin__num">${num}</div>${seqHtml}</div>` });
+    html:`<div class="pin ${isHome?'pin--home':''}" style="--dc:${c}"><div class="pin__body"></div><div class="pin__num">${num}</div>${seqHtml}${roleHtml}</div>` });
 }
 function popupHtml(s, dayLabel, seq){
   const seqLine = seq ? `<div class="pop__time">Stop ${seq} im Tag</div>` : "";
@@ -1086,6 +1246,13 @@ function popupHtml(s, dayLabel, seq){
       <h3>${s.title}</h3>${s.time?`<div class="pop__time">${s.time}</div>`:''}${seqLine}<p>${s.desc}</p>
       <a class="pop__nav" href="${s.mapsUrl}" target="_blank" rel="noopener">Navigation →</a></div></div>`;
 }
+function poiPopup(p){
+  const kind = p.type==="food" ? "Essen · Café" : "WC · Toilette";
+  return `<div class="pop"><div class="pop__body" style="padding:.9rem 1.1rem">
+    <div class="pop__eyebrow" style="color:${p.type==='food'?'#ff7a00':'#1e88e5'}">${kind}</div>
+    <h3>${p.name}</h3><p style="margin-bottom:.7rem">${p.note}</p>
+    <a class="pop__nav" href="${p.mapsUrl}" target="_blank" rel="noopener">Navigation →</a></div></div>`;
+}
 function bearingDeg(a, b){
   const toRad = d => d*Math.PI/180, toDeg = r => r*180/Math.PI;
   const y = Math.sin(toRad(b[1]-a[1]))*Math.cos(toRad(b[0]));
@@ -1093,41 +1260,192 @@ function bearingDeg(a, b){
   return (toDeg(Math.atan2(y,x)) + 360) % 360;
 }
 function midPoint(a, b){ return [(a[0]+b[0])/2, (a[1]+b[1])/2]; }
-function arrowIcon(angle){
-  return L.divIcon({ className:"", iconSize:[24,24], iconAnchor:[12,12],
-    html:`<div class="route-arrow" style="transform:rotate(${angle-90}deg)"></div>` });
+function arrowIcon(angle, color){
+  return L.divIcon({ className:"", iconSize:[22,22], iconAnchor:[11,11],
+    html:`<div class="route-arrow" style="--dc:${color};transform:rotate(${angle-90}deg)"></div>` });
 }
 
+/* Tages-Layer (farbig, mit Start/Ende-Indikatoren) */
 const dayLayers = [];
-let activeDayIdx = -1;
-eventDays.forEach(d => {
+const dayMeta = [];
+eventDays.forEach((d, i) => {
   const group = L.layerGroup();
+  const c = dayColor(d.n);
   const latlngs = [];
   d.stops.forEach((s, si) => {
     const seq = d.stops.length > 1 ? (si+1) : null;
-    const marker = L.marker(s.coords, { icon:makePin(s.id, !!s.home, seq) });
-    marker.bindPopup(popupHtml(s, `Tag ${d.n}`, seq), { maxWidth:300, minWidth:280 });
+    const role = d.stops.length > 1
+      ? (si===0 ? "start" : (si===d.stops.length-1 ? "end" : null))
+      : null;
+    const marker = L.marker(s.coords, { icon:makePin(s.id, !!s.home, seq, c, role) });
+    marker.bindPopup(popupHtml(s, `Tag ${d.n} · ${d.tag}`, seq), { maxWidth:300, minWidth:280 });
     marker.addTo(group);
     latlngs.push(s.coords);
   });
   if(latlngs.length > 1){
-    L.polyline(latlngs, { color:"#ffffff", weight:8, opacity:.9, lineJoin:"round", lineCap:"round" }).addTo(group);
-    L.polyline(latlngs, { color:"#d60038", weight:4.5, opacity:1, lineJoin:"round", lineCap:"round", className:"route-main" }).addTo(group);
-    for(let i=1; i<latlngs.length; i++){
-      const a = latlngs[i-1], b = latlngs[i];
-      const mid = midPoint(a,b);
-      const ang = bearingDeg(a,b);
-      L.marker(mid, { icon: arrowIcon(ang), interactive:false }).addTo(group);
+    L.polyline(latlngs, { color:"#ffffff", weight:7, opacity:.85, lineJoin:"round", lineCap:"round" }).addTo(group);
+    L.polyline(latlngs, { color:c, weight:4, opacity:1, lineJoin:"round", lineCap:"round", className:"route-main" }).addTo(group);
+    for(let i2=1; i2<latlngs.length; i2++){
+      const a = latlngs[i2-1], b = latlngs[i2];
+      L.marker(midPoint(a,b), { icon: arrowIcon(bearingDeg(a,b), c), interactive:false }).addTo(group);
     }
   }
   dayLayers.push(group);
+  dayMeta.push({ color:c, km: latlngs.length>1 ? routeKm(latlngs) : 0, stops: d.stops.length, poiCount: poiNearDay(d, 1.2).length });
 });
+
+/* All-Spots-Layer · jeder Spot in seiner Primärfarbe */
 const allLayer = L.layerGroup();
 Object.entries(spotsMaster).forEach(([id, s]) => {
-  const marker = L.marker(s.coords, { icon:makePin(+id, !!s.home) });
-  marker.bindPopup(popupHtml({...s, id:+id}, "Alle Tage"), { maxWidth:300, minWidth:280 });
+  const nId = +id;
+  const c = dayColor(spotPrimaryDay[nId] || 1);
+  const marker = L.marker(s.coords, { icon:makePin(nId, !!s.home, null, c, null) });
+  marker.bindPopup(popupHtml({...s, id:nId}, "Alle Tage"), { maxWidth:300, minWidth:280 });
   marker.addTo(allLayer);
 });
+
+/* POI-Layer (on-demand, gefiltert nach aktivem Tag) */
+const poiLayers = { food:L.layerGroup(), wc:L.layerGroup() };
+const poiActive = { food:false, wc:false };
+function renderPois(){
+  ["food","wc"].forEach(t => {
+    poiLayers[t].clearLayers();
+    if(!poiActive[t]) return;
+    const relevant = activeDayIdx === -1 ? pois : poiNearDay(eventDays[activeDayIdx], 1.5);
+    relevant.filter(p => p.type === t).forEach(p => {
+      const icon = L.divIcon({ className:"", iconSize:[26,26], iconAnchor:[13,13], popupAnchor:[0,-14],
+        html:`<div class="poi-marker poi-marker--${p.type}"><span>${p.type==='food'?'F':'W'}</span></div>` });
+      const m = L.marker(p.coords, { icon });
+      m.bindPopup(poiPopup(p), { maxWidth:280 });
+      m.addTo(poiLayers[t]);
+    });
+  });
+}
+document.querySelectorAll(".poi-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const t = btn.dataset.poi;
+    poiActive[t] = !poiActive[t];
+    btn.setAttribute("aria-pressed", String(poiActive[t]));
+    if(poiActive[t]){ poiLayers[t].addTo(map); } else { map.removeLayer(poiLayers[t]); }
+    renderPois();
+  });
+});
+
+/* Panel-Render */
+let activeDayIdx = -1;
+const panelBody = document.getElementById("mapPanelBody");
+const panelTitle = document.getElementById("mapPanelTitle");
+const mapBar = document.getElementById("mapBar");
+const mapLegend = document.getElementById("mapLegend");
+
+function renderPanel(){
+  panelBody.innerHTML = "";
+  const allBtn = document.createElement("button");
+  allBtn.className = "allCard" + (activeDayIdx===-1?" is-active":"");
+  allBtn.innerHTML = `
+    <div class="allCard__top">◐ Übersicht · Alle 14 Spots</div>
+    <div class="allCard__title">Alle Spots · jeder in seiner Tagesfarbe</div>
+    <div class="allCard__meta">9 Tage · 14 Orte · klick auf einen Tag unten für die Route</div>`;
+  allBtn.addEventListener("click", () => showDay(-1));
+  panelBody.appendChild(allBtn);
+
+  eventDays.forEach((d, i) => {
+    const meta = dayMeta[i];
+    const btn = document.createElement("button");
+    btn.className = "dayCard" + (activeDayIdx===i?" is-active":"");
+    btn.style.setProperty("--dc", meta.color);
+    const stopsHtml = d.stops.map((s, si) => {
+      const seq = d.stops.length>1 ? (si+1) : "•";
+      return `<button class="dayCard__stop" data-stop-day="${i}" data-stop-lat="${s.coords[0]}" data-stop-lng="${s.coords[1]}">
+        <span class="dayCard__stopPin" style="--dc:${meta.color}"><span>${seq}</span></span>
+        <span class="dayCard__stopInfo">
+          <span class="dayCard__stopName">${s.title}</span>
+          <span class="dayCard__stopTime">${s.time || "—"}</span>
+        </span>
+      </button>`;
+    }).join("");
+    btn.innerHTML = `
+      <div class="dayCard__top">
+        <div class="dayCard__n">Tag ${String(d.n).padStart(2,'0')}</div>
+        <div class="dayCard__date">${d.date}</div>
+      </div>
+      <div class="dayCard__title">${d.title}</div>
+      <span class="dayCard__tag">${d.tag}</span>
+      <div class="dayCard__stats">
+        <span><b>${d.stops.length}</b> Stops</span>
+        ${meta.km>0?`<span>ca. <b>${meta.km.toFixed(1)} km</b></span>`:""}
+        <span><b>${meta.poiCount}</b> POIs nah</span>
+      </div>
+      <div class="dayCard__stops">${stopsHtml}</div>`;
+    btn.addEventListener("click", e => {
+      if(e.target.closest(".dayCard__stop")) return;
+      showDay(i);
+    });
+    panelBody.appendChild(btn);
+  });
+
+  // Stop-Klicks
+  panelBody.querySelectorAll(".dayCard__stop").forEach(b => {
+    b.addEventListener("click", e => {
+      e.stopPropagation();
+      const di = +b.dataset.stopDay, lat = +b.dataset.stopLat, lng = +b.dataset.stopLng;
+      if(activeDayIdx !== di) showDay(di);
+      setTimeout(() => {
+        map.flyTo([lat,lng], 16, { duration:.8 });
+        setTimeout(() => {
+          (dayLayers[di]).eachLayer(l => {
+            if(l.getLatLng && Math.abs(l.getLatLng().lat-lat)<.001 && Math.abs(l.getLatLng().lng-lng)<.001) l.openPopup();
+          });
+        }, 700);
+      }, 80);
+    });
+  });
+}
+
+function renderBar(){
+  mapBar.innerHTML = "";
+  const all = document.createElement("button");
+  all.className = "map-bar__btn map-bar__btn--all" + (activeDayIdx===-1?" is-active":"");
+  all.innerHTML = `<span>◐ Alle Spots</span>`;
+  all.addEventListener("click", () => showDay(-1));
+  mapBar.appendChild(all);
+  eventDays.forEach((d, i) => {
+    const b = document.createElement("button");
+    b.className = "map-bar__btn" + (activeDayIdx===i?" is-active":"");
+    b.style.setProperty("--dc", dayMeta[i].color);
+    b.innerHTML = `<i></i>T${d.n} · ${d.tag}`;
+    b.addEventListener("click", () => showDay(i));
+    mapBar.appendChild(b);
+  });
+}
+
+function renderLegend(){
+  if(activeDayIdx === -1){
+    mapLegend.innerHTML = `<h4>Alle Tage</h4>` +
+      eventDays.map((d, i) => `<div class="row" style="--dc:${dayMeta[i].color}"><i></i>T${d.n} · ${d.tag}</div>`).join("") +
+      `<hr><div class="row row--muted">Pin-Nummer = Spot-ID</div><div class="row row--muted">Klick auf Spot öffnet Info</div>`;
+  } else {
+    const d = eventDays[activeDayIdx], m = dayMeta[activeDayIdx];
+    mapLegend.innerHTML = `<h4 style="color:${m.color}">Tag ${d.n} · ${d.tag}</h4>
+      <div class="row"><i class="sq" style="--dc:${m.color}"></i>Route in Tagesfarbe</div>
+      <div class="row row--muted">▶ = Start · ■ = Ende</div>
+      <div class="row row--muted">Pfeile zeigen Richtung</div>
+      <hr>
+      <div class="row row--muted">${m.km>0?`ca. ${m.km.toFixed(1)} km, ${d.stops.length} Stops`:`${d.stops.length} Stop`}</div>`;
+  }
+}
+
+function updateNavButtons(){
+  document.getElementById("mapPrev").disabled = activeDayIdx <= -1;
+  document.getElementById("mapNext").disabled = activeDayIdx >= eventDays.length-1;
+  if(activeDayIdx === -1){
+    panelTitle.innerHTML = `<b>Ansicht</b>Alle Spots`;
+  } else {
+    const d = eventDays[activeDayIdx];
+    panelTitle.innerHTML = `<b>Tag ${d.n} · ${d.date.split(' · ')[0]}</b>${d.tag}`;
+  }
+}
+
 function showDay(idx){
   activeDayIdx = idx;
   dayLayers.forEach(l => map.removeLayer(l));
@@ -1138,26 +1456,34 @@ function showDay(idx){
   } else {
     dayLayers[idx].addTo(map);
     const bounds = L.latLngBounds(eventDays[idx].stops.map(s=>s.coords));
-    map.flyToBounds(bounds.pad(0.25), { duration:.9 });
+    map.flyToBounds(bounds.pad(0.28), { duration:.9 });
   }
-  document.querySelectorAll(".map-tab").forEach((t,ti) => {
-    t.classList.toggle("is-active", (ti===0 && idx===-1) || (ti-1===idx));
-  });
+  renderPanel();
+  renderBar();
+  renderLegend();
+  updateNavButtons();
+  renderPois();
+  // Aktive Karte ins Zentrum des Sidebar-Scrolls holen
+  const active = panelBody.querySelector(".dayCard.is-active, .allCard.is-active");
+  if(active) active.scrollIntoView({ behavior:"smooth", block:"nearest" });
 }
-const mapTabs = document.getElementById("mapTabs");
-const allTab = document.createElement("button");
-allTab.className = "map-tab is-active";
-allTab.textContent = "Alle Spots";
-allTab.addEventListener("click", () => showDay(-1));
-mapTabs.appendChild(allTab);
-eventDays.forEach((d, i) => {
-  const b = document.createElement("button");
-  b.className = "map-tab";
-  b.textContent = `Tag ${d.n} · ${d.tag}`;
-  b.addEventListener("click", () => showDay(i));
-  mapTabs.appendChild(b);
+
+document.getElementById("mapPrev").addEventListener("click", () => {
+  if(activeDayIdx > -1) showDay(activeDayIdx - 1);
 });
+document.getElementById("mapNext").addEventListener("click", () => {
+  if(activeDayIdx < eventDays.length - 1) showDay(activeDayIdx + 1);
+});
+
+/* Initial render */
 allLayer.addTo(map);
+renderPanel();
+renderBar();
+renderLegend();
+updateNavButtons();
+// POI-Counts
+document.getElementById("poiCountFood").textContent = `(${pois.filter(p=>p.type==="food").length})`;
+document.getElementById("poiCountWc").textContent = `(${pois.filter(p=>p.type==="wc").length})`;
 
 document.querySelectorAll("[data-focus-day]").forEach(btn => {
   btn.addEventListener("click", () => {
