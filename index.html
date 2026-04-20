@@ -157,7 +157,12 @@ a{color:inherit;text-decoration:none}
 
 /* SECTION FOLD — Stay / Map / FAQ / Join collapsible */
 .section--fold{padding:0 1.25rem;margin-bottom:2rem;max-width:1400px;margin-left:auto;margin-right:auto;width:100%}
-.section--fold > summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:end;padding:2rem 1.75rem;border-radius:var(--radius-lg);border:1px solid var(--line);background:linear-gradient(135deg,rgba(12,12,16,.92),rgba(22,22,28,.82));transition:border-color .25s,background .25s}
+.section--fold > summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:end;padding:2rem 1.75rem;border-radius:var(--radius-lg);border:1px solid var(--line);background:linear-gradient(135deg,rgba(12,12,16,.92),rgba(22,22,28,.82));transition:border-color .25s,background .25s;position:relative;overflow:hidden;isolation:isolate}
+.section--fold__bg{position:absolute;inset:0;z-index:0;pointer-events:none}
+.section--fold__bg svg{width:100%;height:100%;display:block;filter:grayscale(1) contrast(1.1) brightness(.55)}
+.section--fold__bg::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(6,6,8,.96) 0%,rgba(6,6,8,.78) 45%,rgba(6,6,8,.55) 100%)}
+.section--fold[open] .section--fold__bg{display:none}
+.section--fold > summary > *:not(.section--fold__bg){position:relative;z-index:2}
 .section--fold > summary::-webkit-details-marker{display:none}
 .section--fold > summary::marker{content:""}
 .section--fold:hover > summary{border-color:var(--red);background:linear-gradient(135deg,rgba(16,16,22,.95),rgba(32,32,40,.85))}
@@ -703,6 +708,58 @@ a{color:inherit;text-decoration:none}
 
 <details class="section--fold reveal" id="map">
   <summary>
+    <div class="section--fold__bg" aria-hidden="true">
+      <svg viewBox="0 0 800 260" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <rect width="800" height="260" fill="#1a1a1c"/>
+        <!-- Park/Grün-Flächen -->
+        <path d="M 120,40 Q 200,20 260,60 Q 280,120 220,150 Q 140,140 120,90 Z" fill="#2a2e28"/>
+        <path d="M 540,160 Q 620,150 680,190 Q 690,240 620,250 Q 560,230 540,200 Z" fill="#2a2e28"/>
+        <!-- Wasser/See -->
+        <path d="M 400,180 Q 470,170 490,210 Q 480,250 420,250 Q 380,230 400,180 Z" fill="#1e2a36"/>
+        <!-- Hauptstraßen -->
+        <g stroke="#6a6a70" stroke-width="4" fill="none" stroke-linecap="round">
+          <path d="M 0,90 L 800,110"/>
+          <path d="M 0,180 L 800,170"/>
+          <path d="M 180,0 L 200,260"/>
+          <path d="M 480,0 L 460,260"/>
+          <path d="M 0,0 L 800,260" stroke-width="3" opacity=".6"/>
+        </g>
+        <!-- Nebenstraßen -->
+        <g stroke="#444" stroke-width="1.5" fill="none">
+          <path d="M 0,40 L 800,55"/>
+          <path d="M 0,140 L 800,135"/>
+          <path d="M 0,220 L 800,230"/>
+          <path d="M 80,0 L 90,260"/>
+          <path d="M 320,0 L 330,260"/>
+          <path d="M 620,0 L 610,260"/>
+          <path d="M 740,0 L 750,260"/>
+          <path d="M 0,260 L 800,0" opacity=".5"/>
+        </g>
+        <!-- Blöcke -->
+        <g fill="#252528" opacity=".7">
+          <rect x="100" y="100" width="60" height="30" rx="2"/>
+          <rect x="220" y="100" width="80" height="30" rx="2"/>
+          <rect x="340" y="60" width="100" height="40" rx="2"/>
+          <rect x="340" y="130" width="100" height="40" rx="2"/>
+          <rect x="500" y="100" width="90" height="30" rx="2"/>
+          <rect x="640" y="100" width="80" height="30" rx="2"/>
+          <rect x="640" y="180" width="80" height="40" rx="2"/>
+          <rect x="100" y="180" width="60" height="40" rx="2"/>
+          <rect x="220" y="180" width="80" height="40" rx="2"/>
+        </g>
+        <!-- Pins -->
+        <g>
+          <circle cx="230" cy="115" r="8" fill="#ff0040"/>
+          <circle cx="230" cy="115" r="3" fill="#fff"/>
+          <circle cx="420" cy="85" r="8" fill="#ff0040"/>
+          <circle cx="420" cy="85" r="3" fill="#fff"/>
+          <circle cx="560" cy="145" r="8" fill="#ff0040"/>
+          <circle cx="560" cy="145" r="3" fill="#fff"/>
+          <circle cx="700" cy="200" r="8" fill="#ff0040"/>
+          <circle cx="700" cy="200" r="3" fill="#fff"/>
+        </g>
+      </svg>
+    </div>
     <div class="section--fold__head">
       <div class="section__eyebrow">The Map</div>
       <h2 class="section__title">Jeder Tag. <em>Eigene Farbe.</em></h2>
