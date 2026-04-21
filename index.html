@@ -353,6 +353,60 @@ a{color:inherit;text-decoration:none}
 @media (max-width:700px){.lightbox__info{position:static;margin-bottom:.5rem;flex-wrap:wrap;font-size:.66rem}.lightbox__info .lb-nav{margin-left:0}}
 .lightbox__counter{position:absolute;bottom:-2.5rem;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:.72rem;letter-spacing:.22em;color:var(--text-dim)}
 
+/* PRINT SHEET · PDF-Export */
+.print-sheet{display:none}
+@media print{
+  @page{size:A4;margin:10mm 10mm 10mm 10mm}
+  html,body{background:#fff !important;color:#111 !important}
+  body > *{display:none !important}
+  body > .print-sheet{display:block !important}
+  .print-sheet{position:static;width:190mm;margin:0 auto;color:#111;font-family:"Space Grotesk",Helvetica,Arial,sans-serif;font-size:9pt;line-height:1.38;background:#fff}
+  .print-sheet h1,.print-sheet h2{font-family:"Permanent Marker","Space Grotesk",sans-serif;font-weight:400;letter-spacing:.01em;color:#111;margin:0}
+  .print-sheet .ps-head{display:grid;grid-template-columns:1.4fr 1fr;gap:8mm;align-items:end;padding:0 0 4mm 0;border-bottom:2pt solid #111}
+  .ps-head__eyebrow{font-family:"JetBrains Mono",monospace;font-size:7pt;letter-spacing:.24em;color:#c20030;margin-bottom:1.5mm}
+  .ps-head__title{font-size:26pt;line-height:1;letter-spacing:0}
+  .ps-head__title span{color:#c20030}
+  .ps-head__dateline{margin-top:1.8mm;font-size:9.5pt;color:#222;letter-spacing:.02em;font-weight:500}
+  .ps-head__meta{display:grid;grid-template-columns:1fr;gap:1mm;font-size:7.8pt}
+  .ps-head__meta div{display:flex;gap:1.5mm}
+  .ps-head__meta b{color:#c20030;min-width:14mm;font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:7pt}
+  .ps-head__meta span{color:#111}
+  .ps-facts{display:grid;grid-template-columns:repeat(4,1fr);gap:3mm;margin:4mm 0 5mm 0}
+  .ps-fact{border:.6pt solid #111;border-radius:2mm;padding:2.5mm 3mm;background:#fafafa}
+  .ps-fact b{font-family:"Permanent Marker","Space Grotesk",sans-serif;font-weight:400;font-size:16pt;line-height:1;color:#c20030;display:block}
+  .ps-fact span{display:block;margin-top:1.2mm;font-size:7.6pt;color:#222;line-height:1.35}
+  .print-sheet section{margin-bottom:5mm}
+  .print-sheet section h2{font-size:13pt;margin:0 0 2.5mm 0;color:#111;border-bottom:1pt solid #c20030;padding-bottom:1mm}
+  .print-sheet table{width:100%;border-collapse:collapse;font-size:8.4pt}
+  .print-sheet thead th{text-align:left;background:#111;color:#fff;padding:1.8mm 2.5mm;font-family:"JetBrains Mono",monospace;font-size:7pt;letter-spacing:.14em;text-transform:uppercase;font-weight:700}
+  .print-sheet tbody td{padding:1.6mm 2.5mm;border-bottom:.4pt solid #d0d0d0;vertical-align:top}
+  .print-sheet tbody tr:last-child td{border-bottom:.6pt solid #111}
+  .print-sheet tbody td.ps-num{font-family:"Permanent Marker","Space Grotesk",sans-serif;font-size:11pt;color:#c20030;width:8mm;text-align:center;font-weight:400}
+  .ps-note{margin:2mm 0 0 0;font-size:7.6pt;color:#333;line-height:1.45}
+  .ps-note b{color:#c20030}
+  .ps-days{display:grid;grid-template-columns:repeat(3,1fr);gap:2.8mm}
+  .ps-day{border:.6pt solid #111;border-radius:2mm;padding:2.5mm 3mm;background:#fff;page-break-inside:avoid;break-inside:avoid}
+  .ps-day__head{display:flex;align-items:baseline;gap:2mm;border-bottom:.5pt solid #d0d0d0;padding-bottom:1.3mm;margin-bottom:1.8mm}
+  .ps-day__num{font-family:"Permanent Marker","Space Grotesk",sans-serif;font-size:11pt;color:#c20030;flex-shrink:0;font-weight:400;line-height:1}
+  .ps-day__date{font-family:"JetBrains Mono",monospace;font-size:7pt;letter-spacing:.1em;color:#333;text-transform:uppercase;flex:1}
+  .ps-day__tag{font-family:"JetBrains Mono",monospace;font-size:6.3pt;letter-spacing:.16em;color:#fff;background:#c20030;padding:.4mm 1.4mm;border-radius:1mm;font-weight:700}
+  .ps-day__title{font-family:"Permanent Marker","Space Grotesk",sans-serif;font-weight:400;font-size:10pt;line-height:1.15;margin:0 0 1.4mm 0;color:#111;letter-spacing:0}
+  .ps-day__title .accent{color:#c20030}
+  .ps-day__stops{list-style:none;padding:0;margin:0;font-size:7.8pt;line-height:1.35}
+  .ps-day__stops li{display:grid;grid-template-columns:16mm 1fr;gap:1mm;padding:.8mm 0;border-bottom:.3pt dotted #c8c8c8}
+  .ps-day__stops li:last-child{border-bottom:none}
+  .ps-day__stops li time{font-family:"JetBrains Mono",monospace;font-size:6.8pt;color:#c20030;letter-spacing:.05em;font-weight:700}
+  .ps-day__stops li .nm{color:#111;font-weight:500}
+  .ps-day__stops li .nm em{font-style:normal;color:#555;font-size:7.2pt;display:block;margin-top:.2mm}
+  .ps-foot{margin-top:4mm;padding-top:3mm;border-top:2pt solid #111;display:grid;grid-template-columns:1fr 1fr auto;gap:5mm;font-size:7.6pt;line-height:1.45;align-items:start}
+  .ps-foot__col b{display:block;color:#c20030;font-size:7.2pt;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1mm;font-weight:700}
+  .ps-foot__col span{color:#111;font-weight:600}
+  .ps-foot__stamp{font-family:"Permanent Marker","Space Grotesk",sans-serif;font-size:20pt;color:#c20030;transform:rotate(-6deg);border:1.5pt solid #c20030;padding:1.5mm 3mm;border-radius:2mm;letter-spacing:.02em;line-height:1;align-self:center;white-space:nowrap}
+  .ps-lineup{page-break-before:auto}
+  .ps-spots tbody td:nth-child(1){width:8mm}
+  .ps-spots tbody td:nth-child(4){width:22mm;font-family:"JetBrains Mono",monospace;font-size:7.2pt;color:#c20030;letter-spacing:.04em}
+}
+
 /* SPOT DETAIL OVERLAY */
 .spot-detail{position:fixed;inset:0;z-index:9100;display:grid;place-items:center;padding:1.5rem;opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
 .spot-detail.open{opacity:1;visibility:visible}
@@ -993,6 +1047,7 @@ a{color:inherit;text-decoration:none}
             <button class="btn btn--primary" id="joinCTA" type="button"><span>Mail-Programm öffnen<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
             <button class="btn btn--ghost" id="copyMailBtn" type="button"><span>Adresse kopieren</span></button>
             <button class="btn btn--ghost" id="copyBodyBtn" type="button"><span>Vorlage kopieren</span></button>
+            <button class="btn btn--ghost" id="pdfBtn" type="button" title="Alle Infos + Lineup als PDF drucken/speichern"><span>PDF · Infopaket</span></button>
           </div>
           <div class="meta">An: <b id="mailAddrShow">folke.kleinrad@gmail.com</b> · Betreff: Anmeldung · Leipzig Invitation 2026</div>
         </div>
@@ -1028,6 +1083,62 @@ a{color:inherit;text-decoration:none}
       <button type="button" id="sdToMap" class="btn btn--ghost">Auf der Karte zeigen</button>
     </div>
   </div>
+</div>
+
+<div class="print-sheet" id="printSheet" aria-hidden="true">
+  <header class="ps-head">
+    <div class="ps-head__brand">
+      <div class="ps-head__eyebrow">STREET · UNICYCLE · LEIPZIG</div>
+      <h1 class="ps-head__title">LEIPZIG INVITATION <span>2026</span></h1>
+      <div class="ps-head__dateline">08. — 16. August 2026 · 9 Tage · Leipzig &amp; Markkleeberg</div>
+    </div>
+    <div class="ps-head__meta">
+      <div><b>Kontakt</b><span>Folke · folke.kleinrad@gmail.com</span></div>
+      <div><b>Web</b><span id="psUrl">—</span></div>
+      <div><b>FSK</b><span>18+ · keine Ausnahme</span></div>
+    </div>
+  </header>
+
+  <section class="ps-facts">
+    <div class="ps-fact"><b>25 €</b><span>Allgemeine Gebühr p. P. · Zelten Pleißenhof inkl.</span></div>
+    <div class="ps-fact"><b>10 €</b><span>Heizhaus extra · nur 10 Plätze</span></div>
+    <div class="ps-fact"><b>35</b><span>Plätze gesamt · first come, first serve</span></div>
+    <div class="ps-fact"><b>9</b><span>Event-Tage · 15 Orte · eine Crew</span></div>
+  </section>
+
+  <section class="ps-stay">
+    <h2>Unterkunft &amp; Kosten</h2>
+    <table>
+      <thead><tr><th>Option</th><th>Ort</th><th>Adresse</th><th>Plätze</th><th>Kosten</th></tr></thead>
+      <tbody id="psStay"></tbody>
+    </table>
+    <p class="ps-note">First come, first serve. Ab Platz 36 selbst organisieren (Camping · Hostel · Hotel · Jugendherberge). Verpflegung Selbstversorgung; gemeinsam wird gekocht und gegrillt. <b>Mindestalter 18 Jahre.</b></p>
+  </section>
+
+  <section class="ps-lineup">
+    <h2>Lineup · 9 Tage auf einen Blick</h2>
+    <div class="ps-days" id="psDays"></div>
+  </section>
+
+  <section class="ps-spots">
+    <h2>Alle Orte · 15 Spots</h2>
+    <table>
+      <thead><tr><th>#</th><th>Name</th><th>Adresse</th><th>Tage</th></tr></thead>
+      <tbody id="psSpots"></tbody>
+    </table>
+  </section>
+
+  <footer class="ps-foot">
+    <div class="ps-foot__col">
+      <b>Anmeldung</b>
+      Mail an <span>folke.kleinrad@gmail.com</span> · Betreff: „Anmeldung · Leipzig Invitation 2026". Nötig: Name, Ankunft, Abreise, Unterkunftswunsch (Pleißenhof 25 € / Heizhaus 10 € / selbst), Allergien, Sonstiges. Antwort i. d. R. innerhalb 48 h.
+    </div>
+    <div class="ps-foot__col">
+      <b>Drop-In-Regel</b>
+      18+ · eigene Verantwortung · Zelt &amp; Schlafzeug mitbringen · Einrad/Helm selbstverständlich. Keine Registrierungsgebühr — die 25 € decken Location, Strom, Müll, Orga.
+    </div>
+    <div class="ps-foot__stamp">LI · 2026</div>
+  </footer>
 </div>
 
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
@@ -1112,6 +1223,72 @@ const copyBodyBtn = document.getElementById("copyBodyBtn");
 if(copyBodyBtn) copyBodyBtn.addEventListener("click", () => copyText(`An: ${MAIL}\nBetreff: ${MAIL_SUBJECT}\n\n${MAIL_BODY}`, "Vorlage"));
 const mailBodyShow = document.getElementById("mailBodyShow");
 if(mailBodyShow) mailBodyShow.textContent = `An: ${MAIL}\nBetreff: ${MAIL_SUBJECT}\n\n${MAIL_BODY}`;
+
+/* ============ PDF · INFOPAKET ============ */
+function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function stripHtml(s){ return String(s).replace(/<[^>]*>/g, ""); }
+function buildPrintSheet(){
+  const psUrl = document.getElementById("psUrl");
+  if(psUrl) psUrl.textContent = (location.host || "leipzig-invitation.de") + (location.pathname === "/" ? "" : location.pathname);
+
+  const psStay = document.getElementById("psStay");
+  if(psStay && typeof accommodations !== "undefined"){
+    psStay.innerHTML = accommodations.map(a => `
+      <tr>
+        <td><b>${escapeHtml(a.name)}</b></td>
+        <td>${escapeHtml(a.city)}</td>
+        <td>${escapeHtml(a.address)}</td>
+        <td>${escapeHtml(String(a.slots))}</td>
+        <td><b>${escapeHtml(a.cost)}</b></td>
+      </tr>
+    `).join("");
+  }
+
+  const psDays = document.getElementById("psDays");
+  if(psDays && typeof eventDays !== "undefined"){
+    psDays.innerHTML = eventDays.map(d => {
+      const weekday = (typeof dayWeekdayLong === "function") ? dayWeekdayLong(d) : d.date.slice(0,2);
+      const datePart = (d.date.split(" · ")[1]) || d.date;
+      const stops = (d.stops || []).map(s => `
+        <li>
+          <time>${escapeHtml(s.time || "")}</time>
+          <div class="nm">${escapeHtml(s.title)}<em>${escapeHtml(s.addr || "")}</em></div>
+        </li>
+      `).join("");
+      return `
+        <article class="ps-day">
+          <header class="ps-day__head">
+            <div class="ps-day__num">Tag ${String(d.n).padStart(2,"0")}</div>
+            <div class="ps-day__date">${escapeHtml(weekday)} · ${escapeHtml(datePart)}</div>
+            <div class="ps-day__tag">${escapeHtml(d.tag)}</div>
+          </header>
+          <h3 class="ps-day__title">${d.title.replace(/<span class='accent'>/g,'<span class="accent">')}</h3>
+          <ul class="ps-day__stops">${stops}</ul>
+        </article>
+      `;
+    }).join("");
+  }
+
+  const psSpots = document.getElementById("psSpots");
+  if(psSpots && typeof spotsMaster !== "undefined"){
+    const ids = Object.keys(spotsMaster).map(Number).sort((a,b) => a - b);
+    psSpots.innerHTML = ids.map(id => {
+      const s = spotsMaster[id];
+      const days = spotDayMap && spotDayMap[id] ? [...spotDayMap[id]].sort((a,b)=>a-b).map(n => "T"+n).join(" · ") : "—";
+      return `<tr>
+        <td class="ps-num">${id}</td>
+        <td><b>${escapeHtml(s.title)}</b></td>
+        <td>${escapeHtml(s.addr)}</td>
+        <td>${escapeHtml(days)}</td>
+      </tr>`;
+    }).join("");
+  }
+}
+const pdfBtn = document.getElementById("pdfBtn");
+if(pdfBtn) pdfBtn.addEventListener("click", () => {
+  buildPrintSheet();
+  setTimeout(() => window.print(), 50);
+});
 
 /* ============ DATA ============ */
 const accommodations = [
