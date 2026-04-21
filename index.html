@@ -15,7 +15,7 @@
 <style>
 :root{
   --bg:#08080a;--bg-2:#0e0e11;--bg-3:#16161a;--line:#24242a;
-  --text:#f5f5f0;--text-dim:#a5a5a5;--text-mute:#5a5a5a;
+  --text:#f5f5f0;--text-dim:#c8c8c8;--text-mute:#9a9a9a;
   --red:#ff0040;--red-deep:#c4001f;--pink:#ff2a9d;--pink-soft:#ff6bc1;--ink:#050507;
   --grad:linear-gradient(100deg,#ff0040 0%,#ff2a9d 100%);
   --grad-soft:linear-gradient(100deg,rgba(255,0,64,.18),rgba(255,42,157,.18));
@@ -158,9 +158,9 @@ a{color:inherit;text-decoration:none}
 /* SECTION FOLD — Stay / Map / FAQ / Join collapsible */
 .section--fold{padding:0 1.25rem;margin-bottom:2rem;max-width:1400px;margin-left:auto;margin-right:auto;width:100%}
 .section--fold > summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:end;padding:2rem 1.75rem;border-radius:var(--radius-lg);border:1px solid var(--line);background:linear-gradient(135deg,rgba(12,12,16,.92),rgba(22,22,28,.82));transition:border-color .25s,background .25s;position:relative;overflow:hidden;isolation:isolate}
-.section--fold__bg{position:absolute;inset:0;z-index:0;pointer-events:none}
-.section--fold__bg svg{width:100%;height:100%;display:block;filter:grayscale(1) contrast(1.1) brightness(.55)}
-.section--fold__bg::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(6,6,8,.96) 0%,rgba(6,6,8,.78) 45%,rgba(6,6,8,.55) 100%)}
+.section--fold__bg{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.9}
+.section--fold__bg svg{width:100%;height:100%;display:block;filter:grayscale(1) contrast(1.25) brightness(.85)}
+.section--fold__bg::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(6,6,8,.92) 0%,rgba(6,6,8,.58) 45%,rgba(6,6,8,.35) 100%)}
 .section--fold[open] .section--fold__bg{display:none}
 .section--fold > summary > *:not(.section--fold__bg){position:relative;z-index:2}
 .section--fold > summary::-webkit-details-marker{display:none}
@@ -353,6 +353,39 @@ a{color:inherit;text-decoration:none}
 @media (max-width:700px){.lightbox__info{position:static;margin-bottom:.5rem;flex-wrap:wrap;font-size:.66rem}.lightbox__info .lb-nav{margin-left:0}}
 .lightbox__counter{position:absolute;bottom:-2.5rem;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:.72rem;letter-spacing:.22em;color:var(--text-dim)}
 
+/* SPOT DETAIL OVERLAY */
+.spot-detail{position:fixed;inset:0;z-index:9100;display:grid;place-items:center;padding:1.5rem;opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
+.spot-detail.open{opacity:1;visibility:visible}
+.spot-detail__backdrop{position:absolute;inset:0;background:rgba(3,3,5,.88);backdrop-filter:blur(18px)}
+.spot-detail__panel{position:relative;max-width:min(860px,94vw);max-height:90vh;width:100%;overflow-y:auto;background:linear-gradient(155deg,rgba(14,14,18,.98),rgba(22,22,28,.94));border:1px solid var(--line);border-radius:var(--radius-lg);box-shadow:0 40px 80px rgba(0,0,0,.7),0 0 0 1px rgba(255,0,64,.15);padding:clamp(1.4rem,3vw,2.4rem);animation:sdIn .45s var(--ease-out);isolation:isolate}
+.spot-detail__bg{position:absolute;inset:0;z-index:-1;border-radius:inherit;overflow:hidden;pointer-events:none}
+.spot-detail__bg img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.1) brightness(.35);transform:scale(1.04)}
+.spot-detail__bg::after{content:"";position:absolute;inset:0;background:linear-gradient(155deg,rgba(10,10,14,.88) 0%,rgba(14,14,18,.78) 45%,rgba(18,18,22,.72) 100%)}
+@keyframes sdIn{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+.spot-detail__close{position:absolute;top:.9rem;right:.9rem;width:44px;height:44px;border-radius:50%;border:1.5px solid rgba(245,245,240,.55);background:rgba(15,15,18,.92);color:#fff;font-size:1.3rem;font-weight:700;display:grid;place-items:center;cursor:pointer;transition:all .3s;z-index:2}
+.spot-detail__close:hover{background:var(--grad);border-color:transparent;transform:scale(1.08);box-shadow:var(--glow-red)}
+.spot-detail__head{display:flex;gap:1rem;align-items:flex-start;padding-right:3rem;margin-bottom:1.2rem}
+.spot-detail__pin{flex-shrink:0;width:54px;height:54px;border-radius:50%;background:var(--grad);color:#fff;display:grid;place-items:center;font-family:var(--font-head);font-weight:400;font-size:1.35rem;letter-spacing:0;box-shadow:var(--glow-red)}
+.spot-detail__pin--lake{background:linear-gradient(135deg,#1e88e5,#0d5fb8);box-shadow:0 0 22px rgba(30,136,229,.55)}
+.spot-detail__eyebrow{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--text-dim);margin-bottom:.35rem}
+.spot-detail__title{font-family:var(--font-head);font-weight:400;font-size:clamp(1.5rem,3.4vw,2.1rem);line-height:1.2;letter-spacing:.01em;margin:0;padding:.05em .06em}
+.spot-detail__addr{display:flex;align-items:center;gap:.55rem;padding:.75rem 1rem;margin:0 0 1.1rem;border-radius:10px;border:1px solid var(--line);background:rgba(8,8,12,.6);color:var(--text);font-size:.88rem;line-height:1.4}
+.spot-detail__addr svg{flex-shrink:0;width:18px;height:18px;fill:none;stroke:var(--pink);stroke-width:2}
+.spot-detail__desc{font-size:1rem;line-height:1.65;color:var(--text);margin:0 0 1.3rem}
+.spot-detail__meta{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.3rem}
+.spot-detail__chip{display:inline-flex;align-items:center;gap:.4rem;padding:.35rem .7rem;border-radius:999px;border:1px solid var(--line);background:rgba(8,8,12,.55);font-family:var(--font-mono);font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text)}
+.spot-detail__chip b{color:var(--pink);font-weight:700}
+.spot-detail__gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:.6rem;margin-bottom:1.4rem}
+.spot-detail__gallery:empty{display:none}
+.spot-detail__media{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;border:1px solid var(--line);cursor:pointer;background:#0a0a0c;transition:transform .3s,border-color .3s}
+.spot-detail__media:hover{transform:scale(1.03);border-color:var(--red)}
+.spot-detail__media img,.spot-detail__media video{width:100%;height:100%;object-fit:cover;display:block}
+.spot-detail__media--vid::after{content:"▶";position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:1.8rem;text-shadow:0 2px 12px rgba(0,0,0,.8);pointer-events:none}
+.spot-detail__empty{padding:1rem;border:1px dashed var(--line);border-radius:10px;color:var(--text-dim);font-size:.85rem;text-align:center;margin-bottom:1.3rem}
+.spot-detail__actions{display:flex;flex-wrap:wrap;gap:.75rem}
+.spot-detail__actions .btn{flex:1;min-width:180px}
+@media (max-width:600px){.spot-detail__panel{padding:1.25rem;max-height:94vh}.spot-detail__head{padding-right:2.5rem}.spot-detail__pin{width:46px;height:46px;font-size:1.15rem}.spot-detail__actions .btn{flex:1 1 100%}}
+
 /* MAP */
 .map-wrap{position:relative;display:grid;grid-template-columns:minmax(300px,340px) 1fr;border-radius:var(--radius-lg);border:1px solid var(--line);box-shadow:var(--shadow);background:var(--bg-2);min-height:clamp(600px,82vh,860px);isolation:isolate;overflow:hidden}
 .map-wrap > .map-panel{border-top-left-radius:var(--radius-lg);border-bottom-left-radius:var(--radius-lg)}
@@ -400,13 +433,13 @@ a{color:inherit;text-decoration:none}
 .dayCard.is-active{border-color:var(--dc);background:linear-gradient(95deg,rgba(255,255,255,.02),var(--bg-3));box-shadow:0 6px 22px -8px var(--dc)}
 .dayCard__top{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
 .dayCard__n{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.22em;color:var(--dc,var(--red));font-weight:700}
-.dayCard__date{font-family:var(--font-mono);font-size:.58rem;letter-spacing:.1em;color:var(--text-mute)}
+.dayCard__date{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.1em;color:var(--text-dim)}
 .dayCard__title{font-family:var(--font-head);font-size:.85rem;line-height:1.15;margin:.25rem 0 .3rem;font-weight:600}
 .dayCard__title em{font-style:italic;color:var(--dc,var(--pink))}
 .dayCard__tag{display:inline-block;padding:.12rem .4rem;border-radius:4px;background:var(--dc,var(--red));color:#fff;font-family:var(--font-mono);font-size:.55rem;letter-spacing:.18em;font-weight:700;text-transform:uppercase}
 .dayCard__stats{display:flex;gap:.65rem;margin-top:.35rem;font-family:var(--font-mono);font-size:.58rem;letter-spacing:.05em;color:var(--text-dim);flex-wrap:wrap}
 .dayCard__stats b{color:var(--text);font-weight:600}
-.dayCard__stops{margin:.55rem -.35rem 0;padding-top:.45rem;border-top:1px dashed var(--line);display:none;flex-direction:column;gap:.1rem;max-height:0;overflow:hidden;transition:max-height .35s ease}
+.dayCard__stops{margin:.55rem -.35rem 0;padding-top:.45rem;border-top:1px dashed var(--line);display:none;flex-direction:column;gap:.1rem;max-height:0;overflow:hidden;transition:max-height .35s ease;color:var(--text-dim)}
 .dayCard.is-active .dayCard__stops{display:flex;max-height:400px}
 .dayCard__stop{display:flex;align-items:center;gap:.45rem;padding:.3rem .35rem;border-radius:6px;cursor:pointer;transition:background .2s;text-align:left;background:transparent;border:0;color:inherit;font:inherit;width:100%}
 .dayCard__stop:hover{background:rgba(255,255,255,.04)}
@@ -416,7 +449,7 @@ a{color:inherit;text-decoration:none}
 .dayCard__stopPin span{transform:rotate(45deg);color:#fff;font-family:var(--font-head);font-weight:700;font-size:.6rem;line-height:1}
 .dayCard__stopInfo{flex:1;line-height:1.1;min-width:0}
 .dayCard__stopName{font-size:.76rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.dayCard__stopTime{font-family:var(--font-mono);font-size:.58rem;color:var(--text-mute);letter-spacing:.08em;margin-top:.1rem}
+.dayCard__stopTime{font-family:var(--font-mono);font-size:.62rem;color:var(--text-dim);letter-spacing:.08em;margin-top:.1rem}
 
 .allCard{border:1px solid var(--line);border-radius:9px;padding:.7rem .85rem;background:linear-gradient(100deg,rgba(255,0,64,.08),rgba(255,42,157,.08));cursor:pointer;text-align:left;width:100%;font:inherit;color:inherit;transition:all .25s;margin-bottom:.2rem}
 .allCard:hover,.allCard.is-active{border-color:var(--red);box-shadow:0 6px 22px -8px var(--red)}
@@ -710,53 +743,110 @@ a{color:inherit;text-decoration:none}
   <summary>
     <div class="section--fold__bg" aria-hidden="true">
       <svg viewBox="0 0 800 260" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-        <rect width="800" height="260" fill="#1a1a1c"/>
-        <!-- Park/Grün-Flächen -->
-        <path d="M 120,40 Q 200,20 260,60 Q 280,120 220,150 Q 140,140 120,90 Z" fill="#2a2e28"/>
-        <path d="M 540,160 Q 620,150 680,190 Q 690,240 620,250 Q 560,230 540,200 Z" fill="#2a2e28"/>
-        <!-- Wasser/See -->
-        <path d="M 400,180 Q 470,170 490,210 Q 480,250 420,250 Q 380,230 400,180 Z" fill="#1e2a36"/>
-        <!-- Hauptstraßen -->
-        <g stroke="#6a6a70" stroke-width="4" fill="none" stroke-linecap="round">
-          <path d="M 0,90 L 800,110"/>
-          <path d="M 0,180 L 800,170"/>
-          <path d="M 180,0 L 200,260"/>
-          <path d="M 480,0 L 460,260"/>
-          <path d="M 0,0 L 800,260" stroke-width="3" opacity=".6"/>
+        <defs>
+          <radialGradient id="mapVig" cx="50%" cy="50%" r="70%">
+            <stop offset="0%" stop-color="#1c1c1e"/>
+            <stop offset="100%" stop-color="#0a0a0c"/>
+          </radialGradient>
+        </defs>
+        <rect width="800" height="260" fill="url(#mapVig)"/>
+
+        <!-- Wasser: Markkleeberger See (Südostbereich) -->
+        <ellipse cx="650" cy="232" rx="75" ry="28" fill="#2a3038" opacity=".9"/>
+        <ellipse cx="650" cy="232" rx="72" ry="26" fill="none" stroke="#3a4048" stroke-width="1"/>
+
+        <!-- Auwald/Parks -->
+        <path d="M 340,120 Q 400,110 430,130 Q 440,170 390,180 Q 340,170 335,145 Z" fill="#22281f" opacity=".7"/>
+        <path d="M 580,90 Q 620,85 635,105 Q 625,125 595,120 Q 575,110 580,90 Z" fill="#22281f" opacity=".7"/>
+
+        <!-- Hauptstraßen (Leipzig Ring + Magistralen, stilisiert) -->
+        <g stroke="#6a6a72" stroke-width="3" fill="none" stroke-linecap="round" opacity=".85">
+          <!-- Innenstadtring (Augustusplatz-Bereich) -->
+          <circle cx="530" cy="38" r="26" stroke-width="2.5"/>
+          <!-- Karli / Südachse Richtung Connewitz -->
+          <path d="M 520,40 Q 510,90 500,140 L 502,175"/>
+          <!-- Tarostraße / Westachse -->
+          <path d="M 540,40 Q 450,55 350,80 Q 250,80 180,120"/>
+          <!-- Prager Str. / Ostachse -->
+          <path d="M 555,40 Q 600,70 640,95 Q 665,140 650,200"/>
+          <!-- B2/Bornaische (Süd nach Markkleeberg) -->
+          <path d="M 500,140 Q 550,180 620,225"/>
+          <!-- Ostring/Reudnitz -->
+          <path d="M 555,40 Q 620,45 650,55"/>
         </g>
-        <!-- Nebenstraßen -->
-        <g stroke="#444" stroke-width="1.5" fill="none">
-          <path d="M 0,40 L 800,55"/>
-          <path d="M 0,140 L 800,135"/>
-          <path d="M 0,220 L 800,230"/>
-          <path d="M 80,0 L 90,260"/>
-          <path d="M 320,0 L 330,260"/>
-          <path d="M 620,0 L 610,260"/>
-          <path d="M 740,0 L 750,260"/>
-          <path d="M 0,260 L 800,0" opacity=".5"/>
+
+        <!-- Nebenstraßen/Raster -->
+        <g stroke="#3a3a42" stroke-width="1" fill="none" opacity=".6">
+          <path d="M 0,60 L 800,70"/>
+          <path d="M 0,130 L 800,120"/>
+          <path d="M 0,200 L 800,195"/>
+          <path d="M 120,0 L 130,260"/>
+          <path d="M 260,0 L 270,260"/>
+          <path d="M 400,0 L 410,260"/>
+          <path d="M 580,0 L 575,260"/>
+          <path d="M 720,0 L 715,260"/>
         </g>
-        <!-- Blöcke -->
-        <g fill="#252528" opacity=".7">
-          <rect x="100" y="100" width="60" height="30" rx="2"/>
-          <rect x="220" y="100" width="80" height="30" rx="2"/>
-          <rect x="340" y="60" width="100" height="40" rx="2"/>
-          <rect x="340" y="130" width="100" height="40" rx="2"/>
-          <rect x="500" y="100" width="90" height="30" rx="2"/>
-          <rect x="640" y="100" width="80" height="30" rx="2"/>
-          <rect x="640" y="180" width="80" height="40" rx="2"/>
-          <rect x="100" y="180" width="60" height="40" rx="2"/>
-          <rect x="220" y="180" width="80" height="40" rx="2"/>
+
+        <!-- Labels (Watermark) -->
+        <g fill="#e8e8ec" opacity=".07" font-family="Permanent Marker, sans-serif">
+          <text x="40" y="90" font-size="46" letter-spacing="6">LEIPZIG</text>
+          <text x="520" y="230" font-size="24" letter-spacing="4">MARKKLEEBERG</text>
         </g>
-        <!-- Pins -->
+
+        <!-- PINS (alle 15 Orte, echte Positionen) -->
+        <!-- bbox: lat 51.265..51.350, lon 12.28..12.43 -->
         <g>
-          <circle cx="230" cy="115" r="8" fill="#ff0040"/>
-          <circle cx="230" cy="115" r="3" fill="#fff"/>
-          <circle cx="420" cy="85" r="8" fill="#ff0040"/>
-          <circle cx="420" cy="85" r="3" fill="#fff"/>
-          <circle cx="560" cy="145" r="8" fill="#ff0040"/>
-          <circle cx="560" cy="145" r="3" fill="#fff"/>
-          <circle cx="700" cy="200" r="8" fill="#ff0040"/>
-          <circle cx="700" cy="200" r="3" fill="#fff"/>
+          <!-- Verbindungslinien (Routen-Andeutung) -->
+          <g stroke="#e5e5ea" stroke-width=".8" fill="none" opacity=".18" stroke-dasharray="2 3">
+            <path d="M 621,227 L 492,21 L 102,90 L 243,70 L 502,67 L 495,45 L 529,39 L 541,34 L 390,67 L 504,146 L 502,129 L 558,105 L 625,85 L 650,47 L 650,234 Z"/>
+          </g>
+          <!-- Pin-Kreise: weiß/transparent, Homebase größer, See blau -->
+          <g>
+            <!-- 1 Pleißenhof (Homebase, größer, Ring) -->
+            <circle cx="621" cy="227" r="9" fill="rgba(255,255,255,.15)" stroke="#fff" stroke-width="1.8"/>
+            <circle cx="621" cy="227" r="3.5" fill="#fff"/>
+            <!-- 15 See (blau) -->
+            <circle cx="650" cy="234" r="7" fill="rgba(150,200,240,.2)" stroke="#a8c8e4" stroke-width="1.5"/>
+            <circle cx="650" cy="234" r="2.5" fill="#a8c8e4"/>
+            <!-- Street-Spots (weiß/grau, transparent) -->
+            <g fill="rgba(255,255,255,.12)" stroke="#d0d0d6" stroke-width="1.3">
+              <circle cx="492" cy="21" r="6"/>
+              <circle cx="102" cy="90" r="6"/>
+              <circle cx="243" cy="70" r="6"/>
+              <circle cx="502" cy="67" r="6"/>
+              <circle cx="495" cy="45" r="6"/>
+              <circle cx="529" cy="39" r="6"/>
+              <circle cx="541" cy="34" r="6"/>
+              <circle cx="390" cy="67" r="6"/>
+              <circle cx="504" cy="146" r="6"/>
+              <circle cx="502" cy="129" r="6"/>
+              <circle cx="558" cy="105" r="6"/>
+              <circle cx="625" cy="85" r="6"/>
+              <circle cx="650" cy="47" r="6"/>
+            </g>
+            <g fill="#fff">
+              <circle cx="492" cy="21" r="1.8"/>
+              <circle cx="102" cy="90" r="1.8"/>
+              <circle cx="243" cy="70" r="1.8"/>
+              <circle cx="502" cy="67" r="1.8"/>
+              <circle cx="495" cy="45" r="1.8"/>
+              <circle cx="529" cy="39" r="1.8"/>
+              <circle cx="541" cy="34" r="1.8"/>
+              <circle cx="390" cy="67" r="1.8"/>
+              <circle cx="504" cy="146" r="1.8"/>
+              <circle cx="502" cy="129" r="1.8"/>
+              <circle cx="558" cy="105" r="1.8"/>
+              <circle cx="625" cy="85" r="1.8"/>
+              <circle cx="650" cy="47" r="1.8"/>
+            </g>
+          </g>
+        </g>
+
+        <!-- Kompass-Indikator oben links -->
+        <g transform="translate(30,210)" opacity=".3">
+          <circle r="14" fill="none" stroke="#e8e8ec" stroke-width="1"/>
+          <path d="M 0,-10 L 3,0 L 0,-3 L -3,0 Z" fill="#e8e8ec"/>
+          <text y="-16" text-anchor="middle" fill="#e8e8ec" font-family="Space Grotesk" font-size="8" letter-spacing="2">N</text>
         </g>
       </svg>
     </div>
@@ -914,6 +1004,32 @@ a{color:inherit;text-decoration:none}
 
 <div class="toast" id="toast">Kopiert ✓</div>
 
+<div class="spot-detail" id="spotDetail" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="sdTitle">
+  <div class="spot-detail__backdrop" data-sd-close></div>
+  <div class="spot-detail__panel">
+    <div class="spot-detail__bg" id="sdBg" aria-hidden="true"></div>
+    <button type="button" class="spot-detail__close" data-sd-close aria-label="Schließen">✕</button>
+    <header class="spot-detail__head">
+      <span class="spot-detail__pin" id="sdPin">?</span>
+      <div>
+        <div class="spot-detail__eyebrow" id="sdEyebrow">Spot</div>
+        <h2 class="spot-detail__title" id="sdTitle">—</h2>
+      </div>
+    </header>
+    <p class="spot-detail__addr" id="sdAddr">
+      <svg viewBox="0 0 24 24"><path d="M12 21s-7-6.5-7-12a7 7 0 1 1 14 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+      <span id="sdAddrText">—</span>
+    </p>
+    <p class="spot-detail__desc" id="sdDesc">—</p>
+    <div class="spot-detail__meta" id="sdMeta"></div>
+    <div class="spot-detail__gallery" id="sdGallery"></div>
+    <div class="spot-detail__actions">
+      <a id="sdMaps" class="btn btn--primary" target="_blank" rel="noopener"><span>Route in Google Maps<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+      <button type="button" id="sdToMap" class="btn btn--ghost">Auf der Karte zeigen</button>
+    </div>
+  </div>
+</div>
+
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-hidden="true">
   <div class="lightbox__stage">
     <img class="lightbox__img" id="lbImg" alt="" />
@@ -1050,7 +1166,7 @@ const spotsMaster = {
   12: { title:"MDR Leipzig",                    addr:"Kantstraße 71–73, 04275 Leipzig",      coords:[51.3156,12.3846], desc:"MDR-Areal. Hard Surfaces, Kanten, urbane Architektur. Kurzer gezielter Stop.",                 mapsUrl:"https://maps.app.goo.gl/cNaJeusZk9FMrQNa9",         img:IMG.mdr1 },
   13: { title:"DNB Magazinturm · Alte Messe",   addr:"Deutscher Pl. 1, 04103 Leipzig",       coords:[51.3223,12.3972], desc:"Deutsche Nationalbibliothek Magazinturm. Brutalismus, offene Plazas, Street & Flat.",          mapsUrl:"https://maps.app.goo.gl/Va54MWz71W3Wjvmw7?g_st=ac", img:null },
   14: { title:"Reudnitz Skatepark",             addr:"Fröschelstraße 4, 04317 Leipzig",      coords:[51.3348,12.4019], desc:"Großer Park, solide Obstacles. Rails, Quarters, Ledges. Street bis in den Abend.",             mapsUrl:"https://maps.app.goo.gl/MfE7mifyHYmtSYvt7?g_st=ac", img:null },
-  15: { title:"Strandhaus am See",              addr:"Haus am See · Markkleeberg (300 m Pleißenhof)", coords:[51.2790,12.3718], desc:"Bade-See direkt nebenan. Abends reinspringen, Feierabend-Vibe nach dem Riden.",        mapsUrl:"https://maps.app.goo.gl/9x3vtyWNHKamvns59?g_st=ac", img:IMG.see, lake:true }
+  15: { title:"Haus am See",                    addr:"Strandbad Ost Markkleeberger See · Auenhainer Str. 1, 04416 Markkleeberg", coords:[51.2735,12.4018], desc:"Bade-See direkt nebenan. Abends reinspringen, Feierabend-Vibe nach dem Riden. Strandbad Ost am Markkleeberger See, Gehdistanz zur Homebase.", mapsUrl:"https://maps.app.goo.gl/9x3vtyWNHKamvns59?g_st=ac", img:IMG.see, lake:true }
 };
 function spot(id, time){ return { ...spotsMaster[id], id, time } }
 
@@ -1234,7 +1350,7 @@ eventDays.forEach((d, i) => {
     <div class="day__body">
       <div class="day__photo">
         <img src="${d.image}" alt="" loading="lazy" />
-        ${d._videos.length ? `<video class="day__video" muted playsinline preload="none" crossorigin="anonymous"></video>` : ""}
+        ${d._gallery.length ? `<video class="day__video" muted playsinline preload="metadata" crossorigin="anonymous"></video>` : ""}
         <div class="day__photo-overlay"></div>
         <div class="day__photo-scan"></div>
       </div>
@@ -1258,58 +1374,97 @@ eventDays.forEach((d, i) => {
     </div>`;
   daysList.appendChild(sec);
 
-  // Video playlist controller
-  if(d._videos.length){
+  // Media carousel: alle Fotos + Videos im Wechsel, Foto 20s, Video komplett, Loop endlos
+  if(d._gallery.length){
+    const photoImg = sec.querySelector(".day__photo > img");
     const videoEl = sec.querySelector(".day__video");
-    let vi = 0;
-    let hovering = false;
-    let gapTimer = null;
-    function clearGap(){ if(gapTimer){ clearTimeout(gapTimer); gapTimer = null; } }
-    function loadNext(){
-      vi = (vi + 1) % d._videos.length;
-      videoEl.src = d._videos[vi];
-      videoEl.load();
-      if(hovering) videoEl.play().then(()=>videoEl.classList.add("playing")).catch(()=>{});
+    const originalImg = d.image;
+
+    // Playlist interleaved: photo, video, photo, video ...
+    const imgs = d._gallery.filter(it => it.type === "img");
+    const vids = d._gallery.filter(it => it.type === "vid");
+    const playlist = [];
+    const maxLen = Math.max(imgs.length, vids.length);
+    for(let i = 0; i < maxLen; i++){
+      if(imgs[i]) playlist.push(imgs[i]);
+      if(vids[i]) playlist.push(vids[i]);
     }
-    videoEl.src = d._videos[0];
-    videoEl.playbackRate = 1.0;
-    videoEl.addEventListener("ended", () => {
-      videoEl.classList.remove("playing");
-      clearGap();
-      if(!hovering) return;
-      gapTimer = setTimeout(() => {
-        gapTimer = null;
-        if(!hovering) return;
-        loadNext();
-      }, 7000);
-    });
-    sec.addEventListener("mouseenter", () => {
-      hovering = true;
-      videoEl.classList.add("playing");
-      videoEl.play().catch(()=>{});
-    });
-    sec.addEventListener("mouseleave", () => {
-      hovering = false;
-      clearGap();
-      videoEl.classList.remove("playing");
-      videoEl.pause();
-    });
-    // Touch / mobile: play when in viewport
-    const mobileIO = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if(!matchMedia("(hover:none)").matches) return;
-        if(e.isIntersecting){
-          videoEl.classList.add("playing");
-          videoEl.play().catch(()=>{});
-          hovering = true;
-        } else {
-          videoEl.classList.remove("playing");
-          videoEl.pause();
-          hovering = false;
+
+    const PHOTO_MS = 20000;
+    let pi = 0;
+    let timer = null;
+    let active = false;
+
+    function clearT(){ if(timer){ clearTimeout(timer); timer = null; } }
+
+    function next(){
+      pi = (pi + 1) % playlist.length;
+      showCurrent();
+    }
+
+    function showCurrent(){
+      clearT();
+      if(!active || !playlist.length) return;
+      const it = playlist[pi];
+      if(!it){ return; }
+      if(it.type === "vid" && videoEl){
+        if(videoEl.currentSrc !== it.src && videoEl.src !== it.src){
+          videoEl.src = it.src;
+          videoEl.load();
         }
+        videoEl.classList.add("playing");
+        videoEl.play().catch(() => { timer = setTimeout(next, 3000); });
+      } else {
+        if(videoEl){
+          try{ videoEl.pause(); }catch(_){}
+          videoEl.classList.remove("playing");
+        }
+        photoImg.src = it.src;
+        timer = setTimeout(next, PHOTO_MS);
+      }
+    }
+
+    function start(){
+      if(active) return;
+      active = true;
+      showCurrent();
+    }
+    function stop(){
+      active = false;
+      clearT();
+      if(videoEl){ try{ videoEl.pause(); }catch(_){} videoEl.classList.remove("playing"); }
+      photoImg.src = originalImg;
+    }
+
+    if(videoEl){
+      videoEl.addEventListener("ended", () => {
+        videoEl.classList.remove("playing");
+        if(!active) return;
+        timer = setTimeout(next, 500);
       });
-    }, { threshold:0.5 });
-    mobileIO.observe(sec);
+      videoEl.addEventListener("error", () => {
+        if(!active) return;
+        timer = setTimeout(next, 500);
+      });
+    }
+
+    // Auto-start wenn Tag offen ist und sichtbar
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if(e.isIntersecting && sec.open) start();
+        else stop();
+      });
+    }, { threshold:0.15 });
+    io.observe(sec);
+
+    sec.addEventListener("toggle", () => {
+      if(sec.open){
+        pi = 0;
+        start();
+      } else {
+        stop();
+      }
+    });
   }
 });
 
@@ -1682,9 +1837,9 @@ function renderPanel(){
   allBtn.type = "button";
   allBtn.className = "allCard" + (activeDayIdx===-1?" is-active":"");
   allBtn.innerHTML = `
-    <div class="allCard__top">◐ Übersicht · Alle 14 Spots</div>
+    <div class="allCard__top">◐ Übersicht · Alle 15 Orte</div>
     <div class="allCard__title">Alle Spots · jeder in seiner Tagesfarbe</div>
-    <div class="allCard__meta">9 Tage · 14 Orte · klick auf einen Tag unten für die Route</div>`;
+    <div class="allCard__meta">9 Tage · 15 Orte · klick auf einen Tag unten für die Route</div>`;
   allBtn.addEventListener("click", () => showDay(-1));
   panelBody.appendChild(allBtn);
 
@@ -1707,7 +1862,7 @@ function renderPanel(){
     btn.innerHTML = `
       <div class="dayCard__top">
         <div class="dayCard__n">Tag ${String(d.n).padStart(2,'0')}</div>
-        <div class="dayCard__date">${d.date}</div>
+        <div class="dayCard__date">${dayWeekdayLong(d)} · ${(d.date.split(' · ')[1]) || d.date}</div>
       </div>
       <div class="dayCard__title">${d.title}</div>
       <span class="dayCard__tag">${d.tag}</span>
@@ -1810,7 +1965,7 @@ function updatePanelHead(){
   if(activeDayIdx === -1){
     panelTitle.innerHTML = `<b>Übersicht</b>Alle Orte + See`;
     resetBtn.hidden = true;
-    boxDaysCount.textContent = "9 Tage · 14 Orte";
+    boxDaysCount.textContent = "9 Tage · 15 Orte";
   } else {
     const d = eventDays[activeDayIdx];
     panelTitle.innerHTML = `<b>Tag ${String(d.n).padStart(2,'0')} · ${dayWeekdayLong(d)}</b>${d.tag}`;
@@ -1885,17 +2040,122 @@ document.querySelectorAll("[data-focus-day]").forEach(btn => {
     document.getElementById("map").scrollIntoView({ behavior:"smooth", block:"start" });
   });
 });
-document.querySelectorAll(".day__spots li").forEach(li => {
-  li.addEventListener("click", () => {
-    const lat = +li.dataset.lat, lng = +li.dataset.lng;
-    map.flyTo([lat,lng], 15, { duration:.8 });
-    document.getElementById("map").scrollIntoView({ behavior:"smooth", block:"start" });
+/* ============ SPOT DETAIL OVERLAY ============ */
+const spotDetail = document.getElementById("spotDetail");
+const sdPin = document.getElementById("sdPin");
+const sdEyebrow = document.getElementById("sdEyebrow");
+const sdTitle = document.getElementById("sdTitle");
+const sdAddrText = document.getElementById("sdAddrText");
+const sdDesc = document.getElementById("sdDesc");
+const sdMeta = document.getElementById("sdMeta");
+const sdGallery = document.getElementById("sdGallery");
+const sdMapsLink = document.getElementById("sdMaps");
+const sdToMap = document.getElementById("sdToMap");
+let sdCurrentId = null;
+
+function openSpotDetail(id){
+  const s = spotsMaster[id];
+  if(!s) return;
+  sdCurrentId = id;
+  const m = spotMedia[id] || { img:[], vid:[] };
+  const daySet = spotDayMap[id];
+  const days = daySet ? [...daySet].sort((a,b)=>a-b).map(n => `Tag ${String(n).padStart(2,'0')}`) : [];
+  const isLake = !!s.lake;
+  const isHome = !!s.home;
+
+  const sdBg = document.getElementById("sdBg");
+  const bgImg = (m.img && m.img[0]) || s.img || null;
+  sdBg.innerHTML = bgImg ? `<img src="${bgImg}" alt="" loading="lazy" />` : "";
+
+  sdPin.textContent = id;
+  sdPin.classList.toggle("spot-detail__pin--lake", isLake);
+  sdEyebrow.textContent = isLake ? "Spot · See" : isHome ? "Spot · Homebase" : `Spot · ${id}`;
+  sdTitle.innerHTML = s.title;
+  sdAddrText.textContent = s.addr;
+  sdDesc.textContent = s.desc;
+
+  const chips = [];
+  if(days.length) chips.push({ k:"Termine", v:days.join(" · ") });
+  if(isHome) chips.push({ k:"Typ", v:"Homebase" });
+  if(isLake) chips.push({ k:"Typ", v:"Bade-See" });
+  chips.push({ k:"Koord", v:`${s.coords[0].toFixed(4)}, ${s.coords[1].toFixed(4)}` });
+  sdMeta.innerHTML = chips.map(c => `<span class="spot-detail__chip"><b>${c.k}</b> ${c.v}</span>`).join("");
+
+  const mediaItems = [
+    ...m.img.map(src => ({ type:"img", src })),
+    ...m.vid.map(src => ({ type:"vid", src }))
+  ];
+  if(mediaItems.length){
+    sdGallery.innerHTML = mediaItems.map(it => {
+      if(it.type === "vid"){
+        return `<button type="button" class="spot-detail__media spot-detail__media--vid" data-sd-media="vid" data-src="${it.src}" aria-label="Video öffnen">
+          <video src="${it.src}" muted playsinline preload="metadata"></video>
+        </button>`;
+      }
+      return `<button type="button" class="spot-detail__media" data-sd-media="img" data-src="${it.src}" aria-label="Bild öffnen">
+        <img src="${it.src}" alt="${s.title}" loading="lazy" />
+      </button>`;
+    }).join("");
+  } else {
+    sdGallery.innerHTML = `<div class="spot-detail__empty">Noch kein Bild- oder Video-Material für diesen Ort — kommt beim Event dazu.</div>`;
+  }
+
+  sdMapsLink.href = s.mapsUrl;
+  spotDetail.classList.add("open");
+  spotDetail.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+}
+
+function closeSpotDetail(){
+  spotDetail.classList.remove("open");
+  spotDetail.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
+  sdGallery.querySelectorAll("video").forEach(v => { try{ v.pause(); }catch(e){} });
+  sdCurrentId = null;
+}
+
+spotDetail.querySelectorAll("[data-sd-close]").forEach(el => el.addEventListener("click", closeSpotDetail));
+document.addEventListener("keydown", e => { if(e.key === "Escape" && spotDetail.classList.contains("open")) closeSpotDetail(); });
+
+sdGallery.addEventListener("click", e => {
+  const btn = e.target.closest("[data-sd-media]");
+  if(!btn) return;
+  const src = btn.dataset.src;
+  // Open in site lightbox via first day whose gallery contains this src
+  for(let di = 0; di < eventDays.length; di++){
+    const g = eventDays[di]._gallery;
+    const idx = g.findIndex(it => it.src === src);
+    if(idx >= 0){
+      closeSpotDetail();
+      setTimeout(() => openLightbox(di, idx), 200);
+      return;
+    }
+  }
+  window.open(src, "_blank", "noopener");
+});
+
+sdToMap.addEventListener("click", () => {
+  if(sdCurrentId == null) return;
+  const s = spotsMaster[sdCurrentId];
+  closeSpotDetail();
+  document.getElementById("map").scrollIntoView({ behavior:"smooth", block:"start" });
+  const mapDetails = document.getElementById("map");
+  if(mapDetails && !mapDetails.open) mapDetails.open = true;
+  setTimeout(() => {
+    map.flyTo(s.coords, 15, { duration:.8 });
     setTimeout(() => {
-      (activeDayIdx===-1?allLayer:dayLayers[activeDayIdx]).eachLayer(l => {
-        if(l.getLatLng && Math.abs(l.getLatLng().lat-lat)<.001 && Math.abs(l.getLatLng().lng-lng)<.001) l.openPopup();
-      });
+      const marker = allStopMarkers[sdCurrentId];
+      if(marker) marker.openPopup();
     }, 650);
-  });
+  }, 200);
+});
+
+document.querySelectorAll(".day__spots li").forEach(li => {
+  li.setAttribute("role", "button");
+  li.setAttribute("tabindex", "0");
+  const handler = () => openSpotDetail(+li.dataset.spot);
+  li.addEventListener("click", handler);
+  li.addEventListener("keydown", e => { if(e.key === "Enter" || e.key === " "){ e.preventDefault(); handler(); } });
 });
 
 /* ============ TICKER (JS-driven, läuft immer) ============ */
