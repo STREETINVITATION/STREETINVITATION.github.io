@@ -1551,13 +1551,12 @@ eventDays.forEach((d, i) => {
     </div>`;
   daysList.appendChild(sec);
 
-  // Media carousel: alle Fotos + Videos im Wechsel, Foto 20s, Video komplett, Loop endlos
+  // Media carousel: alle Fotos + Videos im Wechsel, robust mit Preload, Fehler-Recovery & Watchdog
   if(d._gallery.length){
     const photoImg = sec.querySelector(".day__photo > img");
     const videoEl = sec.querySelector(".day__video");
     const originalImg = d.image;
 
-    // Playlist interleaved: photo, video, photo, video ...
     const imgs = d._gallery.filter(it => it.type === "img");
     const vids = d._gallery.filter(it => it.type === "vid");
     const playlist = [];
@@ -1568,48 +1567,79 @@ eventDays.forEach((d, i) => {
     }
 
     const PHOTO_MS = 20000;
+    const VIDEO_FAIL_MS = 1500;
+    const VIDEO_WATCHDOG_MS = 8000;
     let pi = 0;
     let timer = null;
+    let watchdog = null;
     let active = false;
+    let loadToken = 0;
+
+    // Bilder im Hintergrund vorladen (kein Flicker beim Wechsel)
+    imgs.forEach(it => { const p = new Image(); p.decoding = "async"; p.src = it.src; });
 
     function clearT(){ if(timer){ clearTimeout(timer); timer = null; } }
+    function clearW(){ if(watchdog){ clearTimeout(watchdog); watchdog = null; } }
 
-    function next(){
-      pi = (pi + 1) % playlist.length;
-      showCurrent();
-    }
+    function advance(){ pi = (pi + 1) % playlist.length; showCurrent(); }
 
     function showCurrent(){
-      clearT();
+      clearT(); clearW();
       if(!active || !playlist.length) return;
       const it = playlist[pi];
-      if(!it){ return; }
+      if(!it){ pi = 0; return; }
+      const token = ++loadToken;
+
       if(it.type === "vid" && videoEl){
-        if(videoEl.currentSrc !== it.src && videoEl.src !== it.src){
+        // Neuen Src nur setzen, wenn anders — sonst weiterspielen
+        const needLoad = !videoEl.src || !videoEl.src.endsWith(it.src.split("/").pop());
+        if(needLoad){
+          try{ videoEl.pause(); }catch(_){}
           videoEl.src = it.src;
           videoEl.load();
         }
-        videoEl.classList.add("playing");
-        videoEl.play().catch(() => { timer = setTimeout(next, 3000); });
-      } else {
-        if(videoEl){
-          try{ videoEl.pause(); }catch(_){}
-          videoEl.classList.remove("playing");
+        const tryPlay = () => {
+          if(token !== loadToken || !active) return;
+          const p = videoEl.play();
+          if(p && p.then){
+            p.then(() => { if(token === loadToken && active) videoEl.classList.add("playing"); })
+             .catch(() => { if(token === loadToken && active) timer = setTimeout(advance, VIDEO_FAIL_MS); });
+          } else {
+            videoEl.classList.add("playing");
+          }
+        };
+        if(videoEl.readyState >= 2){ tryPlay(); }
+        else {
+          videoEl.addEventListener("loadeddata", tryPlay, { once:true });
+          videoEl.addEventListener("canplay",    tryPlay, { once:true });
         }
-        photoImg.src = it.src;
-        timer = setTimeout(next, PHOTO_MS);
+        // Watchdog: falls nichts passiert, springen
+        watchdog = setTimeout(() => {
+          if(token !== loadToken || !active) return;
+          if(videoEl.paused || videoEl.readyState < 2) advance();
+        }, VIDEO_WATCHDOG_MS);
+      } else {
+        if(videoEl){ try{ videoEl.pause(); }catch(_){} videoEl.classList.remove("playing"); }
+        // Bild erst nach erfolgreichem Laden einsetzen — verhindert Broken-Image-Flash
+        const probe = new Image();
+        probe.decoding = "async";
+        probe.onload = () => { if(token === loadToken && active) photoImg.src = it.src; };
+        probe.onerror = () => { if(token === loadToken && active) timer = setTimeout(advance, 600); };
+        probe.src = it.src;
+        timer = setTimeout(advance, PHOTO_MS);
       }
     }
 
-    function start(){
-      if(active) return;
-      active = true;
-      showCurrent();
-    }
-    function stop(){
+    function start(){ if(active) return; active = true; showCurrent(); }
+    function pause(){
       active = false;
-      clearT();
+      clearT(); clearW();
       if(videoEl){ try{ videoEl.pause(); }catch(_){} videoEl.classList.remove("playing"); }
+      // Bild-Frame stehen lassen — kein Reset
+    }
+    function reset(){
+      pause();
+      pi = 0;
       photoImg.src = originalImg;
     }
 
@@ -1617,30 +1647,42 @@ eventDays.forEach((d, i) => {
       videoEl.addEventListener("ended", () => {
         videoEl.classList.remove("playing");
         if(!active) return;
-        timer = setTimeout(next, 500);
+        timer = setTimeout(advance, 350);
       });
       videoEl.addEventListener("error", () => {
+        videoEl.classList.remove("playing");
         if(!active) return;
-        timer = setTimeout(next, 500);
+        timer = setTimeout(advance, VIDEO_FAIL_MS);
       });
     }
 
-    // Auto-start wenn Tag offen ist und sichtbar
+    // Start/Pause basierend auf Sichtbarkeit (rootMargin macht es vorausschauend)
     const io = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if(e.isIntersecting && sec.open) start();
-        else stop();
+        else pause();
       });
-    }, { threshold:0.15 });
+    }, { threshold:0.01, rootMargin:"150px 0px" });
     io.observe(sec);
 
     sec.addEventListener("toggle", () => {
       if(sec.open){
         pi = 0;
-        start();
+        photoImg.src = originalImg;
+        // kleiner Delay, damit Layout/CSS-Transitions durch sind
+        setTimeout(() => { if(sec.open) start(); }, 50);
       } else {
-        stop();
+        reset();
       }
+    });
+
+    // Falls Tag bereits offen gemountet wird (z. B. via URL-Hash)
+    if(sec.open) setTimeout(start, 100);
+
+    // Fenster-Fokus-Wechsel: pausieren/weiter
+    document.addEventListener("visibilitychange", () => {
+      if(document.hidden) pause();
+      else if(sec.open) start();
     });
   }
 });
