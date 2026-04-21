@@ -158,9 +158,9 @@ a{color:inherit;text-decoration:none}
 /* SECTION FOLD — Stay / Map / FAQ / Join collapsible */
 .section--fold{padding:0 1.25rem;margin-bottom:2rem;max-width:1400px;margin-left:auto;margin-right:auto;width:100%}
 .section--fold > summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:end;padding:2rem 1.75rem;border-radius:var(--radius-lg);border:1px solid var(--line);background:linear-gradient(135deg,rgba(12,12,16,.92),rgba(22,22,28,.82));transition:border-color .25s,background .25s;position:relative;overflow:hidden;isolation:isolate}
-.section--fold__bg{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:.9}
-.section--fold__bg svg{width:100%;height:100%;display:block;filter:grayscale(1) contrast(1.25) brightness(.85)}
-.section--fold__bg::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(6,6,8,.92) 0%,rgba(6,6,8,.58) 45%,rgba(6,6,8,.35) 100%)}
+.section--fold__bg{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:1}
+.section--fold__bg svg{width:100%;height:100%;display:block;filter:grayscale(1) contrast(1.4) brightness(1.6)}
+.section--fold__bg::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(6,6,8,.75) 0%,rgba(6,6,8,.28) 50%,rgba(6,6,8,.05) 100%)}
 .section--fold[open] .section--fold__bg{display:none}
 .section--fold > summary > *:not(.section--fold__bg){position:relative;z-index:2}
 .section--fold > summary::-webkit-details-marker{display:none}
@@ -760,7 +760,7 @@ a{color:inherit;text-decoration:none}
         <path d="M 580,90 Q 620,85 635,105 Q 625,125 595,120 Q 575,110 580,90 Z" fill="#22281f" opacity=".7"/>
 
         <!-- Hauptstraßen (Leipzig Ring + Magistralen, stilisiert) -->
-        <g stroke="#6a6a72" stroke-width="3" fill="none" stroke-linecap="round" opacity=".85">
+        <g stroke="#b8b8c0" stroke-width="4" fill="none" stroke-linecap="round" opacity="1">
           <!-- Innenstadtring (Augustusplatz-Bereich) -->
           <circle cx="530" cy="38" r="26" stroke-width="2.5"/>
           <!-- Karli / Südachse Richtung Connewitz -->
@@ -776,7 +776,7 @@ a{color:inherit;text-decoration:none}
         </g>
 
         <!-- Nebenstraßen/Raster -->
-        <g stroke="#3a3a42" stroke-width="1" fill="none" opacity=".6">
+        <g stroke="#7a7a82" stroke-width="1.5" fill="none" opacity=".8">
           <path d="M 0,60 L 800,70"/>
           <path d="M 0,130 L 800,120"/>
           <path d="M 0,200 L 800,195"/>
@@ -788,7 +788,7 @@ a{color:inherit;text-decoration:none}
         </g>
 
         <!-- Labels (Watermark) -->
-        <g fill="#e8e8ec" opacity=".07" font-family="Permanent Marker, sans-serif">
+        <g fill="#e8e8ec" opacity=".18" font-family="Permanent Marker, sans-serif">
           <text x="40" y="90" font-size="46" letter-spacing="6">LEIPZIG</text>
           <text x="520" y="230" font-size="24" letter-spacing="4">MARKKLEEBERG</text>
         </g>
@@ -1166,7 +1166,7 @@ const spotsMaster = {
   12: { title:"MDR Leipzig",                    addr:"Kantstraße 71–73, 04275 Leipzig",      coords:[51.3156,12.3846], desc:"MDR-Areal. Hard Surfaces, Kanten, urbane Architektur. Kurzer gezielter Stop.",                 mapsUrl:"https://maps.app.goo.gl/cNaJeusZk9FMrQNa9",         img:IMG.mdr1 },
   13: { title:"DNB Magazinturm · Alte Messe",   addr:"Deutscher Pl. 1, 04103 Leipzig",       coords:[51.3223,12.3972], desc:"Deutsche Nationalbibliothek Magazinturm. Brutalismus, offene Plazas, Street & Flat.",          mapsUrl:"https://maps.app.goo.gl/Va54MWz71W3Wjvmw7?g_st=ac", img:null },
   14: { title:"Reudnitz Skatepark",             addr:"Fröschelstraße 4, 04317 Leipzig",      coords:[51.3348,12.4019], desc:"Großer Park, solide Obstacles. Rails, Quarters, Ledges. Street bis in den Abend.",             mapsUrl:"https://maps.app.goo.gl/MfE7mifyHYmtSYvt7?g_st=ac", img:null },
-  15: { title:"Haus am See",                    addr:"Strandbad Ost Markkleeberger See · Auenhainer Str. 1, 04416 Markkleeberg", coords:[51.2735,12.4018], desc:"Bade-See direkt nebenan. Abends reinspringen, Feierabend-Vibe nach dem Riden. Strandbad Ost am Markkleeberger See, Gehdistanz zur Homebase.", mapsUrl:"https://maps.app.goo.gl/9x3vtyWNHKamvns59?g_st=ac", img:IMG.see, lake:true }
+  15: { title:"Haus am See",                    addr:"Strandbad Ost Markkleeberger See · Auenhainer Str. 1, 04416 Markkleeberg", coords:[51.27125,12.40181], desc:"Bade-See direkt nebenan. Abends reinspringen, Feierabend-Vibe nach dem Riden. Strandbad Ost am Markkleeberger See, Gehdistanz zur Homebase.", mapsUrl:"https://maps.app.goo.gl/9x3vtyWNHKamvns59?g_st=ac", img:IMG.see, lake:true }
 };
 function spot(id, time){ return { ...spotsMaster[id], id, time } }
 
@@ -1556,8 +1556,7 @@ eventDays.forEach((d, i) => d.stops.forEach(s => {
 /* Quality-of-life POIs · kuratierte Vorschläge */
 const pois = [
   { type:"food", name:"Seehaus am Markkleeberger See", coords:[51.2799,12.3703], note:"Biergarten am Wasser, Snacks & warmes Essen", mapsUrl:"https://www.google.com/maps/search/Seehaus+Markkleeberger+See" },
-  { type:"food", name:"Strandhaus am See", coords:[51.2790,12.3718], note:"Direkt am Strand, offen bei warmem Wetter", mapsUrl:"https://maps.app.goo.gl/9x3vtyWNHKamvns59?g_st=ac" },
-  { type:"wc", name:"WC Strandbad Markkleeberg", coords:[51.2806,12.3699], note:"Öffentliche Toiletten am Badestrand", mapsUrl:"https://www.google.com/maps/search/Strandbad+Markkleeberg+WC" },
+  { type:"wc", name:"WC Strandbad Ost", coords:[51.27128,12.40175], note:"Öffentliche Toiletten am Badestrand (Auenhainer Str.)", mapsUrl:"https://www.google.com/maps/search/Strandbad+Ost+WC" },
   { type:"wc", name:"WC Pleißenhof", coords:[51.2780,12.3694], note:"Homebase, während Aufenthalt", mapsUrl:"https://maps.app.goo.gl/weCVkzvTJEUxFYG77" },
 
   { type:"food", name:"Ludwig im Rosental", coords:[51.3404,12.3760], note:"Biergarten nah Wagner-Platz", mapsUrl:"https://www.google.com/maps/search/Ludwig+Leipzig+Rosental" },
