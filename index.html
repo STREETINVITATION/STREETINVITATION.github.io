@@ -2625,7 +2625,7 @@ document.querySelectorAll(".day__spots li").forEach(li => {
 
 /* ============ TICKER (JS-driven, läuft immer) ============ */
 const tickerEl = document.getElementById("ticker");
-const words = ["LEIPZIG INVITATION 26","STREET LINES","FLAT · FLOW","14 SPOTS","35 RIDER","9 DAYS","POST UNICON","TRICKS / SESSIONS","MARKKLEEBERG · LEIPZIG","HOMEBASE PLEISSENHOF"];
+const words = ["LEIPZIG INVITATION 26","STREET LINES","FLATLAND","14 SPOTS","35 RIDER","9 DAYS","POST UNICON","TRICKS / SESSIONS","MARKKLEEBERG · LEIPZIG","HOMEBASE PLEISSENHOF"];
 const hot = new Set([1,3,5,7,9]);
 const html = words.map((w,i)=>`<span class="${hot.has(i)?'hot':''}">${w}</span>`).join("");
 tickerEl.innerHTML = html + html + html;
