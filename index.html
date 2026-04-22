@@ -121,6 +121,10 @@ a{color:inherit;text-decoration:none}
 @keyframes lift{to{transform:translateY(0)}}
 
 .hero__tag{max-width:580px;font-size:clamp(.95rem,1.2vw,1.1rem);color:var(--text-dim);margin-bottom:1.6rem;line-height:1.55;opacity:0;transform:translateY(20px);animation:fadeUp 1s var(--ease-out) .8s forwards}
+.hero__tag p{margin:0 0 .65rem}
+.hero__tag p:last-child{margin-bottom:0}
+.hero__tag-lead{font-family:var(--font-head);font-weight:400;font-size:clamp(1.1rem,1.6vw,1.4rem);line-height:1.3;color:var(--text);margin-bottom:.9rem!important;letter-spacing:.01em}
+.hero__tag-emoji{display:inline-block;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;font-size:.85em;vertical-align:middle;margin-left:.2em}
 @keyframes fadeUp{to{opacity:1;transform:none}}
 .hero__cta{display:flex;gap:.75rem;flex-wrap:wrap;opacity:0;transform:translateY(20px);animation:fadeUp 1s var(--ease-out) .95s forwards}
 
@@ -801,7 +805,12 @@ a{color:inherit;text-decoration:none}
       <span class="l"><span>Invita<i>tion</i></span></span>
     </h1>
     <div class="hero__dateline">08.–16. August 2026</div>
-    <p class="hero__tag">Neun Tage Street-Einrad. Eine Stadt, eine Crew, ab 18. Rohe Lines, präzise Kontrolle, echte Trickarbeit — und nach Sonnenuntergang zurück zur Homebase.</p>
+    <div class="hero__tag">
+      <p class="hero__tag-lead">Das erste Street Einrad &amp; Skate Event in Leipzig <span class="hero__tag-emoji">🌻🌈</span></p>
+      <p>Direkt nach der Unicon geht es weiter mit der Leipzig Invitation.</p>
+      <p>Neun Tage sind wir gemeinsam in Leipzig unterwegs, fahren Street &amp; Flatland und besuchen täglich verschiedene Spots.</p>
+      <p>Es wird gefahren, gefilmt, Musik gehört und entspannt Zeit miteinander verbracht.</p>
+    </div>
     <div class="hero__cta">
       <button type="button" class="btn btn--primary" id="joinHero"><span>Anmelden<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
       <a href="#days" class="btn btn--ghost">Lineup</a>
@@ -814,11 +823,8 @@ a{color:inherit;text-decoration:none}
 
 <section class="section" id="overview">
   <header class="section__head section__head--intro">
-    <div><div class="section__eyebrow reveal">Das Event</div><h2 class="section__title reveal">Das erste <em>Street-Einrad</em> &amp; Skate Event in Leipzig <span class="section__title-emoji">🌻🌈</span></h2></div>
+    <div><div class="section__eyebrow reveal">Das Event</div><h2 class="section__title reveal">Ohne <em>Wettbewerb</em><br>zusammen fahren.</h2></div>
     <div class="section__lede reveal reveal--2">
-      <p>Direkt nach der Unicon geht es weiter mit der Leipzig Invitation.</p>
-      <p>Neun Tage sind wir gemeinsam in Leipzig unterwegs, fahren Street &amp; Flatland und besuchen täglich verschiedene Spots.</p>
-      <p>Es wird gefahren, gefilmt, Musik gehört und entspannt Zeit miteinander verbracht.</p>
       <p>Geplant sind außerdem ein Grill- und Bierballabend sowie spontane Aktionen wie Baden, Game of Uni, Zelten und natürlich viel gemeinsames Fahren.</p>
       <p>Das Event findet ohne Wettbewerb statt (allenfalls kleine Jams mit Preisen für best Tricks). Im Mittelpunkt stehen das Fahren, der Austausch und das gemeinsame Lernen auch über Ländergrenzen hinweg.</p>
       <p>Ziel ist es, Street-Einradfahren stärker in die Community zu bringen und eine schöne Zeit zu haben.</p>
