@@ -189,6 +189,11 @@ a{color:inherit;text-decoration:none}
 .section__title{font-family:var(--font-head);font-weight:400;font-size:clamp(2rem,5.2vw,3.8rem);line-height:1.15;letter-spacing:.01em;max-width:18ch;padding:.08em .05em}
 .section__title em{font-style:normal;background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;padding:0 .06em;display:inline-block}
 .section__lede{max-width:440px;color:var(--text-dim);font-size:1rem;line-height:1.65}
+.section__lede p{margin:0 0 .75rem}
+.section__lede p:last-child{margin-bottom:0}
+.section__head--intro{align-items:flex-start}
+.section__head--intro .section__lede{max-width:58ch}
+.section__title-emoji{display:inline-block;-webkit-text-fill-color:initial;background:none;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;font-size:.7em;vertical-align:middle;margin-left:.25em}
 
 /* OVERVIEW */
 .overview-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius-lg);overflow:hidden}
@@ -808,9 +813,16 @@ a{color:inherit;text-decoration:none}
 <div class="ticker" aria-hidden="true"><div class="ticker__track" id="ticker"></div></div>
 
 <section class="section" id="overview">
-  <header class="section__head">
-    <div><div class="section__eyebrow reveal">Das Event</div><h2 class="section__title reveal">Street. <em>Flow.</em><br>Community.</h2></div>
-    <p class="section__lede reveal reveal--2">Road Trip direkt nach der Unicon. Neun Tage rollen, trainieren, filmen, feiern. Kein Contest-Zirkus — Lines, Sessions, gemeinsames Essen, Spots, die sich lohnen.</p>
+  <header class="section__head section__head--intro">
+    <div><div class="section__eyebrow reveal">Das Event</div><h2 class="section__title reveal">Das erste <em>Street-Einrad</em> &amp; Skate Event in Leipzig <span class="section__title-emoji">🌻🌈</span></h2></div>
+    <div class="section__lede reveal reveal--2">
+      <p>Direkt nach der Unicon geht es weiter mit der Leipzig Invitation.</p>
+      <p>Neun Tage sind wir gemeinsam in Leipzig unterwegs, fahren Street &amp; Flatland und besuchen täglich verschiedene Spots.</p>
+      <p>Es wird gefahren, gefilmt, Musik gehört und entspannt Zeit miteinander verbracht.</p>
+      <p>Geplant sind außerdem ein Grill- und Bierballabend sowie spontane Aktionen wie Baden, Game of Uni, Zelten und natürlich viel gemeinsames Fahren.</p>
+      <p>Das Event findet ohne Wettbewerb statt (allenfalls kleine Jams mit Preisen für best Tricks). Im Mittelpunkt stehen das Fahren, der Austausch und das gemeinsame Lernen auch über Ländergrenzen hinweg.</p>
+      <p>Ziel ist es, Street-Einradfahren stärker in die Community zu bringen und eine schöne Zeit zu haben.</p>
+    </div>
   </header>
   <div class="overview-grid reveal">
     <div class="overview-cell"><b>08–16</b><div><div class="label">August 2026</div><div class="desc">Samstag zu Sonntag. Ankommen, riden, abreisen.</div></div></div>
@@ -1355,7 +1367,7 @@ if(pdfBtn) pdfBtn.addEventListener("click", () => {
 /* ============ DATA ============ */
 const accommodations = [
   { name:"Pleißenhof · Homebase", city:"Markkleeberg", address:"Bornaische Str. 68, 04416 Markkleeberg", cost:"25 €", costNote:"einmalige Teilnahmegebühr", slots:25, note:"Teilnahmegebühr 25 € pro Person für das gesamte Event — Zelten auf dem Gelände inklusive. First come, first serve. Strandhaus am See 300 m entfernt.", mapsUrl:"https://maps.app.goo.gl/weCVkzvTJEUxFYG77" },
-  { name:"Heizhaus · Schlafplatz (Option)", city:"Leipzig West", address:"Alte Salzstraße 63, 04209 Leipzig", cost:"10 € / Übernachtung", costNote:"nur Schlafplatz · pro Tag/Nacht · direkt ans Heizhaus", slots:10, note:"<strong>Nur Schlafplatz-Preis</strong> — hat <u>nichts</u> mit dem Session-Besuch im Heizhaus zu tun. Optionale Alternative zu Hotel oder Campingplatz, nur wer dort übernachten will. <strong>10 € pro Übernachtung, direkt ans Heizhaus bezahlt</strong> (nicht über den Veranstalter). Kommt <strong>zusätzlich</strong> zur einmaligen 25 € Teilnahmegebühr. Details &amp; Buchung direkt auf der Heizhaus-Seite.", mapsUrl:"https://maps.app.goo.gl/JShsajAzJpGFTfQu9?g_st=ac", webUrl:"https://heizhaus-leipzig.de/" },
+  { name:"Heizhaus · Schlafplatz (Option)", city:"Leipzig West", address:"Alte Salzstraße 63, 04209 Leipzig", cost:"10 € / Nacht", costNote:"direkt ans Heizhaus", slots:10, note:"Anmeldung für die Übernachtung direkt auf der <strong>Heizhaus-Webseite</strong> — <strong>10 € die Nacht</strong>, das Geld geht ans Heizhaus. Kommt <strong>zusätzlich</strong> zur Anmeldegebühr drauf.", mapsUrl:"https://maps.app.goo.gl/JShsajAzJpGFTfQu9?g_st=ac", webUrl:"https://heizhaus-leipzig.de/" },
   { name:"Selbst organisieren", city:"ab Platz 36", address:"Campingplatz · Hostel · Hotel · Jugendherberge", cost:"variabel", costNote:"eigene Buchung", slots:"∞", note:"Sobald Pleißenhof und Heizhaus-Schlafplätze voll sind, regelt sich jeder selbst.", mapsUrl:"https://www.google.com/maps/search/Leipzig+Hostel+Hotel" }
 ];
 
@@ -1393,7 +1405,7 @@ const VID = {
 const spotsMaster = {
   1:  { title:"Pleißenhof · Homebase",          addr:"Bornaische Str. 68, Markkleeberg",     coords:[51.2758,12.3964], desc:"Zelten, kochen, chillen. Community-Tisch, Feuerstelle, Platz für 25 Rider. See 300 m entfernt.",    mapsUrl:"https://maps.app.goo.gl/weCVkzvTJEUxFYG77",          img:null, home:true },
   2:  { title:"Plaza · Wagner-Platz",           addr:"Richard-Wagner-Platz 1, 04109 Leipzig", coords:[51.3432,12.3723], desc:"Startpunkt City-Ride. Weite Plaza, Granit-Ledges, Treppen, Innenstadt-Cruise.",                  mapsUrl:"https://maps.app.goo.gl/dd29GXX65ni8C1LT8",          img:null },
-  3:  { title:"Heizhaus · Indoor",              addr:"Alte Salzstraße 63, 04209 Leipzig",    coords:[51.3205,12.2991], desc:"Indoor-Street & Flat. Ramps, Rails, Free Ride, Game of Uni. Session-Location (heizhaus-leipzig.de). Unabhängig davon gibt es 10 Schlafplätze: Übernachtung 10 € pro Nacht direkt ans Heizhaus — nur Schlafplatz-Preis, hat nichts mit unserem Session-Besuch zu tun. Separat von der einmaligen 25 € Teilnahmegebühr, Alternative zu Hotel oder Campingplatz.", mapsUrl:"https://maps.app.goo.gl/JShsajAzJpGFTfQu9?g_st=ac", img:IMG.heiz1, webUrl:"https://heizhaus-leipzig.de/" },
+  3:  { title:"Heizhaus · Indoor",              addr:"Alte Salzstraße 63, 04209 Leipzig",    coords:[51.3205,12.2991], desc:"Indoor-Street & Flatland. Ramps, Rails, Free Ride, Game of Uni. Session-Location der Leipzig Invitation. Übernachtung separat möglich — Anmeldung direkt auf heizhaus-leipzig.de, 10 € die Nacht, zusätzlich zur Anmeldegebühr.", mapsUrl:"https://maps.app.goo.gl/JShsajAzJpGFTfQu9?g_st=ac", img:IMG.heiz1, webUrl:"https://heizhaus-leipzig.de/" },
   4:  { title:"Giezer Skatespot DIY",           addr:"Naumburger Str. 44, 04229 Leipzig",    coords:[51.3270,12.3256], desc:"Selbstgebauter Beton von der Community. Raue Surfaces, Hips, Banks — echter DIY-Charakter.",    mapsUrl:"https://maps.app.goo.gl/FfhY9LhZF2jNgfQh6?g_st=ac", img:IMG.geizer1 },
   5:  { title:"Biomare Südvorstadt",            addr:"Karl-Liebknecht-Str. 27, 04107 Leipzig", coords:[51.3281,12.3742], desc:"Flat & Street. Zwei 3er-Stairs plus 7-Stair mit Downrail. Technisches Gelände.",                mapsUrl:"https://maps.app.goo.gl/Qh9e5h8DKNPHF5BK7",         img:IMG.biomare },
   6:  { title:"Propsteikirche St. Trinitatis",  addr:"Nonnenmühlgasse 2, 04107 Leipzig",     coords:[51.3352,12.3729], desc:"Moderne Sakralarchitektur. Geschliffene Kanten, lange Lines, glattes Pflaster.",               mapsUrl:"https://maps.app.goo.gl/n7dXYNUHT4Hd77uZ6?g_st=ac", img:null },
@@ -2449,11 +2461,9 @@ function openSpotDetail(id){
     if(id === 3){
       sdNotice.hidden = false;
       sdNotice.innerHTML = `
-        <span class="sd-notice__title">Übernachtung · optional · kein Session-Preis</span>
-        <span class="sd-notice__price"><b>10 €</b><small>pro Übernachtung / Nacht</small></span>
-        <b>Nur für Schlafplatz.</b> Die <b>10 €</b> gelten ausschließlich für <b>eine Übernachtung im Heizhaus</b> — sie haben <u>nichts</u> mit unserem Session-Besuch zu tun. Der Aufenthalt im Heizhaus während unseres Events selbst ist davon <b>unabhängig</b>.
-        <br><br>
-        Bezahlt wird <b>direkt ans Heizhaus</b> (<a href="https://heizhaus-leipzig.de/" target="_blank" rel="noopener">heizhaus-leipzig.de →</a>) — <u>nicht</u> über den Veranstalter. Zusätzlich zur einmaligen <b>25 € Teilnahmegebühr</b> pro Person. Nur eine optionale Alternative zu Hotel oder Campingplatz. Max. 10 Schlafplätze.`;
+        <span class="sd-notice__title">Übernachtung · optional</span>
+        <span class="sd-notice__price"><b>10 €</b><small>pro Nacht</small></span>
+        Anmeldung für die Übernachtung direkt auf der <a href="https://heizhaus-leipzig.de/" target="_blank" rel="noopener">Heizhaus-Webseite</a>. <b>10 € die Nacht</b> — das Geld geht ans Heizhaus. Kommt <b>zusätzlich</b> zur Anmeldegebühr drauf. Max. 10 Schlafplätze.`;
     } else if(s.webUrl){
       sdNotice.hidden = false;
       const host = s.webUrl.replace(/^https?:\/\//,'').replace(/\/$/,'');
