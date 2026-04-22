@@ -808,7 +808,7 @@ a{color:inherit;text-decoration:none}
   <div class="overview-grid reveal">
     <div class="overview-cell"><b>08–16</b><div><div class="label">August 2026</div><div class="desc">Samstag zu Sonntag. Ankommen, riden, abreisen.</div></div></div>
     <div class="overview-cell"><b>35</b><div><div class="label">Plätze maximal</div><div class="desc">25 Pleißenhof · 10 Heizhaus-Schlafplatz. Ab Platz 36 selbst.</div></div></div>
-    <div class="overview-cell"><b>25 €</b><div><div class="label">Einmalig p. P.</div><div class="desc">Teilnahmegebühr inkl. Zelten im Pleißenhof. Details zu Übernachtung → „Wo du schläfst".</div></div></div>
+    <div class="overview-cell"><b>25 €</b><div><div class="label">Einmalige Teilnahmegebühr</div><div class="desc">Inkl. Zelten im Pleißenhof. Details zu Übernachtung → „Wo du schläfst".</div></div></div>
     <div class="overview-cell"><b>14</b><div><div class="label">Spots &amp; Locations</div><div class="desc">Street, Flat, DIY, Parks — plus Bade-See direkt am Camp.</div></div></div>
     <div class="overview-cell"><b>Self</b><div><div class="label">Selbstverpflegung</div><div class="desc">Crew kocht, teilt, grillt. Foodliste für Tag 2 bei Ankunft.</div></div></div>
     <div class="overview-cell"><b>18+</b><div><div class="label">Mindestalter</div><div class="desc">Ab 18 Jahren — keine Ausnahme.</div></div></div>
@@ -1147,7 +1147,7 @@ a{color:inherit;text-decoration:none}
   </header>
 
   <section class="ps-facts">
-    <div class="ps-fact"><b>25 €</b><span>Einmalig p. P. · Teilnahmegebühr · Zelten Pleißenhof inkl.</span></div>
+    <div class="ps-fact"><b>25 €</b><span>Einmalige Teilnahmegebühr · Zelten Pleißenhof inkl.</span></div>
     <div class="ps-fact"><b>10 €/Übernachtung</b><span>Heizhaus-<b>Schlafplatz</b> · optional · pro Tag/Nacht · direkt ans Heizhaus · NICHT Session-Preis · 10 Plätze</span></div>
     <div class="ps-fact"><b>35</b><span>Plätze gesamt · first come, first serve</span></div>
     <div class="ps-fact"><b>9</b><span>Event-Tage · 15 Orte · eine Crew</span></div>
@@ -1347,7 +1347,7 @@ if(pdfBtn) pdfBtn.addEventListener("click", () => {
 
 /* ============ DATA ============ */
 const accommodations = [
-  { name:"Pleißenhof · Homebase", city:"Markkleeberg", address:"Bornaische Str. 68, 04416 Markkleeberg", cost:"25 €", costNote:"einmalige Teilnahmegebühr p. P.", slots:25, note:"Teilnahmegebühr 25 € pro Person für das gesamte Event — Zelten auf dem Gelände inklusive. First come, first serve. Strandhaus am See 300 m entfernt.", mapsUrl:"https://maps.app.goo.gl/weCVkzvTJEUxFYG77" },
+  { name:"Pleißenhof · Homebase", city:"Markkleeberg", address:"Bornaische Str. 68, 04416 Markkleeberg", cost:"25 €", costNote:"einmalige Teilnahmegebühr", slots:25, note:"Teilnahmegebühr 25 € pro Person für das gesamte Event — Zelten auf dem Gelände inklusive. First come, first serve. Strandhaus am See 300 m entfernt.", mapsUrl:"https://maps.app.goo.gl/weCVkzvTJEUxFYG77" },
   { name:"Heizhaus · Schlafplatz (Option)", city:"Leipzig West", address:"Alte Salzstraße 63, 04209 Leipzig", cost:"10 € / Übernachtung", costNote:"nur Schlafplatz · pro Tag/Nacht · direkt ans Heizhaus", slots:10, note:"<strong>Nur Schlafplatz-Preis</strong> — hat <u>nichts</u> mit dem Session-Besuch im Heizhaus zu tun. Optionale Alternative zu Hotel oder Campingplatz, nur wer dort übernachten will. <strong>10 € pro Übernachtung, direkt ans Heizhaus bezahlt</strong> (nicht über den Veranstalter). Kommt <strong>zusätzlich</strong> zur einmaligen 25 € Teilnahmegebühr. Details &amp; Buchung direkt auf der Heizhaus-Seite.", mapsUrl:"https://maps.app.goo.gl/JShsajAzJpGFTfQu9?g_st=ac", webUrl:"https://heizhaus-leipzig.de/" },
   { name:"Selbst organisieren", city:"ab Platz 36", address:"Campingplatz · Hostel · Hotel · Jugendherberge", cost:"variabel", costNote:"eigene Buchung", slots:"∞", note:"Sobald Pleißenhof und Heizhaus-Schlafplätze voll sind, regelt sich jeder selbst.", mapsUrl:"https://www.google.com/maps/search/Leipzig+Hostel+Hotel" }
 ];
@@ -1426,7 +1426,7 @@ const eventDays = [
     description:"Ankunft an der Homebase nach der Unicon. Zelte auf, Equipment sortieren, Crew kennenlernen. Abends gemeinsam zum See (300 m) — reinspringen, Selbstverpflegung, Foodliste für Tag 2.",
     pretext:"Tag null zählt auch.",
     image:IMG.folke,
-    summary:[{k:"Treffpunkt",v:"Pleißenhof"},{k:"Gebühr",v:"25 € p.P."},{k:"Abends",v:"See baden"},{k:"Vibe",v:"Set-Up"}],
+    summary:[{k:"Treffpunkt",v:"Pleißenhof"},{k:"Gebühr",v:"25 € einmalig"},{k:"Abends",v:"See baden"},{k:"Vibe",v:"Set-Up"}],
     stops:[ spot(1,"ab Nachmittag"), spot(15,"abends") ] },
 
   { id:"day-2", n:2, date:"So · 09.08.2026", tag:"FIRST DAY", title:"City Ride &amp; <span class='accent'>Heizhaus</span>",
