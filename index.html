@@ -429,6 +429,12 @@ a{color:inherit;text-decoration:none}
 .spot-detail__addr{display:flex;align-items:center;gap:.55rem;padding:.75rem 1rem;margin:0 0 1.1rem;border-radius:10px;border:1px solid var(--line);background:rgba(8,8,12,.6);color:var(--text);font-size:.88rem;line-height:1.4}
 .spot-detail__addr svg{flex-shrink:0;width:18px;height:18px;fill:none;stroke:var(--pink);stroke-width:2}
 .spot-detail__desc{font-size:1rem;line-height:1.65;color:var(--text);margin:0 0 1.3rem}
+.spot-detail__notice{display:block;padding:.85rem 1rem;margin:0 0 1.2rem;border-radius:10px;border:1px solid rgba(255,44,120,.35);background:linear-gradient(180deg,rgba(255,44,120,.09),rgba(255,44,120,.03));color:var(--text);font-size:.88rem;line-height:1.5}
+.spot-detail__notice[hidden]{display:none!important}
+.spot-detail__notice b{color:var(--pink)}
+.spot-detail__notice .sd-notice__title{display:block;font-family:var(--font-mono);font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--pink);margin-bottom:.35rem}
+.spot-detail__notice a{color:var(--pink);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.spot-detail__notice a:hover{color:#fff}
 .spot-detail__meta{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.3rem}
 .spot-detail__chip{display:inline-flex;align-items:center;gap:.4rem;padding:.35rem .7rem;border-radius:999px;border:1px solid var(--line);background:rgba(8,8,12,.55);font-family:var(--font-mono);font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--text)}
 .spot-detail__chip b{color:var(--pink);font-weight:700}
@@ -799,8 +805,8 @@ a{color:inherit;text-decoration:none}
   </header>
   <div class="overview-grid reveal">
     <div class="overview-cell"><b>08–16</b><div><div class="label">August 2026</div><div class="desc">Samstag zu Sonntag. Ankommen, riden, abreisen.</div></div></div>
-    <div class="overview-cell"><b>35</b><div><div class="label">Plätze maximal</div><div class="desc">25 Pleißenhof · 10 Heizhaus. Ab Platz 36 selbst.</div></div></div>
-    <div class="overview-cell"><b>25 €</b><div><div class="label">Gebühr (inkl. Zelten)</div><div class="desc">First come, first serve. Heizhaus 10 € extra.</div></div></div>
+    <div class="overview-cell"><b>35</b><div><div class="label">Plätze maximal</div><div class="desc">25 Pleißenhof · 10 Heizhaus-Schlafplatz. Ab Platz 36 selbst.</div></div></div>
+    <div class="overview-cell"><b>25 €</b><div><div class="label">Einmalig p. P.</div><div class="desc">Teilnahmegebühr inkl. Zelten im Pleißenhof. Heizhaus-Schlafplatz optional 10 €/Nacht extra, direkt vor Ort.</div></div></div>
     <div class="overview-cell"><b>14</b><div><div class="label">Spots &amp; Locations</div><div class="desc">Street, Flat, DIY, Parks — plus Bade-See direkt am Camp.</div></div></div>
     <div class="overview-cell"><b>Self</b><div><div class="label">Selbstverpflegung</div><div class="desc">Crew kocht, teilt, grillt. Foodliste für Tag 2 bei Ankunft.</div></div></div>
     <div class="overview-cell"><b>18+</b><div><div class="label">Mindestalter</div><div class="desc">Ab 18 Jahren — keine Ausnahme.</div></div></div>
@@ -1004,14 +1010,14 @@ a{color:inherit;text-decoration:none}
   <div class="faq">
     <details class="faq__item"><summary>Muss ich Tricks können?</summary><div class="answer">Nein. Wir haben Spots für Flat, Street, technisches Riden und Chill-Sessions. Wichtiger als Level ist Motivation und Respekt vor den Spots.</div></details>
     <details class="faq__item"><summary>Wie läuft Verpflegung?</summary><div class="answer">Selbstverpflegung. Am Ankunftstag gibt's eine Foodliste für Tag 2. Danach organisiert sich die Crew über den Community-Tisch. Frühstück gemeinsam, Abends wird gegrillt wenn geplant.</div></details>
-    <details class="faq__item"><summary>Was kostet es?</summary><div class="answer">Allgemeine Gebühr: <strong>25 € pro Person</strong> — Zelten auf dem Pleißenhof ist inklusive (25 Plätze, first come, first serve). Heizhaus: <strong>10 € extra</strong> (10 Plätze). Ab Platz 36 selbst organisiert — Campingplatz, Hostel, Hotel oder Jugendherberge.</div></details>
+    <details class="faq__item"><summary>Was kostet es?</summary><div class="answer"><strong>25 € pro Person, einmalige Teilnahmegebühr</strong> für das gesamte Event — Zelten auf dem Pleißenhof inklusive (25 Plätze, first come, first serve). <br><br><strong>Heizhaus-Schlafplatz optional: 10 € pro Nacht</strong>, <strong>direkt ans Heizhaus bezahlt</strong> (läuft nicht über den Veranstalter). Nur eine mögliche Alternative zu Hotel oder Campingplatz — wer dort schlafen will, bucht selbst bei <a href="https://heizhaus-leipzig.de/" target="_blank" rel="noopener">heizhaus-leipzig.de</a>. 10 Schlafplätze verfügbar. <br><br>Ab Platz 36: selbst organisiert — Campingplatz, Hostel, Hotel oder Jugendherberge.</div></details>
     <details class="faq__item"><summary>Gibt es ein Mindestalter?</summary><div class="answer">Ja — <strong>18 Jahre</strong>, keine Ausnahme. Street-Sessions, späte Abende und Eigenverantwortung am Zeltplatz setzen das voraus.</div></details>
     <details class="faq__item"><summary>Kann ich auch nur ein paar Tage kommen?</summary><div class="answer">Grundsätzlich ja. Meld dich früh, damit wir einen Platz freihalten können — besonders auf der Homebase sind Plätze begrenzt.</div></details>
     <details class="faq__item"><summary>Welche Ausrüstung brauche ich?</summary><div class="answer">Dein Einrad (ideal 19" oder 24/26" Street-Setup), Protektoren (Shin, Knee empfehlen wir strong), Helm. Zelt + Schlafsack für die Homebase, Kochzeug. Eventuell Reserve-Pedale und Pumpe.</div></details>
 
     <details class="faq__item"><summary>Wie komme ich zwischen den Spots?</summary><div class="answer">Primär auf dem Einrad — wir sind ein Ride-Trip. Die Routen sind auf der Karte als verbundene Linien sichtbar, jeder Stop nummeriert nach Reihenfolge im Tag. Für längere Strecken (Homebase ↔ Innenstadt) nutzen wir LVB S-Bahn & Straßenbahn, Tageskarte 8,80 €.</div></details>
     <details class="faq__item"><summary>Wo sind die Spots geografisch verteilt?</summary><div class="answer">Fast alles liegt innerhalb des Leipziger Stadtgebiets in ≤ 5 km Radius um das Zentrum. Homebase Pleißenhof liegt in Markkleeberg (südlich, 8 km zur Innenstadt). Heizhaus im Westen (Alte Salzstraße), Giezer DIY im Südwesten, Reudnitz Skatepark östlich — alles machbar am Rad.</div></details>
-    <details class="faq__item"><summary>Sind alle Spots öffentlich und frei zugänglich?</summary><div class="answer">Ja, bis auf das Heizhaus (vereinsbetrieben, 10€ bei Übernachtung). Alle Straßenspots sind öffentlicher Raum — wir verhalten uns respektvoll: keine Schäden, keine Lautstärke zur Unzeit, Müll mitnehmen. Bei Ansprache freundlich bleiben, gegebenenfalls Spot wechseln.</div></details>
+    <details class="faq__item"><summary>Sind alle Spots öffentlich und frei zugänglich?</summary><div class="answer">Ja, bis auf das Heizhaus — das ist vereinsbetrieben (<a href="https://heizhaus-leipzig.de/" target="_blank" rel="noopener">heizhaus-leipzig.de</a>). Für unsere Sessions dort läuft alles über die Crew. Die <strong>Übernachtung im Heizhaus</strong> ist eine separate Option: 10 € pro Nacht, direkt ans Heizhaus gezahlt — nicht Teil der 25 € Teilnahmegebühr. Alle Straßenspots sind öffentlicher Raum — wir verhalten uns respektvoll: keine Schäden, keine Lautstärke zur Unzeit, Müll mitnehmen. Bei Ansprache freundlich bleiben, gegebenenfalls Spot wechseln.</div></details>
     <details class="faq__item"><summary>Was ist wenn ich einen Spot nicht finde?</summary><div class="answer">Jeder Spot auf der Karte hat eine „Navigation →" zu Google Maps. Im Zweifel ping die Crew-Gruppe — Telegram/Signal-Link kommt nach Anmeldung. Alle Adressen + Koordinaten stehen auch in der Spots-Übersicht oben.</div></details>
     <details class="faq__item"><summary>Gibt es WCs und Wasser an den Spots?</summary><div class="answer">Homebase Pleißenhof, Heizhaus und Skatepark Leipzig (AOK) haben WC. Für Stadtspots nutzen wir Gastronomie (Blaza, Biomare, Moritzbastei) oder öffentliche Anlagen am Augustusplatz. Wasser: Mehrwegflasche mitbringen, in Leipzig läuft Trinkwasser aus allen Hähnen.</div></details>
     <details class="faq__item"><summary>Wie weit sind die Spots voneinander?</summary><div class="answer">Innenstadt-Spots (Blaza, Moritzbastei, Augustusplatz, Propsteikirche, Biomare) liegen in ≤ 2 km. Heizhaus ↔ Giezer DIY: 4 km. Homebase ↔ Innenstadt: 8 km. Die Tages-Routen auf der Karte zeigen die tatsächlich gefahrene Reihenfolge mit Pfeilen.</div></details>
@@ -1076,7 +1082,7 @@ a{color:inherit;text-decoration:none}
         <p>Ein Klick → Mail-Programm öffnet sich mit fertig ausgefülltem Formular an Folke. Oder kopiere die Vorlage per Button und nutze dein bevorzugtes Mail-Tool. Antwort meist innerhalb von 48 h.</p>
         <div class="join__cost">
           <b>25 €</b>
-          <span>Allgemeine Gebühr · <strong>Zelten im Pleißenhof inklusive</strong> · First come, first serve (25 Plätze).<br>Heizhaus: 10 € extra (10 Plätze). Ab Platz 36 selbst organisieren. <strong>Mindestalter 18.</strong></span>
+          <span><strong>Einmalige Teilnahmegebühr pro Person</strong> · <strong>Zelten im Pleißenhof inklusive</strong> · First come, first serve (25 Plätze).<br><strong>Heizhaus-Schlafplatz separat: 10 €/Nacht</strong> direkt ans <a href="https://heizhaus-leipzig.de/" target="_blank" rel="noopener">Heizhaus</a> (10 Plätze, nicht über Veranstalter). Ab Platz 36 selbst organisieren. <strong>Mindestalter 18.</strong></span>
         </div>
         <div class="join__cta">
           <div class="join__actions">
@@ -1114,6 +1120,7 @@ a{color:inherit;text-decoration:none}
       <span id="sdAddrText">—</span>
     </p>
     <p class="spot-detail__desc" id="sdDesc">—</p>
+    <div class="spot-detail__notice" id="sdNotice" hidden></div>
     <div class="spot-detail__meta" id="sdMeta"></div>
     <div class="spot-detail__gallery" id="sdGallery"></div>
     <div class="spot-detail__actions">
@@ -1138,8 +1145,8 @@ a{color:inherit;text-decoration:none}
   </header>
 
   <section class="ps-facts">
-    <div class="ps-fact"><b>25 €</b><span>Allgemeine Gebühr p. P. · Zelten Pleißenhof inkl.</span></div>
-    <div class="ps-fact"><b>10 €</b><span>Heizhaus extra · nur 10 Plätze</span></div>
+    <div class="ps-fact"><b>25 €</b><span>Einmalig p. P. · Teilnahmegebühr · Zelten Pleißenhof inkl.</span></div>
+    <div class="ps-fact"><b>10 €/Nacht</b><span>Heizhaus-Schlafplatz · optional · direkt vor Ort · 10 Plätze</span></div>
     <div class="ps-fact"><b>35</b><span>Plätze gesamt · first come, first serve</span></div>
     <div class="ps-fact"><b>9</b><span>Event-Tage · 15 Orte · eine Crew</span></div>
   </section>
@@ -1150,7 +1157,7 @@ a{color:inherit;text-decoration:none}
       <thead><tr><th>Option</th><th>Ort</th><th>Adresse</th><th>Plätze</th><th>Kosten</th></tr></thead>
       <tbody id="psStay"></tbody>
     </table>
-    <p class="ps-note">First come, first serve. Ab Platz 36 selbst organisieren (Camping · Hostel · Hotel · Jugendherberge). Verpflegung Selbstversorgung; gemeinsam wird gekocht und gegrillt. <b>Mindestalter 18 Jahre.</b></p>
+    <p class="ps-note"><b>25 € = einmalige Teilnahmegebühr pro Person</b> (Zelten im Pleißenhof inklusive). <b>Heizhaus-Schlafplatz = 10 € pro Nacht, direkt ans Heizhaus</b> (heizhaus-leipzig.de) — nur eine optionale Alternative zu Hotel oder Campingplatz, läuft <b>nicht über den Veranstalter</b>. First come, first serve. Ab Platz 36 selbst organisieren (Camping · Hostel · Hotel · Jugendherberge). Verpflegung Selbstversorgung; gemeinsam wird gekocht und gegrillt. <b>Mindestalter 18 Jahre.</b></p>
   </section>
 
   <section class="ps-lineup">
@@ -1330,9 +1337,9 @@ if(pdfBtn) pdfBtn.addEventListener("click", () => {
 
 /* ============ DATA ============ */
 const accommodations = [
-  { name:"Pleißenhof · Homebase", city:"Markkleeberg", address:"Bornaische Str. 68, 04416 Markkleeberg", cost:"25 €", slots:25, note:"Allgemeine Gebühr 25 € pro Person — Zelten inklusive. First come, first serve. Strandhaus am See 300 m entfernt.", mapsUrl:"https://maps.app.goo.gl/weCVkzvTJEUxFYG77" },
-  { name:"Heizhaus", city:"Leipzig West", address:"Alte Salzstraße 63, 04209 Leipzig", cost:"10 €", slots:10, note:"Indoor-Session direkt am Ort. 10 € extra — separat zur Allgemeingebühr.", mapsUrl:"https://maps.app.goo.gl/JShsajAzJpGFTfQu9?g_st=ac" },
-  { name:"Selbst organisieren", city:"ab Platz 36", address:"Campingplatz · Hostel · Hotel · Jugendherberge", cost:"variabel", slots:"∞", note:"Sobald Pleißenhof und Heizhaus voll sind, regelt sich jeder selbst.", mapsUrl:"https://www.google.com/maps/search/Leipzig+Hostel+Hotel" }
+  { name:"Pleißenhof · Homebase", city:"Markkleeberg", address:"Bornaische Str. 68, 04416 Markkleeberg", cost:"25 €", costNote:"einmalige Teilnahmegebühr p. P.", slots:25, note:"Teilnahmegebühr 25 € pro Person für das gesamte Event — Zelten auf dem Gelände inklusive. First come, first serve. Strandhaus am See 300 m entfernt.", mapsUrl:"https://maps.app.goo.gl/weCVkzvTJEUxFYG77" },
+  { name:"Heizhaus · Schlafplatz (Option)", city:"Leipzig West", address:"Alte Salzstraße 63, 04209 Leipzig", cost:"10 €/Nacht", costNote:"nur Schlafplatz · direkt ans Heizhaus", slots:10, note:"Optionale Alternative zu Hotel oder Campingplatz — nur wer dort schlafen will. <strong>10 € pro Nacht, direkt ans Heizhaus bezahlt</strong> (nicht über den Veranstalter). Kommt <strong>zusätzlich</strong> zur einmaligen 25 € Teilnahmegebühr. Details &amp; Buchung direkt auf der Heizhaus-Seite.", mapsUrl:"https://maps.app.goo.gl/JShsajAzJpGFTfQu9?g_st=ac", webUrl:"https://heizhaus-leipzig.de/" },
+  { name:"Selbst organisieren", city:"ab Platz 36", address:"Campingplatz · Hostel · Hotel · Jugendherberge", cost:"variabel", costNote:"eigene Buchung", slots:"∞", note:"Sobald Pleißenhof und Heizhaus-Schlafplätze voll sind, regelt sich jeder selbst.", mapsUrl:"https://www.google.com/maps/search/Leipzig+Hostel+Hotel" }
 ];
 
 const IMG = {
@@ -1369,7 +1376,7 @@ const VID = {
 const spotsMaster = {
   1:  { title:"Pleißenhof · Homebase",          addr:"Bornaische Str. 68, Markkleeberg",     coords:[51.2758,12.3964], desc:"Zelten, kochen, chillen. Community-Tisch, Feuerstelle, Platz für 25 Rider. See 300 m entfernt.",    mapsUrl:"https://maps.app.goo.gl/weCVkzvTJEUxFYG77",          img:null, home:true },
   2:  { title:"Plaza · Wagner-Platz",           addr:"Richard-Wagner-Platz 1, 04109 Leipzig", coords:[51.3432,12.3723], desc:"Startpunkt City-Ride. Weite Plaza, Granit-Ledges, Treppen, Innenstadt-Cruise.",                  mapsUrl:"https://maps.app.goo.gl/dd29GXX65ni8C1LT8",          img:null },
-  3:  { title:"Heizhaus · Indoor",              addr:"Alte Salzstraße 63, 04209 Leipzig",    coords:[51.3205,12.2991], desc:"Indoor-Street & Flat. Ramps, Rails, Free Ride, Game of Uni. Die Indoor-Homebase.",              mapsUrl:"https://maps.app.goo.gl/JShsajAzJpGFTfQu9?g_st=ac", img:IMG.heiz1 },
+  3:  { title:"Heizhaus · Indoor",              addr:"Alte Salzstraße 63, 04209 Leipzig",    coords:[51.3205,12.2991], desc:"Indoor-Street & Flat. Ramps, Rails, Free Ride, Game of Uni. Session-Location (heizhaus-leipzig.de). Optionaler Schlafplatz: 10 €/Nacht direkt ans Heizhaus — separat von der 25 € Teilnahmegebühr, nur eine Alternative zu Hotel oder Campingplatz.", mapsUrl:"https://maps.app.goo.gl/JShsajAzJpGFTfQu9?g_st=ac", img:IMG.heiz1, webUrl:"https://heizhaus-leipzig.de/" },
   4:  { title:"Giezer Skatespot DIY",           addr:"Naumburger Str. 44, 04229 Leipzig",    coords:[51.3270,12.3256], desc:"Selbstgebauter Beton von der Community. Raue Surfaces, Hips, Banks — echter DIY-Charakter.",    mapsUrl:"https://maps.app.goo.gl/FfhY9LhZF2jNgfQh6?g_st=ac", img:IMG.geizer1 },
   5:  { title:"Biomare Südvorstadt",            addr:"Karl-Liebknecht-Str. 27, 04107 Leipzig", coords:[51.3281,12.3742], desc:"Flat & Street. Zwei 3er-Stairs plus 7-Stair mit Downrail. Technisches Gelände.",                mapsUrl:"https://maps.app.goo.gl/Qh9e5h8DKNPHF5BK7",         img:IMG.biomare },
   6:  { title:"Propsteikirche St. Trinitatis",  addr:"Nonnenmühlgasse 2, 04107 Leipzig",     coords:[51.3352,12.3729], desc:"Moderne Sakralarchitektur. Geschliffene Kanten, lange Lines, glattes Pflaster.",               mapsUrl:"https://maps.app.goo.gl/n7dXYNUHT4Hd77uZ6?g_st=ac", img:null },
@@ -1506,11 +1513,13 @@ const stayGrid = document.getElementById("stayGrid");
 accommodations.forEach(a => {
   const c = document.createElement("article");
   c.className = "stay__card reveal";
+  const costLine = a.costNote ? `${a.cost} <small style="opacity:.75;font-weight:400">· ${a.costNote}</small> · ${a.slots} Plätze` : `${a.cost} · ${a.slots} Plätze`;
+  const webLink = a.webUrl ? ` · <a href="${a.webUrl}" target="_blank" rel="noopener">heizhaus-leipzig.de →</a>` : "";
   c.innerHTML = `
     <h3>${a.name}</h3>
-    <span class="pill ${a.cost==='free'?'pill--free':''}">${a.cost} · ${a.slots} Plätze</span>
+    <span class="pill ${a.cost==='free'?'pill--free':''}">${costLine}</span>
     <p><strong>${a.city}</strong> — ${a.address}<br>${a.note}</p>
-    <a href="${a.mapsUrl}" target="_blank" rel="noopener">Route öffnen →</a>`;
+    <a href="${a.mapsUrl}" target="_blank" rel="noopener">Route öffnen →</a>${webLink}`;
   c.addEventListener("mousemove", e => {
     const r = c.getBoundingClientRect();
     c.style.setProperty("--mx", `${e.clientX - r.left}px`);
@@ -2376,6 +2385,7 @@ const sdEyebrow = document.getElementById("sdEyebrow");
 const sdTitle = document.getElementById("sdTitle");
 const sdAddrText = document.getElementById("sdAddrText");
 const sdDesc = document.getElementById("sdDesc");
+const sdNotice = document.getElementById("sdNotice");
 const sdMeta = document.getElementById("sdMeta");
 const sdGallery = document.getElementById("sdGallery");
 const sdMapsLink = document.getElementById("sdMaps");
@@ -2416,6 +2426,23 @@ function openSpotDetail(id){
   sdTitle.innerHTML = s.title;
   sdAddrText.textContent = s.addr;
   sdDesc.textContent = s.desc;
+
+  // Info-Block: z. B. Heizhaus-Schlafplatz-Option + Website (nicht mit Teilnahmegebühr verwechseln)
+  if(sdNotice){
+    if(id === 3){
+      sdNotice.hidden = false;
+      sdNotice.innerHTML = `
+        <span class="sd-notice__title">Übernachtung · optional</span>
+        Das Heizhaus ist <b>Session-Location</b> für uns — und bietet <b>zusätzlich</b> 10 Schlafplätze. <b>10 € pro Nacht</b>, <b>direkt ans Heizhaus</b> bezahlt — <u>nicht</u> über den Veranstalter. Dieser Preis ist <b>separat</b> zur einmaligen <b>25 € Teilnahmegebühr</b> pro Person und stellt lediglich eine Alternative zu Hotel oder Campingplatz dar. Details &amp; Buchung: <a href="https://heizhaus-leipzig.de/" target="_blank" rel="noopener">heizhaus-leipzig.de →</a>`;
+    } else if(s.webUrl){
+      sdNotice.hidden = false;
+      const host = s.webUrl.replace(/^https?:\/\//,'').replace(/\/$/,'');
+      sdNotice.innerHTML = `<span class="sd-notice__title">Website</span><a href="${s.webUrl}" target="_blank" rel="noopener">${host} →</a>`;
+    } else {
+      sdNotice.hidden = true;
+      sdNotice.innerHTML = "";
+    }
+  }
 
   const chips = [];
   if(days.length) chips.push({ k:"Termine", v:days.join(" · ") });
