@@ -775,9 +775,10 @@ a{color:inherit;text-decoration:none}
 .outro__eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.36em;text-transform:uppercase;color:var(--red);display:flex;align-items:center;justify-content:center;gap:.75rem;margin:0 auto 1.2rem;max-width:max-content}
 .outro__eyebrow::before,.outro__eyebrow::after{content:"";width:34px;height:1px;background:linear-gradient(90deg,transparent,var(--red))}
 .outro__eyebrow::after{background:linear-gradient(270deg,transparent,var(--red))}
-.outro__title{font-family:var(--font-head);font-weight:400;font-size:clamp(1.6rem,4.2vw,2.9rem);line-height:1.2;letter-spacing:.01em;color:var(--text);margin:0 0 1.4rem;padding:.05em .1em;max-width:18ch;margin-inline:auto}
-.outro__title em{font-style:italic;background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
-.outro__lede{color:var(--text-dim);font-size:clamp(.95rem,1.2vw,1.1rem);line-height:1.65;max-width:44ch;margin:0 auto 1.8rem}
+.outro__title{font-family:var(--font-head);font-weight:400;font-size:clamp(1.7rem,4.6vw,3.1rem);line-height:1.22;letter-spacing:.01em;color:var(--text);margin:0 auto 1.4rem;padding:.05em .1em;max-width:22ch;text-shadow:0 2px 24px rgba(5,5,7,.55)}
+.outro__title em{font-style:italic;background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;padding:0 .05em}
+.outro__rule{width:clamp(64px,18vw,120px);height:1px;margin:0 auto 1.5rem;background:linear-gradient(90deg,transparent,rgba(255,0,64,.8),transparent);position:relative}
+.outro__rule::before{content:"";position:absolute;left:50%;top:50%;width:6px;height:6px;border-radius:50%;background:var(--red);transform:translate(-50%,-50%);box-shadow:0 0 10px var(--red)}
 .outro__sign{display:inline-flex;align-items:center;gap:.8rem;font-family:var(--font-mono);font-size:.66rem;letter-spacing:.38em;text-transform:uppercase;color:var(--text-mute);padding:.55rem 1.1rem;border:1px solid rgba(245,245,240,.18);border-radius:999px;background:rgba(8,8,10,.55);backdrop-filter:blur(6px)}
 .outro__sign i{width:6px;height:6px;border-radius:50%;background:var(--red);box-shadow:0 0 10px var(--red);animation:pulse 2.4s ease-in-out infinite}
 .outro__icons{display:flex;justify-content:center;gap:1.25rem;margin-bottom:1.6rem;opacity:.9}
@@ -788,7 +789,7 @@ a{color:inherit;text-decoration:none}
   .outro{padding:3.5rem 1rem}
   .outro__icons{gap:1rem;margin-bottom:1.2rem}
   .outro__icons svg{width:24px;height:24px}
-  .outro__lede{margin-bottom:1.4rem}
+  .outro__rule{margin-bottom:1.2rem}
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;animation-iteration-count:1!important}}
 </style>
@@ -1158,8 +1159,8 @@ a{color:inherit;text-decoration:none}
       <svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/></svg>
       <svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6l2-2h4l2 2"/></svg>
     </div>
-    <h2 class="outro__title" id="outroTitle">Wir begleiten das Projekt <em>in Bild &amp; Bewegtbild</em></h2>
-    <p class="outro__lede">Es ist geplant, das Projekt per Video und Foto zu begleiten.</p>
+    <h2 class="outro__title" id="outroTitle">Es ist geplant,<br>das Projekt per <em>Video &amp; Foto</em><br>zu begleiten.</h2>
+    <div class="outro__rule" aria-hidden="true"></div>
     <span class="outro__sign"><i></i>Leipzig Invitation · 2026</span>
   </div>
 </section>
