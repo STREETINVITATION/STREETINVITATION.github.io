@@ -1463,6 +1463,9 @@ const IMG = {
   probstei7: "Bilder/Probsteikirche/Probsteikirche_p7.jpg",
   probstei8: "Bilder/Probsteikirche/Probsteikirche_p8.jpg",
   wilhelm1: "Bilder/Wilhelm_Leuschner_Platz/Wilhelm_Leuschner_Platz_p1.jpg",
+  penny1: "Bilder/15_Stairset_Penny/15_Stairset_Penny_p1.jpg",
+  penny2: "Bilder/15_Stairset_Penny/15_Stairset_Penny_p2.jpg",
+  penny3: "Bilder/15_Stairset_Penny/15_Stairset_Penny_p3.jpg",
   fotoVideo: "Bilder/FOTO_VIDEO.jpg"
 };
 
@@ -1495,7 +1498,7 @@ const spotsMaster = {
   14: { title:"Reudnitz Skatepark",             addr:"Fröschelstraße 4, 04317 Leipzig",      coords:[51.3348,12.4019], desc:"Großer Park, solide Obstacles. Rails, Quarters, Ledges. Street bis in den Abend.",             mapsUrl:"https://maps.app.goo.gl/MfE7mifyHYmtSYvt7?g_st=ac", img:null },
   15: { title:"Haus am See",                    addr:"Strandbad Ost Markkleeberger See · Auenhainer Str. 1, 04416 Markkleeberg", coords:[51.271034,12.397521], desc:"Bade-See direkt nebenan. Abends reinspringen, Feierabend-Vibe nach dem Riden. Strandbad Ost am Markkleeberger See, Gehdistanz zur Homebase.", mapsUrl:"https://maps.app.goo.gl/9x3vtyWNHKamvns59?g_st=ac", img:IMG.see, lake:true },
   16: { title:"Wilhelm-Leuschner-Platz",        addr:"Wilhelm-Leuschner-Platz, 04107 Leipzig", coords:[51.3350,12.3750], desc:"Treffpunkt zum Skateboard Jam am letzten Tag. Großzügige Fläche im Zentrum, Kanten und offenes Pflaster.", mapsUrl:"https://www.google.com/maps/search/Wilhelm-Leuschner-Platz+Leipzig", img:IMG.wilhelm1 },
-  17: { title:"Penny Plagwitz · 15er-Stairset", addr:"Plagwitz, 04229 Leipzig",              coords:[51.3239,12.3325], desc:"Zwischenstopp auf dem Weg zum Giezer DIY. Getränke kaufen, 15er-Stairset und Wallride fahren — kurzer, knackiger Stop.", mapsUrl:"https://www.google.com/maps/search/Penny+Plagwitz+Leipzig", img:null }
+  17: { title:"Penny Plagwitz · 15er-Stairset", addr:"Plagwitz, 04229 Leipzig",              coords:[51.3239,12.3325], desc:"Zwischenstopp auf dem Weg zum Giezer DIY. Getränke kaufen, 15er-Stairset und Wallride fahren — kurzer, knackiger Stop.", mapsUrl:"https://www.google.com/maps/search/Penny+Plagwitz+Leipzig", img:IMG.penny1 }
 };
 function spot(id, time){ return { ...spotsMaster[id], id, time } }
 
@@ -1517,7 +1520,7 @@ const spotMedia = {
   14: { img:[], vid:[] },
   15: { img:[IMG.see], vid:[] },
   16: { img:[IMG.wilhelm1], vid:[] },
-  17: { img:[], vid:[] }
+  17: { img:[IMG.penny1, IMG.penny2, IMG.penny3], vid:[] }
 };
 
 const eventDays = [
