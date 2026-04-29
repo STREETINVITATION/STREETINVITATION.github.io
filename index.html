@@ -1713,7 +1713,7 @@ eventDays.forEach((d, i) => {
           <p class="day__lead"><span class="pretext">${d.pretext}</span> ${d.description}</p>
           <div class="day__summary">${summary}</div>
           <div class="day__actions">
-            <button type="button" class="btn btn--primary" data-focus-day="${i}"><span>Auf Karte zeigen<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
+            <button type="button" class="btn btn--primary" data-focus-day="${i}"><span>Blick in den Tag<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
           </div>
         </div>
         <div class="day__side">
@@ -2465,7 +2465,7 @@ function showDay(idx, opts){
   } else {
     dayLayers[idx].addTo(map);
     const bounds = L.latLngBounds(eventDays[idx].stops.map(s=>s.coords));
-    map.flyToBounds(bounds.pad(0.28), { duration:.9 });
+    map.flyToBounds(bounds.pad(0.28), { duration:.55 });
   }
   renderPanel();
   renderTopbar();
@@ -2503,8 +2503,21 @@ document.getElementById("poiCountWc").textContent = `(${pois.filter(p=>p.type===
 
 document.querySelectorAll("[data-focus-day]").forEach(btn => {
   btn.addEventListener("click", () => {
-    showDay(+btn.dataset.focusDay);
-    document.getElementById("map").scrollIntoView({ behavior:"smooth", block:"start" });
+    const idx = +btn.dataset.focusDay;
+    /* Map-Akkordeon aufklappen, falls noch zu */
+    const mapSec = document.getElementById("map");
+    if(mapSec && !mapSec.open) mapSec.open = true;
+    /* Mobile-Gate triggern, damit die Karte sofort interagierbar ist */
+    const gate = document.getElementById("mapGate");
+    if(gate && gate.classList.contains("is-visible")) gate.click();
+    /* Tag aktivieren + auf Stops fitBounden */
+    showDay(idx);
+    /* Layout-Settle, dann scrollen + map sanity-check */
+    requestAnimationFrame(() => {
+      try { map.invalidateSize(); } catch(_){}
+      const target = document.getElementById("mapCanvas") || mapSec;
+      if(target) target.scrollIntoView({ behavior:"smooth", block:"start" });
+    });
   });
 });
 /* ============ SPOT DETAIL OVERLAY ============ */
