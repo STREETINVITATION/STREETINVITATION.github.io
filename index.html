@@ -61,10 +61,6 @@ a{color:inherit;text-decoration:none}
 .loader__meta{font-family:var(--font-mono);font-size:.72rem;color:var(--text-mute);letter-spacing:.35em;text-transform:uppercase;position:relative;z-index:1}
 @keyframes sweep{to{left:100%}}
 
-.cursor{position:fixed;top:0;left:0;width:22px;height:22px;border:1.5px solid var(--red);border-radius:50%;pointer-events:none;z-index:9500;mix-blend-mode:difference;transform:translate(-50%,-50%);transition:width .25s var(--ease),height .25s var(--ease),background .25s var(--ease);display:none}
-.cursor.is-active{width:64px;height:64px;background:var(--pink);border-color:var(--pink)}
-@media (hover:hover) and (pointer:fine){.cursor{display:block}body{cursor:none}}
-
 /* NAV */
 .nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:.9rem 1.25rem;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);background:rgba(8,8,10,.55);border-bottom:1px solid transparent;transition:border-color .3s,background .3s}
 .nav.is-scrolled{border-bottom-color:var(--line);background:rgba(8,8,10,.85)}
@@ -794,6 +790,15 @@ a{color:inherit;text-decoration:none}
   .outro__icons svg{width:24px;height:24px}
   .outro__rule{margin-bottom:1.2rem}
 }
+/* ===== Sponsor / Partner ===== */
+.sponsor{background:var(--ink);padding:clamp(2rem,5vw,3.2rem) 1.25rem;border-top:1px solid rgba(245,245,240,.06)}
+.sponsor__inner{max-width:820px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:.9rem;text-align:center}
+.sponsor__eyebrow{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.34em;text-transform:uppercase;color:var(--text-mute)}
+.sponsor__logo{display:inline-flex;opacity:.78;transition:opacity .25s var(--ease),transform .25s var(--ease)}
+.sponsor__logo:hover,.sponsor__logo:focus-visible{opacity:1;transform:translateY(-1px)}
+.sponsor__logo img{display:block;height:46px;width:auto;max-width:min(220px,60vw)}
+@media (max-width:700px){.sponsor__logo img{height:38px}}
+
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;animation-iteration-count:1!important}}
 </style>
 </head>
@@ -805,8 +810,6 @@ a{color:inherit;text-decoration:none}
   <div class="loader__bar"></div>
   <div class="loader__meta">08 — 16 · 08 · 2026</div>
 </div>
-
-<div class="cursor" id="cursor" aria-hidden="true"></div>
 
 <header class="nav" id="nav">
   <a href="#top" class="nav__brand"><i></i>LEIPZIG/INV.26</a>
@@ -827,7 +830,7 @@ a{color:inherit;text-decoration:none}
     <img src="Bilder/Titelbild.jpg" alt="" />
   </div>
   <div class="hero__inner">
-    <div class="hero__meta"><span>Post-Unicon Ride Trip</span><span>Leipzig · Markkleeberg</span><span>35 Plätze</span><span class="hero__fsk">18+</span></div>
+    <div class="hero__meta"><span>Post-Unicon Ride Trip</span><span>Leipzig · Markkleeberg</span><span>35 Plätze</span><span class="hero__fsk">16+</span></div>
     <h1 class="hero__title">
       <span class="l"><span>Leipzig</span></span>
       <span class="l"><span>Invita<i>tion</i></span></span>
@@ -864,7 +867,7 @@ a{color:inherit;text-decoration:none}
     <div class="overview-cell overview-cell--jump" data-jump="stay" role="button" tabindex="0" aria-label="Zu 'Wo du schläfst' springen"><b>25 €</b><div><div class="label">Einmalige Teilnahmegebühr · vor Ort</div><div class="desc">Pro Person, einmalig — Zahlung bar bei Anmeldung am Pleißenhof. Inkl. Zelten. <span class="overview-cell__cta">Details zu Übernachtung → „Wo du schläfst" ↗</span></div></div></div>
     <div class="overview-cell"><b>17</b><div><div class="label">Spots &amp; Locations</div><div class="desc">Street, Flat, DIY, Parks — plus Bade-See direkt am Camp.</div></div></div>
     <div class="overview-cell"><b>Self</b><div><div class="label">Selbstverpflegung</div><div class="desc">Crew kocht, teilt, grillt. Foodliste für Tag 2 bei Ankunft.</div></div></div>
-    <div class="overview-cell"><b>18+</b><div><div class="label">Mindestalter</div><div class="desc">Ab 18 Jahren — keine Ausnahme.</div></div></div>
+    <div class="overview-cell"><b>16+</b><div><div class="label">Mindestalter</div><div class="desc">Ab 16 Jahren — keine Ausnahme.</div></div></div>
   </div>
 </section>
 
@@ -1066,7 +1069,7 @@ a{color:inherit;text-decoration:none}
     <details class="faq__item"><summary>Muss ich Tricks können?</summary><div class="answer">Nein. Wir haben Spots für Flat, Street, technisches Riden und Chill-Sessions. Wichtiger als Level ist Motivation und Respekt vor den Spots.</div></details>
     <details class="faq__item"><summary>Wie läuft Verpflegung?</summary><div class="answer">Selbstverpflegung. Am Ankunftstag gibt's eine Foodliste für Tag 2. Danach organisiert sich die Crew über den Community-Tisch. Frühstück gemeinsam, Abends wird gegrillt wenn geplant.</div></details>
     <details class="faq__item"><summary>Was kostet es?</summary><div class="answer"><strong>25 € pro Person, einmalige Teilnahmegebühr</strong> für das gesamte Event — Zelten auf dem Pleißenhof inklusive (25 Plätze, first come, first serve). <br><br><strong>Heizhaus-Übernachtung optional: 10 € pro Nacht</strong> (pro Tag) — <strong>nur Schlafplatz-Preis</strong>, hat <strong>nichts mit unserem Session-Besuch zu tun</strong>. <strong>Direkt ans Heizhaus bezahlt</strong>, läuft nicht über den Veranstalter. Nur eine mögliche Alternative zu Hotel oder Campingplatz — wer dort schlafen will, bucht selbst bei <a href="https://heizhaus-leipzig.de/" target="_blank" rel="noopener">heizhaus-leipzig.de</a>. 10 Schlafplätze verfügbar. <br><br>Ab Platz 36: selbst organisiert — Campingplatz, Hostel, Hotel oder Jugendherberge.</div></details>
-    <details class="faq__item"><summary>Gibt es ein Mindestalter?</summary><div class="answer">Ja — <strong>18 Jahre</strong>, keine Ausnahme. Street-Sessions, späte Abende und Eigenverantwortung am Zeltplatz setzen das voraus.</div></details>
+    <details class="faq__item"><summary>Gibt es ein Mindestalter?</summary><div class="answer">Ja — <strong>16 Jahre</strong>, keine Ausnahme. Street-Sessions, späte Abende und Eigenverantwortung am Zeltplatz setzen das voraus.</div></details>
     <details class="faq__item"><summary>Kann ich auch nur ein paar Tage kommen?</summary><div class="answer">Grundsätzlich ja. Meld dich früh, damit wir einen Platz freihalten können — besonders auf der Homebase sind Plätze begrenzt.</div></details>
     <details class="faq__item"><summary>Welche Ausrüstung brauche ich?</summary><div class="answer">Dein Einrad (ideal 19" oder 24/26" Street-Setup), Protektoren (Shin, Knee empfehlen wir strong), Helm. Zelt + Schlafsack für die Homebase, Kochzeug. Eventuell Reserve-Pedale und Pumpe.</div></details>
 
@@ -1083,7 +1086,7 @@ a{color:inherit;text-decoration:none}
 
 <section class="join" id="join">
   <div class="join__inner reveal">
-    <div class="join__fsk" aria-label="Ab 18 Jahren · Einrad" title="Mindestalter 18 Jahre">
+    <div class="join__fsk" aria-label="Ab 16 Jahren · Einrad" title="Mindestalter 16 Jahre">
       <svg viewBox="0 0 160 280" aria-hidden="true">
         <defs>
           <linearGradient id="fskRed" x1="0" y1="0" x2="1" y2="1">
@@ -1123,8 +1126,8 @@ a{color:inherit;text-decoration:none}
           <circle cx="80" cy="200" r="9" fill="url(#fskRed)"/>
         </g>
 
-        <!-- 18+ im oberen Halbkreis des Rades -->
-        <text class="fsk-num" x="80" y="182" text-anchor="middle" font-family="Permanent Marker, sans-serif" font-size="34" fill="#fff" style="paint-order:stroke;stroke:#ff0040;stroke-width:1.5">18+</text>
+        <!-- 16+ im oberen Halbkreis des Rades -->
+        <text class="fsk-num" x="80" y="182" text-anchor="middle" font-family="Permanent Marker, sans-serif" font-size="34" fill="#fff" style="paint-order:stroke;stroke:#ff0040;stroke-width:1.5">16+</text>
 
         <!-- FSK im unteren Halbkreis des Rades -->
         <text x="80" y="245" text-anchor="middle" font-family="Permanent Marker, sans-serif" font-size="22" fill="#ff0040" letter-spacing="3" style="paint-order:stroke;stroke:#0a0a0a;stroke-width:2">FSK</text>
@@ -1137,7 +1140,7 @@ a{color:inherit;text-decoration:none}
         <p>Ein Klick → Mail-Programm öffnet sich mit fertig ausgefülltem Formular an Folke. Oder kopiere die Vorlage per Button und nutze dein bevorzugtes Mail-Tool. Antwort meist innerhalb von 48 h.</p>
         <div class="join__cost">
           <b>25 €</b>
-          <span><strong>Einmalige Teilnahmegebühr pro Person · Zahlung bar vor Ort bei Anmeldung am Pleißenhof.</strong> Zelten im Pleißenhof inklusive. First come, first serve (25 Plätze).<br><strong>Heizhaus-Übernachtung separat: 10 € pro Nacht</strong> direkt ans <a href="https://heizhaus-leipzig.de/" target="_blank" rel="noopener">Heizhaus</a> — <strong>nur Schlafplatz</strong>, nicht der Session-Besuch (10 Plätze, läuft nicht über Veranstalter). Ab Platz 36 selbst organisieren. <strong>Mindestalter 18.</strong></span>
+          <span><strong>Einmalige Teilnahmegebühr pro Person · Zahlung bar vor Ort bei Anmeldung am Pleißenhof.</strong> Zelten im Pleißenhof inklusive. First come, first serve (25 Plätze).<br><strong>Heizhaus-Übernachtung separat: 10 € pro Nacht</strong> direkt ans <a href="https://heizhaus-leipzig.de/" target="_blank" rel="noopener">Heizhaus</a> — <strong>nur Schlafplatz</strong>, nicht der Session-Besuch (10 Plätze, läuft nicht über Veranstalter). Ab Platz 36 selbst organisieren. <strong>Mindestalter 16.</strong></span>
         </div>
         <div class="join__cta">
           <div class="join__actions">
@@ -1165,6 +1168,15 @@ a{color:inherit;text-decoration:none}
     <h2 class="outro__title" id="outroTitle">Es ist geplant,<br>das Projekt per <em>Video &amp; Foto</em><br>zu begleiten.</h2>
     <div class="outro__rule" aria-hidden="true"></div>
     <span class="outro__sign"><i></i>Leipzig Invitation · 2026</span>
+  </div>
+</section>
+
+<section class="sponsor" aria-label="Sponsor & Partner">
+  <div class="sponsor__inner">
+    <span class="sponsor__eyebrow">Mit Unterstützung von</span>
+    <a class="sponsor__logo" href="https://heizhaus-leipzig.de/" target="_blank" rel="noopener" aria-label="Heizhaus Leipzig">
+      <img src="https://heizhaus-leipzig.de/build/website/images/heizhaus-logo-orange.65c4a11a.svg" alt="Heizhaus Leipzig" loading="lazy" decoding="async" />
+    </a>
   </div>
 </section>
 
@@ -1209,7 +1221,7 @@ a{color:inherit;text-decoration:none}
     <div class="ps-head__meta">
       <div><b>Kontakt</b><span>Folke · folke.kleinrad@gmail.com</span></div>
       <div><b>Web</b><span id="psUrl">—</span></div>
-      <div><b>FSK</b><span>18+ · keine Ausnahme</span></div>
+      <div><b>FSK</b><span>16+ · keine Ausnahme</span></div>
     </div>
   </header>
 
@@ -1226,7 +1238,7 @@ a{color:inherit;text-decoration:none}
       <thead><tr><th>Option</th><th>Ort</th><th>Adresse</th><th>Plätze</th><th>Kosten</th></tr></thead>
       <tbody id="psStay"></tbody>
     </table>
-    <p class="ps-note"><b>25 € = einmalige Teilnahmegebühr pro Person, bar vor Ort bei Anmeldung am Pleißenhof zu zahlen</b> (Zelten im Pleißenhof inklusive). <b>Heizhaus-Übernachtung = 10 € pro Nacht</b>, <b>direkt ans Heizhaus</b> (heizhaus-leipzig.de) — <b>nur Schlafplatz-Preis, NICHT für den Session-Besuch</b>. Optionale Alternative zu Hotel oder Campingplatz, läuft <b>nicht über den Veranstalter</b>. First come, first serve. Ab Platz 36 selbst organisieren (Camping · Hostel · Hotel · Jugendherberge). Verpflegung Selbstversorgung; gemeinsam wird gekocht und gegrillt. <b>Mindestalter 18 Jahre.</b></p>
+    <p class="ps-note"><b>25 € = einmalige Teilnahmegebühr pro Person, bar vor Ort bei Anmeldung am Pleißenhof zu zahlen</b> (Zelten im Pleißenhof inklusive). <b>Heizhaus-Übernachtung = 10 € pro Nacht</b>, <b>direkt ans Heizhaus</b> (heizhaus-leipzig.de) — <b>nur Schlafplatz-Preis, NICHT für den Session-Besuch</b>. Optionale Alternative zu Hotel oder Campingplatz, läuft <b>nicht über den Veranstalter</b>. First come, first serve. Ab Platz 36 selbst organisieren (Camping · Hostel · Hotel · Jugendherberge). Verpflegung Selbstversorgung; gemeinsam wird gekocht und gegrillt. <b>Mindestalter 16 Jahre.</b></p>
   </section>
 
   <section class="ps-lineup">
@@ -1249,7 +1261,7 @@ a{color:inherit;text-decoration:none}
     </div>
     <div class="ps-foot__col">
       <b>Drop-In-Regel</b>
-      18+ · eigene Verantwortung · Zelt &amp; Schlafzeug mitbringen · Einrad/Helm selbstverständlich. Keine Online-Vorabzahlung — die 25 € werden <b>bar vor Ort bei Anmeldung</b> kassiert und decken Location, Strom, Müll, Orga.
+      16+ · eigene Verantwortung · Zelt &amp; Schlafzeug mitbringen · Einrad/Helm selbstverständlich. Keine Online-Vorabzahlung — die 25 € werden <b>bar vor Ort bei Anmeldung</b> kassiert und decken Location, Strom, Müll, Orga.
     </div>
     <div class="ps-foot__stamp">LI · 2026</div>
   </footer>
@@ -1275,7 +1287,7 @@ const MAIL_SUBJECT = "Anmeldung · Leipzig Invitation 2026";
 const MAIL_BODY = `Hey Folke,
 
 ich möchte bei der Leipzig Invitation 2026 (08.–16.08.2026) dabei sein.
-Ich bin mindestens 18 Jahre alt.
+Ich bin mindestens 16 Jahre alt.
 
 — Name:
 — Ankunft:
@@ -1486,20 +1498,20 @@ const VID = {
 
 const spotsMaster = {
   1:  { title:"Pleißenhof · Homebase",          addr:"Bornaische Str. 68, Markkleeberg",     coords:[51.2758,12.3964], desc:"Der Pleißenhof ist ein Vierseitenhof am Rand von Leipzig (Markkleeberg) mit einer Obstbaumwiese, auf der gezeltet wird (max. 25 Personen). Ein gemeinsamer Ort zum Ankommen und Zusammensein.\n\nIn der Partyscheune auf dem Hof wird zusammen gekocht, gegessen, geredet und auch Indoor gefahren. Hier lassen wir die Tage ausklingen.\n\nDer Hof ist gut mit der Straßenbahn erreichbar, der Markkleeberger See liegt nur wenige Minuten entfernt.\n\nDer Pleißenhof wird als Genossenschaft betrieben — ein achtsamer und respektvoller Umgang miteinander und mit dem Ort ist uns wichtig.", mapsUrl:"https://maps.app.goo.gl/weCVkzvTJEUxFYG77", img:IMG.plei1, home:true },
-  2:  { title:"Plaza · Wagner-Platz",           addr:"Richard-Wagner-Platz 1, 04109 Leipzig", coords:[51.3432,12.3723], desc:"Startpunkt City-Ride. Weite Plaza, Granit-Ledges, Treppen, Innenstadt-Cruise.",                  mapsUrl:"https://maps.app.goo.gl/dd29GXX65ni8C1LT8",          img:null },
-  3:  { title:"Heizhaus · Indoor",              addr:"Alte Salzstraße 63, 04209 Leipzig",    coords:[51.3205,12.2991], desc:"Indoor-Street & Flatland. Ramps, Rails, Free Ride, Game of Uni. Session-Location der Leipzig Invitation. Übernachtung separat möglich — Anmeldung direkt auf heizhaus-leipzig.de, 10 € die Nacht, zusätzlich zur Anmeldegebühr.", mapsUrl:"https://maps.app.goo.gl/JShsajAzJpGFTfQu9?g_st=ac", img:IMG.heiz1, webUrl:"https://heizhaus-leipzig.de/" },
-  4:  { title:"Giezer Skatespot DIY",           addr:"Naumburger Str. 44, 04229 Leipzig",    coords:[51.3270,12.3256], desc:"Selbstgebauter Beton von der Community. Raue Surfaces, Hips, Banks — echter DIY-Charakter.",    mapsUrl:"https://maps.app.goo.gl/FfhY9LhZF2jNgfQh6?g_st=ac", img:IMG.geizer1 },
+  2:  { title:"Plaza · Wagner-Platz",           addr:"Richard-Wagner-Platz 1, 04109 Leipzig", coords:[51.3432,12.3723], desc:"Großer Platz in der Innenstadt mit Springbrunnen und angrenzenden Restaurants und Shopping Mall.\n\nAuf dem Platz ist ein Skatepark mit Ledges, Marmorboden und Wasserbrunnen.",                  mapsUrl:"https://maps.app.goo.gl/dd29GXX65ni8C1LT8",          img:null },
+  3:  { title:"Heizhaus · Indoor",              addr:"Alte Salzstraße 63, 04209 Leipzig",    coords:[51.3205,12.2991], desc:"Großer Skatepark in Grünau mit Street Section, Bowl und Miniramp sowie einer 1000 m² großen Indoor-Skatehalle.\n\nÜbernachtung ist möglich — Anmeldung direkt auf heizhaus-leipzig.de, 10 € die Nacht, zusätzlich zur Anmeldegebühr.", mapsUrl:"https://maps.app.goo.gl/JShsajAzJpGFTfQu9?g_st=ac", img:IMG.heiz1, webUrl:"https://heizhaus-leipzig.de/" },
+  4:  { title:"Giezer Skatespot DIY",           addr:"Naumburger Str. 44, 04229 Leipzig",    coords:[51.3270,12.3256], desc:"Von den Lokals gebaute Obstacles neben einem Fußweg.\n\nPartylocations, Backstein-Restaurant und Konsum nebenan.",    mapsUrl:"https://maps.app.goo.gl/FfhY9LhZF2jNgfQh6?g_st=ac", img:IMG.geizer1 },
   5:  { title:"Biomare Südvorstadt",            addr:"Karl-Liebknecht-Str. 27, 04107 Leipzig", coords:[51.3281,12.3742], desc:"Flat & Street. Zwei 3er-Stairs plus 7-Stair mit Downrail. Technisches Gelände.",                mapsUrl:"https://maps.app.goo.gl/Qh9e5h8DKNPHF5BK7",         img:IMG.biomare },
-  6:  { title:"Propsteikirche St. Trinitatis",  addr:"Nonnenmühlgasse 2, 04107 Leipzig",     coords:[51.3352,12.3729], desc:"Moderne Sakralarchitektur. Geschliffene Kanten, lange Lines, glattes Pflaster.",               mapsUrl:"https://maps.app.goo.gl/n7dXYNUHT4Hd77uZ6?g_st=ac", img:IMG.probstei1 },
+  6:  { title:"Propsteikirche St. Trinitatis",  addr:"Nonnenmühlgasse 2, 04107 Leipzig",     coords:[51.3352,12.3729], desc:"Moderne Sakralarchitektur mit vielseitigen Obstacles: ein größer werdendes Stairset (bis zu 6 Stufen) mit Downrail, ein 8-Stufen-Set mit Kinkrail sowie zwei Downledges.",               mapsUrl:"https://maps.app.goo.gl/n7dXYNUHT4Hd77uZ6?g_st=ac", img:IMG.probstei1 },
   7:  { title:"Moritzbastei",                   addr:"Kurt-Masur-Platz 1, 04109 Leipzig",    coords:[51.3372,12.3792], desc:"Historische Festungsmauer, Stein-Ledges, Treppen. Mitten im Zentrum.",                         mapsUrl:"https://maps.app.goo.gl/m18f2n53uQgcfMo48",         img:IMG.moritz1 },
   8:  { title:"Augustusplatz",                  addr:"Augustusplatz, 04109 Leipzig",         coords:[51.3389,12.3815], desc:"Großer Platz im Stadtzentrum. Weite Flächen für Flat, Kanten für Street.",                     mapsUrl:"https://maps.app.goo.gl/Km7ESNiwQyAfe6mk9",         img:IMG.augustus1 },
-  9:  { title:"Skatepark Leipzig · AOK",        addr:"Anton-Bruckner-Allee 1, 04229 Leipzig", coords:[51.3282,12.3531], desc:"Offener Skatepark. Bowl, Street-Plaza, Rails. Feuerstelle am AOK-Spielplatz direkt nebenan.",   mapsUrl:"https://maps.app.goo.gl/3BtepMxP2pX6VbKQ6",         img:IMG.aok1 },
-  10: { title:"Conne Island",                   addr:"Koburger Str. 3, 04277 Leipzig",       coords:[51.3023,12.3745], desc:"Legendäres Kulturzentrum. Raues Gelände, Charakter, Chill-Territorium.",                       mapsUrl:"https://maps.app.goo.gl/1WTkLsJX3HB9veBb6?g_st=ac", img:IMG.conne },
+  9:  { title:"Skatepark Leipzig · AOK",        addr:"Anton-Bruckner-Allee 1, 04229 Leipzig", coords:[51.3282,12.3531], desc:"Skatepark im Clarapark an der Sachsenbrücke.\n\nHier sind: eine Spine, mehrere Boxen und eine Quarter.",   mapsUrl:"https://maps.app.goo.gl/3BtepMxP2pX6VbKQ6",         img:IMG.aok1 },
+  10: { title:"Conne Island",                   addr:"Koburger Str. 3, 04277 Leipzig",       coords:[51.3023,12.3745], desc:"Das Island ist ein Kultur- und Musikzentrum.\n\nEs besteht aus einer DIY-Bowl und Miniramp mit einer kleinen Street-Area, Tischtennisplatten, Graffiti-Walls und Veranstaltungsräumen.",                       mapsUrl:"https://maps.app.goo.gl/1WTkLsJX3HB9veBb6?g_st=ac", img:IMG.conne },
   11: { title:"Spielplatz Herderstr. · Connewitz", addr:"Herderstraße 5, 04277 Leipzig",     coords:[51.3078,12.3741], desc:"Entspanntes Gelände für gemeinsames Essen und lockeres Riden.",                                mapsUrl:"https://maps.app.goo.gl/6nTxkcr9vXWAtRrH9",         img:null },
-  12: { title:"MDR Leipzig",                    addr:"Kantstraße 71–73, 04275 Leipzig",      coords:[51.3156,12.3846], desc:"MDR-Areal. Hard Surfaces, Kanten, urbane Architektur. Kurzer gezielter Stop.",                 mapsUrl:"https://maps.app.goo.gl/cNaJeusZk9FMrQNa9",         img:IMG.mdr1 },
+  12: { title:"MDR Leipzig",                    addr:"Kantstraße 71–73, 04275 Leipzig",      coords:[51.3156,12.3846], desc:"DIY-Spot an der MDR-S-Bahn-Station.",                 mapsUrl:"https://maps.app.goo.gl/cNaJeusZk9FMrQNa9",         img:IMG.mdr1 },
   13: { title:"DNB Magazinturm · Alte Messe",   addr:"Deutscher Pl. 1, 04103 Leipzig",       coords:[51.3223,12.3972], desc:"Deutsche Nationalbibliothek Magazinturm. Brutalismus, offene Plazas, Street & Flat.",          mapsUrl:"https://maps.app.goo.gl/Va54MWz71W3Wjvmw7?g_st=ac", img:null },
   14: { title:"Reudnitz Skatepark",             addr:"Fröschelstraße 4, 04317 Leipzig",      coords:[51.3348,12.4019], desc:"Großer Park, solide Obstacles. Rails, Quarters, Ledges. Street bis in den Abend.",             mapsUrl:"https://maps.app.goo.gl/MfE7mifyHYmtSYvt7?g_st=ac", img:null },
-  15: { title:"Haus am See",                    addr:"Strandbad Ost Markkleeberger See · Auenhainer Str. 1, 04416 Markkleeberg", coords:[51.271034,12.397521], desc:"Bade-See direkt nebenan. Abends reinspringen, Feierabend-Vibe nach dem Riden. Strandbad Ost am Markkleeberger See, Gehdistanz zur Homebase.", mapsUrl:"https://maps.app.goo.gl/9x3vtyWNHKamvns59?g_st=ac", img:IMG.see, lake:true },
+  15: { title:"Haus am See",                    addr:"Strandbad Ost Markkleeberger See · Auenhainer Str. 1, 04416 Markkleeberg", coords:[51.271034,12.397521], desc:"Badesee direkt nebenan.\n\nStrand ist 300 m entfernt.", mapsUrl:"https://maps.app.goo.gl/9x3vtyWNHKamvns59?g_st=ac", img:IMG.see, lake:true },
   16: { title:"Wilhelm-Leuschner-Platz",        addr:"Wilhelm-Leuschner-Platz, 04107 Leipzig", coords:[51.3350,12.3750], desc:"Treffpunkt zum Skateboard Jam am letzten Tag. Großzügige Fläche im Zentrum, Kanten und offenes Pflaster.", mapsUrl:"https://www.google.com/maps/search/Wilhelm-Leuschner-Platz+Leipzig", img:IMG.wilhelm1 },
   17: { title:"Penny Plagwitz · 15er-Stairset", addr:"Plagwitz, 04229 Leipzig",              coords:[51.3239,12.3325], desc:"Zwischenstopp auf dem Weg zum Giezer DIY. Getränke kaufen, 15er-Stairset und Wallride fahren — kurzer, knackiger Stop.", mapsUrl:"https://www.google.com/maps/search/Penny+Plagwitz+Leipzig", img:IMG.penny1 }
 };
@@ -2811,16 +2823,6 @@ window.addEventListener("scroll", () => {
   const y = Math.min(window.scrollY, 700);
   heroImg.style.setProperty("--parallax", `${y * 0.18}px`);
 }, { passive:true });
-
-/* ============ CURSOR ============ */
-const cursor = document.getElementById("cursor");
-if(matchMedia("(hover:hover) and (pointer:fine)").matches){
-  let tx=0,ty=0,cx=0,cy=0;
-  window.addEventListener("mousemove", e => { tx=e.clientX; ty=e.clientY; });
-  (function loop(){ cx += (tx-cx)*.25; cy += (ty-cy)*.25; cursor.style.transform = `translate(${cx}px, ${cy}px) translate(-50%,-50%)`; requestAnimationFrame(loop); })();
-  document.addEventListener("mouseover", e => { if(e.target.closest("a, button, summary, input, .leaflet-interactive, .spot-card, .day__spots li, .gal-item, .stay__card, .overview-cell")) cursor.classList.add("is-active"); });
-  document.addEventListener("mouseout", e => { if(e.target.closest("a, button, summary, input, .leaflet-interactive, .spot-card, .day__spots li, .gal-item, .stay__card, .overview-cell")) cursor.classList.remove("is-active"); });
-}
 
 /* ============ OVERVIEW-CELL JUMP (25€ -> Wo du schläfst) ============ */
 function jumpToSection(id){
