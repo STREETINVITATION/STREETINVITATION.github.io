@@ -2738,16 +2738,9 @@ L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r
   subdomains:"abcd", maxZoom:19
 }).addTo(map);
 
-/* Safety Net: falls auf Mobile doch ein Popup aufgeht (programmatisch), sofort
-   schliessen und Bottom-Sheet stattdessen oeffnen. */
-map.on("popupopen", (e) => {
-  if(!matchMedia("(max-width:600px)").matches) return;
-  const src = e.popup && e.popup._source;
-  const id = src && src.__spotId;
-  if(id == null) return;
-  try { map.closePopup(e.popup); } catch(_){}
-  if(typeof openSpotDetail === "function") openSpotDetail(id);
-});
+/* Auf Mobile UND Desktop oeffnet sich beim Marker-Tap die kleine Popup-Karte.
+   Das grosse Bottom-Sheet wird erst durch den Klick auf "Details" im Popup
+   geoeffnet (siehe Event-Delegation unten). */
 
 /* "Details"-Button im Popup (Desktop) -> grosses Spot-Detail-Overlay. Event-
    Delegation auf dem Map-Container, weil Leaflet Popups dort einhaengt. */
@@ -2900,19 +2893,27 @@ function arrowIcon(angle, color){
     html:`<div class="route-arrow" style="--dc:${color};transform:rotate(${angle-90}deg)"></div>` });
 }
 
-/* Mobile-First Helper: auf Handy oeffnet Marker-Tap das Bottom-Sheet,
-   nicht das (zu grosse) Leaflet-Popup. Desktop bleibt wie bisher. */
+/* Marker-Tap: zoomt sanft zum Pin und oeffnet die kleine Leaflet-Popup-Karte
+   mit Spot-Info + Details/Navigation Buttons. Das grosse Spot-Detail-Sheet
+   oeffnet sich erst bei Klick auf "Details" im Popup. */
 function isMobileMap(){ return matchMedia("(max-width:600px)").matches; }
-const POPUP_OPTS = { maxWidth:300, minWidth:240, autoPan:true, autoPanPaddingTopLeft:[20,90], autoPanPaddingBottomRight:[20,50], keepInView:true };
+const POPUP_OPTS = { maxWidth:300, minWidth:240, autoPan:true, autoPanPaddingTopLeft:[20,90], autoPanPaddingBottomRight:[20,50], keepInView:true, closeButton:true };
 function attachPinTap(marker, spotId, popupArgs){
   marker.__spotId = spotId;
   marker.bindPopup(popupHtml(...popupArgs), POPUP_OPTS);
   marker.on("click", (e) => {
-    if(!isMobileMap()) return;
     if(e && e.originalEvent) L.DomEvent.stopPropagation(e.originalEvent);
-    try { marker.closePopup(); } catch(_){}
-    if(typeof openSpotDetail === "function") openSpotDetail(spotId);
-    setTimeout(() => { try { marker.closePopup(); } catch(_){} }, 0);
+    const ll = marker.getLatLng();
+    const targetZoom = isMobileMap() ? Math.max(map.getZoom(), 15) : Math.max(map.getZoom(), 16);
+    const needZoom = map.getZoom() < targetZoom;
+    if(needZoom){
+      map.flyTo(ll, targetZoom, { duration:.45 });
+      /* Popup nach Zoom-Animation oeffnen, damit autoPan korrekt arbeitet */
+      setTimeout(() => { try { marker.openPopup(); } catch(_){} }, 480);
+    } else {
+      map.panTo(ll, { animate:true, duration:.3 });
+      try { marker.openPopup(); } catch(_){}
+    }
   });
 }
 
@@ -3233,8 +3234,7 @@ function focusStop(di, si){
   map.flyTo(s.coords, 16, { duration:.6 });
   setTimeout(() => {
     const marker = dayStopMarkers[di] && dayStopMarkers[di][si];
-    if(marker && !isMobileMap()) marker.openPopup();
-    else if(marker && isMobileMap() && s && s.id != null){ openSpotDetail(s.id); }
+    if(marker) { try { marker.openPopup(); } catch(_){} }
     clearPinFocus();
     const el = document.querySelector(`.pin[data-focus-key="d${di}s${si}"]`);
     if(el) el.classList.add("is-focused");
