@@ -816,9 +816,28 @@ a{color:inherit;text-decoration:none}
 .poi-marker--wc{border-color:#1e88e5;color:#1e88e5}
 
 .leaflet-popup-content-wrapper{background:#fff!important;color:#111!important;border-radius:var(--radius)!important;border:1px solid rgba(0,0,0,.12);box-shadow:0 20px 50px -10px rgba(0,0,0,.35)!important;padding:0!important;overflow:hidden}
-.leaflet-popup-content{margin:0!important;width:280px!important;font-family:var(--font-body)!important}
-@media (max-width:400px){.leaflet-popup-content{width:240px!important}.pop__img{height:110px}.pop__body{padding:.8rem .9rem .9rem}.pop h3{font-size:.98rem}.pop p{font-size:.82rem}}
-@media (max-width:600px){.leaflet-popup-content-wrapper{max-height:calc(100% - 40px);overflow:hidden}.leaflet-popup-content{max-height:calc(54vh - 80px)!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch}.pop__img{height:88px}.leaflet-popup-close-button{width:38px!important;height:38px!important;font-size:1.4rem!important;top:.45rem!important;right:.45rem!important;border-width:2px!important}}
+.leaflet-popup-content{margin:0!important;width:280px!important;font-family:var(--font-body)!important;display:flex;flex-direction:column}
+.pop{display:flex;flex-direction:column;max-height:100%}
+.pop__body{display:flex;flex-direction:column}
+.pop__actions{position:sticky;bottom:0;background:#fff;padding-top:.5rem;margin-top:auto}
+/* Mobile: kompaktes Popup, Buttons IMMER sichtbar via sticky bottom + line-clamp Description */
+@media (max-width:600px){
+  .leaflet-popup-content{width:min(86vw,260px)!important;max-height:min(60vh,360px)!important}
+  .pop__img{height:78px}
+  .pop__body{padding:.7rem .85rem .85rem}
+  .pop__eyebrow{font-size:.6rem;margin-bottom:.25rem}
+  .pop h3{font-size:.92rem;margin:0 0 .35rem}
+  .pop__time{font-size:.85rem;padding:.15rem .45rem;margin-bottom:.45rem}
+  .pop p{font-size:.78rem;line-height:1.4;margin:0 0 .5rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .pop__actions{padding-top:.4rem}
+  .pop__nav,.pop__details{font-size:.58rem;padding:.5rem .4rem}
+  .leaflet-popup-close-button{width:34px!important;height:34px!important;font-size:1.25rem!important;top:.35rem!important;right:.35rem!important;border-width:2px!important}
+}
+@media (max-width:400px){
+  .leaflet-popup-content{width:min(88vw,230px)!important;max-height:min(58vh,330px)!important}
+  .pop__img{height:62px}
+  .pop p{-webkit-line-clamp:2}
+}
 .leaflet-popup-tip{background:#fff!important}
 .leaflet-popup-close-button{width:44px!important;height:44px!important;border-radius:50%!important;border:2.5px solid #e6194b!important;background:rgba(255,255,255,.97)!important;color:#e6194b!important;font-size:1.6rem!important;font-weight:900!important;line-height:1!important;display:grid!important;place-items:center!important;padding:0!important;top:.6rem!important;right:.6rem!important;box-shadow:0 0 0 2px rgba(230,25,75,.25),0 4px 14px rgba(0,0,0,.4)!important;opacity:1!important;text-decoration:none!important;transition:all .25s var(--ease)!important;text-indent:0!important}
 .leaflet-popup-close-button:hover{background:#e6194b!important;color:#fff!important;border-color:#fff!important;transform:scale(1.1) rotate(90deg)!important;box-shadow:0 0 0 3px #e6194b,0 6px 20px rgba(230,25,75,.55)!important}
@@ -2899,7 +2918,17 @@ function arrowIcon(angle, color){
    mit Spot-Info + Details/Navigation Buttons. Das grosse Spot-Detail-Sheet
    oeffnet sich erst bei Klick auf "Details" im Popup. */
 function isMobileMap(){ return matchMedia("(max-width:600px)").matches; }
-const POPUP_OPTS = { maxWidth:300, minWidth:240, autoPan:true, autoPanPaddingTopLeft:[20,90], autoPanPaddingBottomRight:[20,50], keepInView:true, closeButton:true };
+/* AutoPan-Padding wird per getter dynamisch berechnet, damit Mobile-Popups
+   garantiert mit allen Buttons sichtbar in den Map-Bereich gepant werden. */
+const POPUP_OPTS = {
+  maxWidth:300, minWidth:230,
+  autoPan:true,
+  autoPanPaddingTopLeft:[16,16],
+  autoPanPaddingBottomRight:[16,16],
+  keepInView:true,
+  closeButton:true,
+  className:"pop-leaflet"
+};
 function attachPinTap(marker, spotId, popupArgs){
   marker.__spotId = spotId;
   marker.bindPopup(popupHtml(...popupArgs), POPUP_OPTS);
