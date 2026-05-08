@@ -694,9 +694,15 @@ a{color:inherit;text-decoration:none}
 .pin--home .pin__num{color:var(--dc,var(--red));-webkit-text-stroke:.3px rgba(255,255,255,.7);text-shadow:0 1px 0 rgba(255,255,255,.7),0 0 4px rgba(255,255,255,.7)}
 .pin--lake .pin__body{background:#1e88e5;border-color:#fff;box-shadow:0 0 0 1.5px rgba(0,0,0,.35),0 0 14px rgba(30,136,229,.55)}
 .pin--lake .pin__num{color:#fff;font-family:var(--font-pin);font-size:1.6rem}
-/* Mehrtages-Spots (ausser Pleissenhof): farbiger Aussenring zeigt den anderen Besuchstag */
-.pin--ring .pin__body{border-color:var(--rc,#fff);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.95),0 0 0 1.5px rgba(0,0,0,.3)}
-.pin--lake.pin--ring .pin__body{box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.95),0 0 0 1.5px rgba(0,0,0,.35),0 0 14px rgba(30,136,229,.55)}
+/* Mehrtages-Spots (ausser Pleissenhof / See): SVG-Multi-Segment-Ring zeigt ALLE
+   anderen Besuchstage in jeweiliger Tagesfarbe als Kreis-Segmente.
+   Innen-Body bleibt mit weissem Border (3.5px) als Separator zum farbigen Ring. */
+.pin--ring .pin__body{border-color:#fff;box-shadow:0 0 0 1.5px rgba(0,0,0,.3)}
+.pin--lake.pin--ring .pin__body{border-color:#fff;box-shadow:0 0 0 1.5px rgba(0,0,0,.35),0 0 14px rgba(30,136,229,.55)}
+.pin__ring{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;transition:transform .3s var(--ease)}
+.pin__ring circle{fill:none;stroke-width:4;transform-origin:center;transform:rotate(-90deg)}
+.pin:hover .pin__ring{transform:scale(1.2)}
+.pin.is-focused .pin__ring{transform:scale(1.3)}
 .pin__sub{position:absolute;top:-8px;right:-8px;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:#111;color:#fff;font-family:var(--font-mono);font-size:.55rem;font-weight:700;letter-spacing:.05em;display:grid;place-items:center;border:1.5px solid var(--dc,var(--red));box-shadow:0 2px 5px rgba(0,0,0,.4);z-index:2;line-height:1}
 .pin__start,.pin__end{position:absolute;bottom:-4px;right:-4px;width:18px;height:18px;border-radius:50%;background:#fff;border:2px solid var(--dc);display:grid;place-items:center;z-index:3;box-shadow:0 2px 5px rgba(0,0,0,.35)}
 .pin__start{background:#fff;color:var(--dc)}
@@ -1578,7 +1584,7 @@ const spotsMaster = {
   1:  { title:"Pleißenhof · Homebase",          addr:"Bornaische Str. 68, Markkleeberg",     coords:[51.2758,12.3964], desc:"Der Pleißenhof ist ein Vierseitenhof am Rand von Leipzig (Markkleeberg) mit einer Obstbaumwiese, auf der gezeltet wird (max. 25 Personen). Ein gemeinsamer Ort zum Ankommen und Zusammensein.\n\nIn der Partyscheune auf dem Hof wird zusammen gekocht, gegessen, geredet und auch Indoor gefahren. Hier lassen wir die Tage ausklingen.\n\nDer Hof ist gut mit der Straßenbahn erreichbar, der Markkleeberger See liegt nur wenige Minuten entfernt.\n\nDer Pleißenhof wird als Genossenschaft betrieben — ein achtsamer und respektvoller Umgang miteinander und mit dem Ort ist uns wichtig.", mapsUrl:"https://maps.app.goo.gl/weCVkzvTJEUxFYG77", img:IMG.plei1, home:true },
   2:  { title:"Plaza · Wagner-Platz",           addr:"Richard-Wagner-Platz 1, 04109 Leipzig", coords:[51.3432,12.3723], desc:"Großer Platz in der Innenstadt mit Springbrunnen und angrenzenden Restaurants und Shopping Mall.\n\nAuf dem Platz ist ein Skatepark mit Ledges, Marmorboden und Wasserbrunnen.",                  mapsUrl:"https://maps.app.goo.gl/dd29GXX65ni8C1LT8",          img:null },
   3:  { title:"Heizhaus · Indoor",              addr:"Alte Salzstraße 63, 04209 Leipzig",    coords:[51.3205,12.2991], desc:"Großer Skatepark in Grünau mit Street Section, Bowl und Miniramp sowie einer 1000 m² großen Indoor-Skatehalle.\n\nÜbernachtung ist möglich — Anmeldung direkt auf heizhaus-leipzig.de, 10 € die Nacht, zusätzlich zur Anmeldegebühr.", mapsUrl:"https://maps.app.goo.gl/JShsajAzJpGFTfQu9?g_st=ac", img:IMG.heiz1, webUrl:"https://heizhaus-leipzig.de/" },
-  4:  { title:"Giezer Skatespot DIY",           addr:"Naumburger Str. 44, 04229 Leipzig",    coords:[51.3270,12.3256], desc:"Von den Lokals gebaute Obstacles neben einem Fußweg.\n\nPartylocations, Backstein-Restaurant und Konsum nebenan.",    mapsUrl:"https://maps.app.goo.gl/FfhY9LhZF2jNgfQh6?g_st=ac", img:IMG.geizer1 },
+  4:  { title:"Giezer Skatespot DIY",           addr:"Naumburger Str. 44, 04229 Leipzig",    coords:[51.3270,12.3256], desc:"Von den Lokals gebaute Obstacles neben einem Fußweg.\n\nPartylocations, Backstein-Restaurant und Konsum nebenan.",    mapsUrl:"https://maps.app.goo.gl/FfhY9LhZF2jNgfQh6?g_st=ac", img:IMG.geizer1, primaryDay:8 },
   5:  { title:"Biomare Südvorstadt",            addr:"Karl-Liebknecht-Str. 27, 04107 Leipzig", coords:[51.3281,12.3742], desc:"Flat & Street. Zwei 3er-Stairs plus 7-Stair mit Downrail. Technisches Gelände.",                mapsUrl:"https://maps.app.goo.gl/Qh9e5h8DKNPHF5BK7",         img:IMG.biomare },
   6:  { title:"Propsteikirche St. Trinitatis",  addr:"Nonnenmühlgasse 2, 04107 Leipzig",     coords:[51.3352,12.3729], desc:"Moderne Sakralarchitektur mit vielseitigen Obstacles: ein größer werdendes Stairset (bis zu 6 Stufen) mit Downrail, ein 8-Stufen-Set mit Kinkrail sowie zwei Downledges.",               mapsUrl:"https://maps.app.goo.gl/n7dXYNUHT4Hd77uZ6?g_st=ac", img:IMG.probstei1 },
   7:  { title:"Moritzbastei",                   addr:"Kurt-Masur-Platz 1, 04109 Leipzig",    coords:[51.3372,12.3792], desc:"Historische Festungsmauer, Stein-Ledges, Treppen. Mitten im Zentrum.",                         mapsUrl:"https://maps.app.goo.gl/m18f2n53uQgcfMo48",         img:IMG.moritz1 },
@@ -1587,8 +1593,8 @@ const spotsMaster = {
   10: { title:"Conne Island",                   addr:"Koburger Str. 3, 04277 Leipzig",       coords:[51.3023,12.3745], desc:"Das Island ist ein Kultur- und Musikzentrum.\n\nEs besteht aus einer DIY-Bowl und Miniramp mit einer kleinen Street-Area, Tischtennisplatten, Graffiti-Walls und Veranstaltungsräumen.",                       mapsUrl:"https://maps.app.goo.gl/1WTkLsJX3HB9veBb6?g_st=ac", img:IMG.conne },
   11: { title:"Spielplatz Herderstr. · Connewitz", addr:"Herderstraße 5, 04277 Leipzig",     coords:[51.3078,12.3741], desc:"Entspanntes Gelände für gemeinsames Essen und lockeres Riden.",                                mapsUrl:"https://maps.app.goo.gl/6nTxkcr9vXWAtRrH9",         img:null },
   12: { title:"MDR Leipzig",                    addr:"Kantstraße 71–73, 04275 Leipzig",      coords:[51.3156,12.3846], desc:"DIY-Spot an der MDR-S-Bahn-Station.",                 mapsUrl:"https://maps.app.goo.gl/cNaJeusZk9FMrQNa9",         img:IMG.mdr1 },
-  13: { title:"DNB Magazinturm · Alte Messe",   addr:"Deutscher Pl. 1, 04103 Leipzig",       coords:[51.3223,12.3972], desc:"Deutsche Nationalbibliothek Magazinturm. Brutalismus, offene Plazas, Street & Flat.",          mapsUrl:"https://maps.app.goo.gl/Va54MWz71W3Wjvmw7?g_st=ac", img:null },
-  14: { title:"Reudnitz Skatepark",             addr:"Fröschelstraße 4, 04317 Leipzig",      coords:[51.3348,12.4019], desc:"Großer Park, solide Obstacles. Rails, Quarters, Ledges. Street bis in den Abend.",             mapsUrl:"https://maps.app.goo.gl/MfE7mifyHYmtSYvt7?g_st=ac", img:null },
+  13: { title:"DNB Magazinturm · Alte Messe",   addr:"Deutscher Pl. 1, 04103 Leipzig",       coords:[51.3223,12.3972], desc:"Deutsche Nationalbibliothek Magazinturm. Brutalismus, offene Plazas, Street & Flat.",          mapsUrl:"https://maps.app.goo.gl/Va54MWz71W3Wjvmw7?g_st=ac", img:IMG.mdr2 },
+  14: { title:"Reudnitz Skatepark",             addr:"Fröschelstraße 4, 04317 Leipzig",      coords:[51.3348,12.4019], desc:"Großer Park, solide Obstacles. Rails, Quarters, Ledges. Street bis in den Abend.",             mapsUrl:"https://maps.app.goo.gl/MfE7mifyHYmtSYvt7?g_st=ac", img:IMG.mdr4 },
   15: { title:"Haus am See",                    addr:"Strandbad Ost Markkleeberger See · Auenhainer Str. 1, 04416 Markkleeberg", coords:[51.271034,12.397521], desc:"Badesee direkt nebenan.\n\nStrand ist 300 m entfernt.", mapsUrl:"https://maps.app.goo.gl/9x3vtyWNHKamvns59?g_st=ac", img:IMG.see, lake:true },
   16: { title:"Wilhelm-Leuschner-Platz",        addr:"Wilhelm-Leuschner-Platz, 04107 Leipzig", coords:[51.3350,12.3750], desc:"Treffpunkt zum Skateboard Jam am letzten Tag. Großzügige Fläche im Zentrum, Kanten und offenes Pflaster.", mapsUrl:"https://www.google.com/maps/search/Wilhelm-Leuschner-Platz+Leipzig", img:IMG.wilhelm1 },
   17: { title:"Penny Plagwitz · 15er-Stairset", addr:"Plagwitz, 04229 Leipzig",              coords:[51.3239,12.3325], desc:"Zwischenstopp auf dem Weg zum Giezer DIY. Getränke kaufen, 15er-Stairset und Wallride fahren — kurzer, knackiger Stop.", mapsUrl:"https://www.google.com/maps/search/Penny+Plagwitz+Leipzig", img:IMG.penny1 }
@@ -1609,8 +1615,8 @@ const spotMedia = {
   10: { img:[IMG.conne], vid:[VID.conne1, VID.conne2, VID.conne3] },
   11: { img:[], vid:[] },
   12: { img:[IMG.mdr1, IMG.mdr2, IMG.mdr3, IMG.mdr4, IMG.mdr5, IMG.mdr6], vid:[] },
-  13: { img:[], vid:[] },
-  14: { img:[], vid:[] },
+  13: { img:[IMG.mdr2, IMG.mdr3, IMG.mdr1, IMG.mdr4, IMG.mdr5, IMG.mdr6], vid:[] },
+  14: { img:[IMG.mdr4, IMG.mdr5, IMG.mdr6, IMG.mdr1, IMG.mdr2, IMG.mdr3], vid:[] },
   15: { img:[IMG.see], vid:[] },
   16: { img:[IMG.wilhelm1], vid:[] },
   17: { img:[IMG.penny1, IMG.penny2, IMG.penny3], vid:[] }
@@ -2047,11 +2053,17 @@ document.addEventListener("keydown", e => {
 
 /* ============ LEAFLET ============ */
 
-/* Primäre Tagesfarbe pro Spot (erster Tag, an dem er vorkommt) */
+/* Primaerer Tag pro Spot = Tag mit der laengsten Verweildauer.
+   Quelle: optionales spotsMaster[id].primaryDay Override, sonst erster Besuchstag.
+   Pleissenhof (1) und See (15) sind von Multi-Ring ausgenommen (siehe spotRingSegments). */
 const spotPrimaryDay = {};
-eventDays.forEach((d, i) => d.stops.forEach(s => {
+eventDays.forEach((d) => d.stops.forEach(s => {
   if(spotPrimaryDay[s.id] === undefined) spotPrimaryDay[s.id] = d.n;
 }));
+Object.keys(spotsMaster).forEach(id => {
+  const override = spotsMaster[id].primaryDay;
+  if(typeof override === "number") spotPrimaryDay[+id] = override;
+});
 
 /* Quality-of-life POIs · kuratierte Vorschläge */
 const pois = [
@@ -2163,7 +2175,13 @@ map.getContainer().addEventListener("mouseleave", () => map.scrollWheelZoom.disa
       lock.classList.remove("is-visible");
       map.dragging.enable(); map.touchZoom.enable();
     }
-    setTimeout(()=>map.invalidateSize(),60);
+    setTimeout(()=>{
+      try { map.invalidateSize({ pan:false }); } catch(_){}
+      /* Wenn Initial-Fit noch nicht lief (Map war versteckt beim Init), jetzt nachholen. */
+      if(typeof fitOverviewWhenReady === "function" && typeof _initialFitDone !== "undefined" && !_initialFitDone){
+        fitOverviewWhenReady();
+      }
+    },60);
   }
   gate.addEventListener("click", ()=>{ unlocked=true; apply(); });
   gate.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ unlocked=true; apply(); }});
@@ -2172,34 +2190,58 @@ map.getContainer().addEventListener("mouseleave", () => map.scrollWheelZoom.disa
   apply();
 })();
 
-function makePin(spotId, isHome, seq, color, role, focusKey, isLake, ringColor){
+/* SVG-Multi-Segment-Ring: ein <circle> pro anderem Besuchstag mit
+   stroke-dasharray fuer mathematisch praezise Segmente. Start oben (12 Uhr)
+   durch rotate(-90deg) am Circle. Kleine 1.5px-Gap zwischen Segmenten fuer
+   visuelle Trennschaerfe. Bei nur 1 Segment: Vollkreis ohne Gap. */
+function ringSvg(segments){
+  if(!segments || segments.length === 0) return "";
+  const r = 21, cx = 23, cy = 23;
+  const C = 2 * Math.PI * r;
+  const N = segments.length;
+  const gap = N > 1 ? 1.5 : 0;
+  const seg = (C - gap*N) / N;
+  let off = 0;
+  const titles = segments.map(s => `T${s.day}`).join(" + ");
+  let circles = "";
+  for(let i=0; i<N; i++){
+    const dasharray = `${seg} ${C - seg}`;
+    const dashoffset = -off;
+    circles += `<circle cx="${cx}" cy="${cy}" r="${r}" stroke="${segments[i].color}" stroke-dasharray="${dasharray}" stroke-dashoffset="${dashoffset}"></circle>`;
+    off += seg + gap;
+  }
+  return `<svg class="pin__ring" viewBox="0 0 46 46" aria-label="Weitere Besuchstage: ${titles}"><g>${circles}</g></svg>`;
+}
+
+function makePin(spotId, isHome, seq, color, role, focusKey, isLake, ringSegments){
   const c = color || '#e6194b';
   const primary = isLake ? "~" : (seq != null ? seq : spotId);
   const subHtml = (!isLake && seq != null) ? `<div class="pin__sub">#${spotId}</div>` : "";
   const roleHtml = role==="start" ? `<div class="pin__start" aria-hidden="true"></div>` : role==="end" ? `<div class="pin__end" aria-hidden="true"></div>` : "";
   const dataAttr = focusKey ? ` data-focus-key="${focusKey}"` : "";
-  const hasRing = !!ringColor;
+  const hasRing = Array.isArray(ringSegments) && ringSegments.length > 0;
   const cls = `pin ${isHome?'pin--home':''} ${isLake?'pin--lake':''} ${hasRing?'pin--ring':''}`.trim().replace(/\s+/g,' ');
-  const styleStr = `--dc:${c}${hasRing ? `;--rc:${ringColor}` : ''}`;
+  const styleStr = `--dc:${c}`;
+  const ringHtml = hasRing ? ringSvg(ringSegments) : "";
   return L.divIcon({ className:"", iconSize:[46,46], iconAnchor:[23,44], popupAnchor:[0,-38],
-    html:`<div class="${cls}" style="${styleStr}"${dataAttr}><div class="pin__body"></div><div class="pin__num">${primary}</div>${subHtml}${roleHtml}</div>` });
+    html:`<div class="${cls}" style="${styleStr}"${dataAttr}><div class="pin__body"></div>${ringHtml}<div class="pin__num">${primary}</div>${subHtml}${roleHtml}</div>` });
 }
 
-/* Ring-Color für Mehrtages-Spots:
-   - Pleißenhof (Homebase, jeden Tag) wird ausgenommen → kein Ring
-   - Single-Day Spots → kein Ring
-   - currentDayN === null (Übersicht): Ring = letzter Besuchstag → "kommt nochmal"
-   - currentDayN gesetzt (Tag-Modus): Ring = jüngster anderer Tag (nicht der aktive),
-     verhindert dass Ring-Farbe = Fill-Farbe wird (sonst unsichtbar) */
-function spotRingColor(spotId, currentDayN){
-  if(spotId === 1) return null;
+/* Ring-Segmente fuer Multi-Day-Spots:
+   - Pleissenhof (1) + See (15): IMMER ausgenommen, keine Multi-Ring-Behandlung
+   - Single-Day Spots: kein Ring
+   - currentDayN==null (Uebersicht): Ring zeigt alle Tage AUSSER primaryDay
+   - currentDayN gesetzt (Tag-Modus): Innen=aktiver Tag (Caller setzt color),
+     Ring zeigt alle Tage AUSSER currentDayN — chronologisch, kleinste Tagesnummer oben */
+function spotRingSegments(spotId, currentDayN){
+  if(spotId === 1 || spotId === 15) return null;
   const days = (typeof spotDayMap !== "undefined") ? spotDayMap[spotId] : null;
   if(!days || days.size < 2) return null;
-  const sorted = [...days].sort((a,b)=>a-b);
-  if(currentDayN == null) return dayColor(sorted[sorted.length - 1]);
-  const others = sorted.filter(d => d !== currentDayN);
-  if(!others.length) return null;
-  return dayColor(others[others.length - 1]);
+  const sorted = [...days].sort((a,b) => a-b);
+  const innerDay = (currentDayN != null) ? currentDayN : spotPrimaryDay[spotId];
+  const others = sorted.filter(d => d !== innerDay);
+  if(others.length === 0) return null;
+  return others.map(d => ({ day:d, color:dayColor(d) }));
 }
 function popupHtml(s, dayLabel, seq){
   const seqLine = seq ? `<div class="pop__time">Stop ${seq} im Tag</div>` : "";
@@ -2267,8 +2309,8 @@ eventDays.forEach((d, i) => {
       ? (si===0 ? "start" : (si===d.stops.length-1 ? "end" : null))
       : null;
     const pinColor = s.lake ? '#1e88e5' : c;
-    const ring = spotRingColor(s.id, d.n);
-    const marker = L.marker(s.coords, { icon:makePin(s.id, !!s.home, seq, pinColor, role, `d${i}s${si}`, !!s.lake, ring), zIndexOffset:1000 });
+    const ringSegs = spotRingSegments(s.id, d.n);
+    const marker = L.marker(s.coords, { icon:makePin(s.id, !!s.home, seq, pinColor, role, `d${i}s${si}`, !!s.lake, ringSegs), zIndexOffset:1000 });
     attachPinTap(marker, s.id, [s, `Tag ${d.n} · ${d.tag}`, seq]);
     marker.addTo(group);
     markers.push(marker);
@@ -2356,8 +2398,8 @@ const allStopMarkers = {};
 Object.entries(spotsMaster).forEach(([id, s]) => {
   const nId = +id;
   const c = s.lake ? '#1e88e5' : dayColor(spotPrimaryDay[nId] || 1);
-  const ring = spotRingColor(nId, null);
-  const marker = L.marker(s.coords, { icon:makePin(nId, !!s.home, null, c, null, `all${nId}`, !!s.lake, ring) });
+  const ringSegs = spotRingSegments(nId, null);
+  const marker = L.marker(s.coords, { icon:makePin(nId, !!s.home, null, c, null, `all${nId}`, !!s.lake, ringSegs) });
   attachPinTap(marker, nId, [{...s, id:nId}, "Alle Tage"]);
   marker.addTo(allLayer);
   allStopMarkers[nId] = marker;
@@ -2571,19 +2613,13 @@ function showDay(idx, opts){
   map.removeLayer(allLayer);
   if(idx === -1){
     allLayer.addTo(map);
-    // Bounds nur über die Stadt-Spots — Pleissenhof (Homebase) und der See liegen
-    // weit suedlich und wuerden den Fokus aus der Stadt rausziehen.
-    // Beide Pins bleiben auf der Karte (allLayer) und sind ueber Pan oder die
-    // Spot-Übersicht erreichbar.
-    const cityCoords = Object.values(spotsMaster)
-      .filter(s => !s.home && !s.lake)
-      .map(s => s.coords);
-    const ob = L.latLngBounds(cityCoords);
-    map.flyToBounds(ob.pad(0.18), { duration:.9, paddingTopLeft:[20,100], paddingBottomRight:[20,60] });
+    applyOverview({ animated:true });
   } else {
     dayLayers[idx].addTo(map);
-    const bounds = L.latLngBounds(eventDays[idx].stops.map(s=>s.coords));
-    map.flyToBounds(bounds.pad(0.28), { duration:.55 });
+    const bounds = L.latLngBounds(eventDays[idx].stops.map(s=>s.coords)).pad(0.18);
+    try { map.stop(); } catch(_){}
+    try { map.invalidateSize({ pan:false }); } catch(_){}
+    map.flyToBounds(bounds, { duration:.55, easeLinearity:.25 });
   }
   renderPanel();
   renderTopbar();
@@ -2599,21 +2635,84 @@ function showDay(idx, opts){
 
 resetBtn.addEventListener("click", () => showDay(-1));
 
-/* Initial render · Uebersicht zentriert auf die Stadt-Spots
-   (Pleissenhof + See bewusst aus Bounds ausgeschlossen, damit der Stadtbezirk
-   die Hauptflaeche der Karte einnimmt; beide bleiben aber sichtbar als Pins
-   ausserhalb des Initial-Fits oder erreichbar via Spot-Übersicht). */
+/* === SINGLE SOURCE OF TRUTH fuer Uebersichts-Fit ===
+   Pleissenhof (1) und See (15) bewusst aus Bounds ausgeschlossen — die liegen
+   suedlich und wuerden den Fokus aus der Stadt rausziehen. Beide Pins bleiben
+   sichtbar als Marker auf der Karte, erreichbar per Pan oder Spot-Übersicht. */
 allLayer.addTo(map);
-try {
+
+function computeOverviewBounds(){
   const cityCoords = Object.values(spotsMaster)
     .filter(s => !s.home && !s.lake)
     .map(s => s.coords);
-  const overviewBounds = L.latLngBounds(cityCoords);
-  map.fitBounds(overviewBounds.pad(0.18), { paddingTopLeft:[30,110], paddingBottomRight:[30,80], animate:false });
-  setTimeout(() => {
-    try { map.invalidateSize(); map.fitBounds(overviewBounds.pad(0.18), { paddingTopLeft:[20,100], paddingBottomRight:[20,60], animate:false }); } catch(_){}
-  }, 400);
-} catch(_){}
+  return L.latLngBounds(cityCoords).pad(0.12);
+}
+function overviewPadding(){
+  /* Auf Mobile (Container ~340-360px hoch) sind grosse Top-Paddings prozentual zu viel.
+     Auf Desktop (~600-820px) sind 90px nur ~12% — angemessen. */
+  const isMobile = matchMedia("(max-width:960px)").matches;
+  return isMobile
+    ? { paddingTopLeft:[16, 70], paddingBottomRight:[16, 30] }
+    : { paddingTopLeft:[24, 90], paddingBottomRight:[24, 50] };
+}
+function applyOverview(opts){
+  const animated = !!(opts && opts.animated);
+  const bounds = computeOverviewBounds();
+  const pad = overviewPadding();
+  try { map.stop(); } catch(_){}
+  try { map.invalidateSize({ pan:false, debounceMoveend:true }); } catch(_){}
+  if(animated){
+    map.flyToBounds(bounds, Object.assign({ duration:.55, easeLinearity:.25 }, pad));
+  } else {
+    map.fitBounds(bounds, Object.assign({ animate:false }, pad));
+  }
+}
+
+let _initialFitDone = false;
+function fitOverviewWhenReady(){
+  if(_initialFitDone) return;
+  const el = document.getElementById("mapCanvas");
+  if(!el) return;
+  if(el.clientWidth === 0 || el.clientHeight === 0) return;
+  _initialFitDone = true;
+  applyOverview({ animated:false });
+}
+
+/* 1) Sofort-Versuch (falls <details open> oder kein <details>) */
+fitOverviewWhenReady();
+
+/* 2) <details id="map"> aufgeklappt -> Snap auf Uebersicht.
+      Zwei rAF + Backup-Timeout nach foldIn-Animation (.4s). */
+const _mapDetails = document.getElementById("map");
+if(_mapDetails){
+  _mapDetails.addEventListener("toggle", () => {
+    if(!_mapDetails.open) return;
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      if(!_initialFitDone){ fitOverviewWhenReady(); }
+      else { applyOverview({ animated:false }); }
+    }));
+    setTimeout(() => {
+      if(!_initialFitDone){ fitOverviewWhenReady(); }
+      else { try { map.invalidateSize({ pan:false }); applyOverview({ animated:false }); } catch(_){} }
+    }, 450);
+  });
+}
+
+/* 3) ResizeObserver als Backup: Container-Hoehe wird groesser als 0
+      -> erstmaliger Fit, plus invalidateSize bei jedem Layout-Shift. */
+if(typeof ResizeObserver !== "undefined"){
+  const _ro = new ResizeObserver((entries) => {
+    for(const e of entries){
+      const cr = e.contentRect;
+      if(cr.width > 0 && cr.height > 0){
+        if(!_initialFitDone){ fitOverviewWhenReady(); }
+        try { map.invalidateSize({ pan:false }); } catch(_){}
+      }
+    }
+  });
+  const mc = document.getElementById("mapCanvas");
+  if(mc) _ro.observe(mc);
+}
 renderPanel();
 renderTopbar();
 renderLegend();
@@ -2631,14 +2730,13 @@ document.querySelectorAll("[data-focus-day]").forEach(btn => {
     /* Mobile-Gate triggern, damit die Karte sofort interagierbar ist */
     const gate = document.getElementById("mapGate");
     if(gate && gate.classList.contains("is-visible")) gate.click();
-    /* Tag aktivieren + auf Stops fitBounden */
-    showDay(idx);
-    /* Layout-Settle, dann scrollen + map sanity-check */
-    requestAnimationFrame(() => {
-      try { map.invalidateSize(); } catch(_){}
+    /* Erst Layout-Settle (fuer frisch geoeffnetes <details>), dann showDay. */
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      try { map.invalidateSize({ pan:false }); } catch(_){}
+      showDay(idx);
       const target = document.getElementById("mapCanvas") || mapSec;
       if(target) target.scrollIntoView({ behavior:"smooth", block:"start" });
-    });
+    }));
   });
 });
 /* ============ SPOT DETAIL OVERLAY ============ */
