@@ -992,7 +992,7 @@ a{color:inherit;text-decoration:none}
   <div class="overview-grid reveal">
     <div class="overview-cell"><b>08–16</b><div><div class="label" data-i18n="overview.cell.dates.label">August 2026</div><div class="desc" data-i18n="overview.cell.dates.desc">Samstag zu Sonntag. Ankommen, riden, abreisen.</div></div></div>
     <div class="overview-cell"><b>35</b><div><div class="label" data-i18n="overview.cell.slots.label">Plätze maximal</div><div class="desc" data-i18n="overview.cell.slots.desc">25 Pleißenhof · 10 Heizhaus-Schlafplatz. Ab Platz 36 selbst.</div></div></div>
-    <div class="overview-cell overview-cell--jump" data-jump="stay" role="button" tabindex="0" aria-label="Zu 'Wo du schläfst' springen"><b>25 €</b><div><div class="label" data-i18n="overview.cell.fee.label">Einmalige Teilnahmegebühr · vor Ort</div><div class="desc" data-i18n-html="overview.cell.fee.desc.html">Pro Person, einmalig — Zahlung bar bei Anmeldung am Pleißenhof. Inkl. Zelten. <span class="overview-cell__cta">Details zu Übernachtung → „Wo du schläfst" ↗</span></div></div></div>
+    <div class="overview-cell overview-cell--jump" data-jump="stay" role="button" tabindex="0" data-i18n-attr="aria-label:overview.jump_aria" aria-label="Zu 'Wo du schläfst' springen"><b>25 €</b><div><div class="label" data-i18n="overview.cell.fee.label">Einmalige Teilnahmegebühr · vor Ort</div><div class="desc" data-i18n-html="overview.cell.fee.desc.html">Pro Person, einmalig — Zahlung bar bei Anmeldung am Pleißenhof. Inkl. Zelten. <span class="overview-cell__cta">Details zu Übernachtung → „Wo du schläfst" ↗</span></div></div></div>
     <div class="overview-cell"><b>17</b><div><div class="label" data-i18n-html="overview.cell.spots.label">Spots &amp; Locations</div><div class="desc" data-i18n="overview.cell.spots.desc">Street, Flat, DIY, Parks — plus Bade-See direkt am Camp.</div></div></div>
     <div class="overview-cell"><b>Self</b><div><div class="label" data-i18n="overview.cell.self.label">Selbstverpflegung</div><div class="desc" data-i18n="overview.cell.self.desc">Crew kocht, teilt, grillt. Foodliste für Tag 2 bei Ankunft.</div></div></div>
     <div class="overview-cell"><b>16+</b><div><div class="label" data-i18n="overview.cell.age.label">Mindestalter</div><div class="desc" data-i18n="overview.cell.age.desc">Ab 16 Jahren — keine Ausnahme.</div></div></div>
@@ -1179,10 +1179,10 @@ a{color:inherit;text-decoration:none}
         <div class="map-topbar" id="mapTopbar"></div>
       </section>
       <div id="mapCanvas"></div>
-      <div class="map-gate is-visible" id="mapGate" role="button" tabindex="0" aria-label="Karte aktivieren">
+      <div class="map-gate is-visible" id="mapGate" role="button" tabindex="0" data-i18n-attr="aria-label:map.gate.aria" aria-label="Karte aktivieren">
         <div class="map-gate__card"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.5-7-12a7 7 0 1 1 14 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg><span data-i18n="map.gate.activate">Tippen zum Aktivieren</span></div>
       </div>
-      <button class="map-lock-btn" id="mapLock" type="button" aria-label="Karte sperren" data-i18n="map.lock.label">✕ Sperren</button>
+      <button class="map-lock-btn" id="mapLock" type="button" data-i18n="map.lock.label" data-i18n-attr="aria-label:map.lock.aria" aria-label="Karte sperren">✕ Sperren</button>
     </div>
   </div>
   </div>
@@ -1553,6 +1553,9 @@ const I18N = {
       "ps.spots.col.num":"#","ps.spots.col.name":"Name","ps.spots.col.address":"Adresse","ps.spots.col.days":"Tage",
       "ps.foot.signup.full.html":"<b>Anmeldung</b>Mail an <span>folke.kleinrad@gmail.com</span> · Betreff: „Anmeldung · Leipzig Invitation 2026“. Nötig: Name, Ankunft, Abreise, Unterkunftswunsch (Pleißenhof 25 € einmalig / Heizhaus-Übernachtung 10 € pro Nacht / selbst), Allergien, Sonstiges. Antwort i. d. R. innerhalb 48 h.",
       "ps.foot.dropin.full.html":"<b>Drop-In-Regel</b>16+ · eigene Verantwortung · Zelt &amp; Schlafzeug mitbringen · Einrad/Helm selbstverständlich. Keine Online-Vorabzahlung — die 25 € werden <b>bar vor Ort bei Anmeldung</b> kassiert und decken Location, Strom, Müll, Orga.",
+      "overview.jump_aria":"Zu „Wo du schläfst“ springen",
+      "map.gate.aria":"Karte aktivieren",
+      "map.lock.aria":"Karte sperren",
       "so.eyebrow":"Alle Orte · 1 Klick","so.title":"Spot Übersicht",
       "so.lede":"Sortiert nach Spot-ID. Klick auf einen Spot öffnet die Details mit Adresse, Galerie und Routenlink.",
       "so.legend.spot":"Spot","so.legend.home":"Homebase","so.legend.lake":"Badesee",
@@ -1675,6 +1678,9 @@ const I18N = {
       "ps.spots.col.num":"#","ps.spots.col.name":"Name","ps.spots.col.address":"Address","ps.spots.col.days":"Days",
       "ps.foot.signup.full.html":"<b>Sign-up</b>Mail to <span>folke.kleinrad@gmail.com</span> · Subject: \"Sign-up · Leipzig Invitation 2026\". Required: name, arrival, departure, lodging preference (Pleißenhof €25 one-time / Heizhaus overnight €10 per night / self-organised), allergies, notes. Reply usually within 48h.",
       "ps.foot.dropin.full.html":"<b>Drop-in rule</b>16+ · own responsibility · bring tent &amp; sleeping gear · unicycle/helmet a given. No online prepayment — €25 is collected <b>in cash on site at sign-up</b> and covers location, power, trash, organisation.",
+      "overview.jump_aria":"Jump to \"Where you sleep\"",
+      "map.gate.aria":"Activate map",
+      "map.lock.aria":"Lock map",
       "so.eyebrow":"All spots · 1 click","so.title":"Spot Overview",
       "so.lede":"Sorted by spot ID. Click a spot to open details with address, gallery and route link.",
       "so.legend.spot":"Spot","so.legend.home":"Homebase","so.legend.lake":"Lake",
