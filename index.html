@@ -1487,7 +1487,7 @@ const I18N = {
       "map.gate.activate":"Tippen zum Aktivieren","map.lock.label":"✕ Sperren",
       "map.popup.navigation":"Navigation →","map.popup.details":"Details",
       "map.popup.poi.food":"Essen · Café","map.popup.poi.wc":"WC · Toilette",
-      "map.reset_back":"Zurück zur Übersicht",
+      "map.reset_back":"Zurück zur Übersicht","map.topbar.all_days":"Alle Tage",
       "faq.eyebrow":"FAQ","faq.title.html":"Good to <em>know.</em>",
       "faq.lede":"Anmeldung, Kosten, Anreise, Schlafen, Verpflegung, Spots, Sicherheit, alle Antworten auf einen Klick.",
       "faq.q1.q":"Wer kann mitmachen, und welches Level brauche ich?",
@@ -1624,7 +1624,7 @@ const I18N = {
       "map.gate.activate":"Tap to activate","map.lock.label":"✕ Lock",
       "map.popup.navigation":"Navigation →","map.popup.details":"Details",
       "map.popup.poi.food":"Food · café","map.popup.poi.wc":"WC · toilet",
-      "map.reset_back":"Back to overview",
+      "map.reset_back":"Back to overview","map.topbar.all_days":"All days",
       "faq.eyebrow":"FAQ","faq.title.html":"Good to <em>know.</em>",
       "faq.lede":"Sign-up, costs, travel, sleep, food, spots, safety, all the answers in one click.",
       "faq.q1.q":"Who can join, and what skill level do I need?",
@@ -1909,7 +1909,7 @@ function buildPrintSheet(){
       const stops = (d.stops || []).map(s => `
         <li>
           <time>${escapeHtml(tTime(s.time) || "")}</time>
-          <div class="nm">${escapeHtml(s.title)}<em>${escapeHtml(s.addr || "")}</em></div>
+          <div class="nm">${escapeHtml(tSpot(s,"title"))}<em>${escapeHtml(tSpot(s,"addr") || "")}</em></div>
         </li>
       `).join("");
       return `
@@ -1935,8 +1935,8 @@ function buildPrintSheet(){
       const days = spotDayMap && spotDayMap[id] ? [...spotDayMap[id]].sort((a,b)=>a-b).map(n => dayPrefix+n).join(" · ") : "…";
       return `<tr>
         <td class="ps-num">${id}</td>
-        <td><b>${escapeHtml(s.title)}</b></td>
-        <td>${escapeHtml(s.addr)}</td>
+        <td><b>${escapeHtml(tSpot(s,"title"))}</b></td>
+        <td>${escapeHtml(tSpot(s,"addr"))}</td>
         <td>${escapeHtml(days)}</td>
       </tr>`;
     }).join("");
@@ -1957,9 +1957,12 @@ if(pdfBtn) pdfBtn.addEventListener("click", () => {
 
 /* ============ DATA ============ */
 const accommodations = [
-  { name:"Pleißenhof · Homebase", city:"Markkleeberg", address:"Bornaische Str. 68, 04416 Markkleeberg", cost:"25 €", costNote:"einmalig · bar vor Ort", slots:25, note:"Teilnahmegebühr 25 € pro Person für das gesamte Event, <strong>Zahlung bar vor Ort bei Anmeldung am Pleißenhof</strong>. Zelten auf dem Gelände inklusive. First come, first serve. Strandhaus am See 300 m entfernt.", mapsUrl:"https://maps.app.goo.gl/weCVkzvTJEUxFYG77" },
-  { name:"Heizhaus · Schlafplatz (Option)", city:"Leipzig West", address:"Alte Salzstraße 63, 04209 Leipzig", cost:"10 € / Nacht", costNote:"direkt ans Heizhaus", slots:10, note:"Anmeldung für die Übernachtung direkt auf der <strong>Heizhaus-Webseite</strong>, <strong>10 € die Nacht</strong>, das Geld geht ans Heizhaus. Kommt <strong>zusätzlich</strong> zur Anmeldegebühr drauf.", mapsUrl:"https://maps.app.goo.gl/JShsajAzJpGFTfQu9?g_st=ac", webUrl:"https://heizhaus-leipzig.de/" },
-  { name:"Selbst organisieren", city:"ab Platz 36", address:"Campingplatz · Hostel · Hotel · Jugendherberge", cost:"variabel", costNote:"eigene Buchung", slots:"∞", note:"Sobald Pleißenhof und Heizhaus-Schlafplätze voll sind, regelt sich jeder selbst.", mapsUrl:"https://www.google.com/maps/search/Leipzig+Hostel+Hotel" }
+  { name:"Pleißenhof · Homebase", city:"Markkleeberg", address:"Bornaische Str. 68, 04416 Markkleeberg", cost:"25 €", costNote:"einmalig · bar vor Ort", slots:25, note:"Teilnahmegebühr 25 € pro Person für das gesamte Event, <strong>Zahlung bar vor Ort bei Anmeldung am Pleißenhof</strong>. Zelten auf dem Gelände inklusive. First come, first serve. Strandhaus am See 300 m entfernt.", mapsUrl:"https://maps.app.goo.gl/weCVkzvTJEUxFYG77",
+    en:{ costNote:"one-time · cash on site", note:"€25 entry fee per person for the full event, <strong>cash on site at sign-up at Pleißenhof</strong>. Camping on the grounds included. First come, first serve. Lake beach 300 m away." } },
+  { name:"Heizhaus · Schlafplatz (Option)", city:"Leipzig West", address:"Alte Salzstraße 63, 04209 Leipzig", cost:"10 € / Nacht", costNote:"direkt ans Heizhaus", slots:10, note:"Anmeldung für die Übernachtung direkt auf der <strong>Heizhaus-Webseite</strong>, <strong>10 € die Nacht</strong>, das Geld geht ans Heizhaus. Kommt <strong>zusätzlich</strong> zur Anmeldegebühr drauf.", mapsUrl:"https://maps.app.goo.gl/JShsajAzJpGFTfQu9?g_st=ac", webUrl:"https://heizhaus-leipzig.de/",
+    en:{ name:"Heizhaus · Sleeping (option)", cost:"10 € / night", costNote:"directly to Heizhaus", note:"Book the overnight stay directly on the <strong>Heizhaus website</strong>, <strong>10 € per night</strong>, the money goes to Heizhaus. Comes <strong>on top</strong> of the entry fee." } },
+  { name:"Selbst organisieren", city:"ab Platz 36", address:"Campingplatz · Hostel · Hotel · Jugendherberge", cost:"variabel", costNote:"eigene Buchung", slots:"∞", note:"Sobald Pleißenhof und Heizhaus-Schlafplätze voll sind, regelt sich jeder selbst.", mapsUrl:"https://www.google.com/maps/search/Leipzig+Hostel+Hotel",
+    en:{ name:"Organise yourself", city:"from spot #36", address:"campsite · hostel · hotel · youth hostel", cost:"variable", costNote:"book yourself", note:"Once Pleißenhof and Heizhaus beds are full, everyone organises their own stay." } }
 ];
 
 const IMG = {
@@ -2033,24 +2036,48 @@ const VID = {
 };
 
 const spotsMaster = {
-  1:  { title:"Pleißenhof · Homebase",          addr:"Bornaische Str. 68, Markkleeberg",     coords:[51.2758,12.3964], desc:"Der Pleißenhof ist ein Vierseitenhof am Rand von Leipzig (Markkleeberg) mit einer Obstbaumwiese, auf der gezeltet wird (max. 25 Personen). Ein gemeinsamer Ort zum Ankommen und Zusammensein.\n\nIn der Partyscheune auf dem Hof wird zusammen gekocht, gegessen, geredet und auch Indoor gefahren. Hier lassen wir die Tage ausklingen.\n\nDer Hof ist gut mit der Straßenbahn erreichbar, der Markkleeberger See liegt nur wenige Minuten entfernt.\n\nDer Pleißenhof wird als Genossenschaft betrieben, ein achtsamer und respektvoller Umgang miteinander und mit dem Ort ist uns wichtig.", mapsUrl:"https://maps.app.goo.gl/weCVkzvTJEUxFYG77", img:IMG.plei1, home:true },
-  2:  { title:"Plaza · Wagner-Platz",           addr:"Richard-Wagner-Platz 1, 04109 Leipzig", coords:[51.3432,12.3723], desc:"Großer Platz in der Innenstadt mit Springbrunnen und angrenzenden Restaurants und Shopping Mall.\n\nAuf dem Platz ist ein Skatepark mit Ledges, Marmorboden und Wasserbrunnen.",                  mapsUrl:"https://maps.app.goo.gl/dd29GXX65ni8C1LT8",          img:IMG.plaza1 },
-  3:  { title:"Heizhaus · Indoor",              addr:"Alte Salzstraße 63, 04209 Leipzig",    coords:[51.3205,12.2991], desc:"Großer Skatepark in Grünau mit Street Section, Bowl und Miniramp sowie einer 1000 m² großen Indoor-Skatehalle.\n\nÜbernachtung ist möglich, Anmeldung direkt auf heizhaus-leipzig.de, 10 € die Nacht, zusätzlich zur Anmeldegebühr.", mapsUrl:"https://maps.app.goo.gl/JShsajAzJpGFTfQu9?g_st=ac", img:IMG.heiz1, webUrl:"https://heizhaus-leipzig.de/" },
-  4:  { title:"Giezer Skatespot DIY",           addr:"Naumburger Str. 44, 04229 Leipzig",    coords:[51.3270,12.3256], desc:"Von den Lokals gebaute Obstacles neben einem Fußweg.\n\nPartylocations, Backstein-Restaurant und Konsum nebenan.",    mapsUrl:"https://maps.app.goo.gl/FfhY9LhZF2jNgfQh6?g_st=ac", img:IMG.geizer1, primaryDay:8 },
-  5:  { title:"Biomare Südvorstadt",            addr:"Karl-Liebknecht-Str. 27, 04107 Leipzig", coords:[51.3281,12.3742], desc:"Flat & Street. Zwei 3er-Stairs plus 7-Stair mit Downrail. Technisches Gelände.",                mapsUrl:"https://maps.app.goo.gl/Qh9e5h8DKNPHF5BK7",         img:IMG.biomare },
-  6:  { title:"Propsteikirche St. Trinitatis",  addr:"Nonnenmühlgasse 2, 04107 Leipzig",     coords:[51.3352,12.3729], desc:"Moderne Sakralarchitektur mit vielseitigen Obstacles: ein größer werdendes Stairset (bis zu 6 Stufen) mit Downrail, ein 8-Stufen-Set mit Kinkrail sowie zwei Downledges.",               mapsUrl:"https://maps.app.goo.gl/n7dXYNUHT4Hd77uZ6?g_st=ac", img:IMG.probstei1 },
-  7:  { title:"Moritzbastei",                   addr:"Kurt-Masur-Platz 1, 04109 Leipzig",    coords:[51.3372,12.3792], desc:"Historische Festungsmauer, Stein-Ledges, Treppen. Mitten im Zentrum.",                         mapsUrl:"https://maps.app.goo.gl/m18f2n53uQgcfMo48",         img:IMG.moritz1 },
-  8:  { title:"Augustusplatz",                  addr:"Augustusplatz, 04109 Leipzig",         coords:[51.3389,12.3815], desc:"Großer Platz im Stadtzentrum. Weite Flächen für Flat, Kanten für Street.",                     mapsUrl:"https://maps.app.goo.gl/Km7ESNiwQyAfe6mk9",         img:IMG.augustus1 },
-  9:  { title:"Skatepark Leipzig · AOK",        addr:"Anton-Bruckner-Allee 1, 04229 Leipzig", coords:[51.3282,12.3531], desc:"Skatepark im Clarapark an der Sachsenbrücke.\n\nHier sind: eine Spine, mehrere Boxen und eine Quarter.",   mapsUrl:"https://maps.app.goo.gl/3BtepMxP2pX6VbKQ6",         img:IMG.aok1 },
-  10: { title:"Conne Island",                   addr:"Koburger Str. 3, 04277 Leipzig",       coords:[51.3023,12.3745], desc:"Das Island ist ein Kultur- und Musikzentrum.\n\nEs besteht aus einer DIY-Bowl und Miniramp mit einer kleinen Street-Area, Tischtennisplatten, Graffiti-Walls und Veranstaltungsräumen.",                       mapsUrl:"https://maps.app.goo.gl/1WTkLsJX3HB9veBb6?g_st=ac", img:IMG.conne },
-  11: { title:"Spielplatz Herderstr. · Connewitz", addr:"Herderstraße 5, 04277 Leipzig",     coords:[51.3078,12.3741], desc:"Entspanntes Gelände für gemeinsames Essen und lockeres Riden.",                                mapsUrl:"https://maps.app.goo.gl/6nTxkcr9vXWAtRrH9",         img:null },
-  12: { title:"MDR Leipzig",                    addr:"Kantstraße 71–73, 04275 Leipzig",      coords:[51.3156,12.3846], desc:"DIY-Spot an der MDR-S-Bahn-Station.",                 mapsUrl:"https://maps.app.goo.gl/cNaJeusZk9FMrQNa9",         img:IMG.mdr1 },
-  13: { title:"DNB Magazinturm · Alte Messe",   addr:"Deutscher Pl. 1, 04103 Leipzig",       coords:[51.3223,12.3972], desc:"Deutsche Nationalbibliothek Magazinturm. Brutalismus, offene Plazas, Street & Flat.",          mapsUrl:"https://maps.app.goo.gl/Va54MWz71W3Wjvmw7?g_st=ac", img:IMG.mdr2 },
-  14: { title:"Reudnitz Skatepark",             addr:"Fröschelstraße 4, 04317 Leipzig",      coords:[51.3348,12.4019], desc:"Großer Park, solide Obstacles. Rails, Quarters, Ledges. Street bis in den Abend.",             mapsUrl:"https://maps.app.goo.gl/MfE7mifyHYmtSYvt7?g_st=ac", img:IMG.mdr4 },
-  15: { title:"Haus am See",                    addr:"Strandbad Ost Markkleeberger See · Auenhainer Str. 1, 04416 Markkleeberg", coords:[51.271034,12.397521], desc:"Badesee direkt nebenan.\n\nStrand ist 300 m entfernt.", mapsUrl:"https://maps.app.goo.gl/9x3vtyWNHKamvns59?g_st=ac", img:IMG.see, lake:true },
-  16: { title:"Wilhelm-Leuschner-Platz",        addr:"Wilhelm-Leuschner-Platz, 04107 Leipzig", coords:[51.3350,12.3750], desc:"Treffpunkt zum Skateboard Jam am letzten Tag. Großzügige Fläche im Zentrum, Kanten und offenes Pflaster.", mapsUrl:"https://www.google.com/maps/search/Wilhelm-Leuschner-Platz+Leipzig", img:IMG.wilhelm1 },
-  17: { title:"Penny Plagwitz · 15er-Stairset", addr:"Plagwitz, 04229 Leipzig",              coords:[51.3239,12.3325], desc:"Zwischenstopp auf dem Weg zum Giezer DIY. Getränke kaufen, 15er-Stairset und Wallride fahren, kurzer, knackiger Stop.", mapsUrl:"https://www.google.com/maps/search/Penny+Plagwitz+Leipzig", img:IMG.penny1 }
+  1:  { title:"Pleißenhof · Homebase",          addr:"Bornaische Str. 68, Markkleeberg",     coords:[51.2758,12.3964], desc:"Der Pleißenhof ist ein Vierseitenhof am Rand von Leipzig (Markkleeberg) mit einer Obstbaumwiese, auf der gezeltet wird (max. 25 Personen). Ein gemeinsamer Ort zum Ankommen und Zusammensein.\n\nIn der Partyscheune auf dem Hof wird zusammen gekocht, gegessen, geredet und auch Indoor gefahren. Hier lassen wir die Tage ausklingen.\n\nDer Hof ist gut mit der Straßenbahn erreichbar, der Markkleeberger See liegt nur wenige Minuten entfernt.\n\nDer Pleißenhof wird als Genossenschaft betrieben, ein achtsamer und respektvoller Umgang miteinander und mit dem Ort ist uns wichtig.", mapsUrl:"https://maps.app.goo.gl/weCVkzvTJEUxFYG77", img:IMG.plei1, home:true,
+        en:{ desc:"Pleißenhof is a four-sided farm on the edge of Leipzig (Markkleeberg) with an orchard meadow for camping (max. 25 people). A shared place to arrive and be together.\n\nIn the party barn we cook, eat, talk and ride indoor together. Here we wind down the days.\n\nThe farm is well connected by tram, Markkleeberger lake just a few minutes away.\n\nPleißenhof is run as a co-operative — mindful and respectful behaviour with each other and with the place is important to us." } },
+  2:  { title:"Plaza · Wagner-Platz",           addr:"Richard-Wagner-Platz 1, 04109 Leipzig", coords:[51.3432,12.3723], desc:"Großer Platz in der Innenstadt mit Springbrunnen und angrenzenden Restaurants und Shopping Mall.\n\nAuf dem Platz ist ein Skatepark mit Ledges, Marmorboden und Wasserbrunnen.",                  mapsUrl:"https://maps.app.goo.gl/dd29GXX65ni8C1LT8",          img:IMG.plaza1,
+        en:{ desc:"Large square in the city centre with fountain, surrounding restaurants and a shopping mall.\n\nOn the plaza there is a skate area with ledges, marble floor and water fountains." } },
+  3:  { title:"Heizhaus · Indoor",              addr:"Alte Salzstraße 63, 04209 Leipzig",    coords:[51.3205,12.2991], desc:"Großer Skatepark in Grünau mit Street Section, Bowl und Miniramp sowie einer 1000 m² großen Indoor-Skatehalle.\n\nÜbernachtung ist möglich, Anmeldung direkt auf heizhaus-leipzig.de, 10 € die Nacht, zusätzlich zur Anmeldegebühr.", mapsUrl:"https://maps.app.goo.gl/JShsajAzJpGFTfQu9?g_st=ac", img:IMG.heiz1, webUrl:"https://heizhaus-leipzig.de/",
+        en:{ desc:"Large skatepark in Grünau with a street section, bowl and miniramp, plus a 1000 m² indoor skate hall.\n\nOvernight stays are possible, book directly on heizhaus-leipzig.de, 10 € per night, on top of the entry fee." } },
+  4:  { title:"Giezer Skatespot DIY",           addr:"Naumburger Str. 44, 04229 Leipzig",    coords:[51.3270,12.3256], desc:"Von den Lokals gebaute Obstacles neben einem Fußweg.\n\nPartylocations, Backstein-Restaurant und Konsum nebenan.",    mapsUrl:"https://maps.app.goo.gl/FfhY9LhZF2jNgfQh6?g_st=ac", img:IMG.geizer1, primaryDay:8,
+        en:{ desc:"Local-built obstacles next to a footpath.\n\nParty venues, brick-house restaurant and convenience store right next door." } },
+  5:  { title:"Biomare Südvorstadt",            addr:"Karl-Liebknecht-Str. 27, 04107 Leipzig", coords:[51.3281,12.3742], desc:"Flat & Street. Zwei 3er-Stairs plus 7-Stair mit Downrail. Technisches Gelände.",                mapsUrl:"https://maps.app.goo.gl/Qh9e5h8DKNPHF5BK7",         img:IMG.biomare,
+        en:{ title:"Biomare South Side", desc:"Flat & street. Two 3-stair sets plus a 7-stair with downrail. Technical terrain." } },
+  6:  { title:"Propsteikirche St. Trinitatis",  addr:"Nonnenmühlgasse 2, 04107 Leipzig",     coords:[51.3352,12.3729], desc:"Moderne Sakralarchitektur mit vielseitigen Obstacles: ein größer werdendes Stairset (bis zu 6 Stufen) mit Downrail, ein 8-Stufen-Set mit Kinkrail sowie zwei Downledges.",               mapsUrl:"https://maps.app.goo.gl/n7dXYNUHT4Hd77uZ6?g_st=ac", img:IMG.probstei1,
+        en:{ desc:"Modern sacral architecture with versatile obstacles: a growing stair set (up to 6 steps) with downrail, an 8-step set with kinkrail, and two down ledges." } },
+  7:  { title:"Moritzbastei",                   addr:"Kurt-Masur-Platz 1, 04109 Leipzig",    coords:[51.3372,12.3792], desc:"Historische Festungsmauer, Stein-Ledges, Treppen. Mitten im Zentrum.",                         mapsUrl:"https://maps.app.goo.gl/m18f2n53uQgcfMo48",         img:IMG.moritz1,
+        en:{ desc:"Historic fortress wall, stone ledges, stairs. Right in the city centre." } },
+  8:  { title:"Augustusplatz",                  addr:"Augustusplatz, 04109 Leipzig",         coords:[51.3389,12.3815], desc:"Großer Platz im Stadtzentrum. Weite Flächen für Flat, Kanten für Street.",                     mapsUrl:"https://maps.app.goo.gl/Km7ESNiwQyAfe6mk9",         img:IMG.augustus1,
+        en:{ desc:"Large square in the city centre. Wide flats for flatland, edges for street." } },
+  9:  { title:"Skatepark Leipzig · AOK",        addr:"Anton-Bruckner-Allee 1, 04229 Leipzig", coords:[51.3282,12.3531], desc:"Skatepark im Clarapark an der Sachsenbrücke.\n\nHier sind: eine Spine, mehrere Boxen und eine Quarter.",   mapsUrl:"https://maps.app.goo.gl/3BtepMxP2pX6VbKQ6",         img:IMG.aok1,
+        en:{ desc:"Skatepark in Clarapark next to Sachsenbrücke.\n\nFeatures: a spine, several boxes and a quarter pipe." } },
+  10: { title:"Conne Island",                   addr:"Koburger Str. 3, 04277 Leipzig",       coords:[51.3023,12.3745], desc:"Das Island ist ein Kultur- und Musikzentrum.\n\nEs besteht aus einer DIY-Bowl und Miniramp mit einer kleinen Street-Area, Tischtennisplatten, Graffiti-Walls und Veranstaltungsräumen.",                       mapsUrl:"https://maps.app.goo.gl/1WTkLsJX3HB9veBb6?g_st=ac", img:IMG.conne,
+        en:{ desc:"The Island is a culture and music venue.\n\nIt features a DIY bowl and miniramp with a small street area, ping-pong tables, graffiti walls and event spaces." } },
+  11: { title:"Spielplatz Herderstr. · Connewitz", addr:"Herderstraße 5, 04277 Leipzig",     coords:[51.3078,12.3741], desc:"Entspanntes Gelände für gemeinsames Essen und lockeres Riden.",                                mapsUrl:"https://maps.app.goo.gl/6nTxkcr9vXWAtRrH9",         img:null,
+        en:{ title:"Herderstr. Playground · Connewitz", desc:"Relaxed area for shared food and easy riding." } },
+  12: { title:"MDR Leipzig",                    addr:"Kantstraße 71–73, 04275 Leipzig",      coords:[51.3156,12.3846], desc:"DIY-Spot an der MDR-S-Bahn-Station.",                 mapsUrl:"https://maps.app.goo.gl/cNaJeusZk9FMrQNa9",         img:IMG.mdr1,
+        en:{ desc:"DIY spot next to the MDR S-Bahn station." } },
+  13: { title:"DNB Magazinturm · Alte Messe",   addr:"Deutscher Pl. 1, 04103 Leipzig",       coords:[51.3223,12.3972], desc:"Deutsche Nationalbibliothek Magazinturm. Brutalismus, offene Plazas, Street & Flat.",          mapsUrl:"https://maps.app.goo.gl/Va54MWz71W3Wjvmw7?g_st=ac", img:IMG.mdr2,
+        en:{ desc:"German National Library archive tower. Brutalism, open plazas, street & flatland." } },
+  14: { title:"Reudnitz Skatepark",             addr:"Fröschelstraße 4, 04317 Leipzig",      coords:[51.3348,12.4019], desc:"Großer Park, solide Obstacles. Rails, Quarters, Ledges. Street bis in den Abend.",             mapsUrl:"https://maps.app.goo.gl/MfE7mifyHYmtSYvt7?g_st=ac", img:IMG.mdr4,
+        en:{ desc:"Large park, solid obstacles. Rails, quarters, ledges. Street riding into the evening." } },
+  15: { title:"Haus am See",                    addr:"Strandbad Ost Markkleeberger See · Auenhainer Str. 1, 04416 Markkleeberg", coords:[51.271034,12.397521], desc:"Badesee direkt nebenan.\n\nStrand ist 300 m entfernt.", mapsUrl:"https://maps.app.goo.gl/9x3vtyWNHKamvns59?g_st=ac", img:IMG.see, lake:true,
+        en:{ title:"Lake House", addr:"Strandbad Ost Markkleeberger See · Auenhainer Str. 1, 04416 Markkleeberg", desc:"Swim lake right next door.\n\nBeach is 300 m away." } },
+  16: { title:"Wilhelm-Leuschner-Platz",        addr:"Wilhelm-Leuschner-Platz, 04107 Leipzig", coords:[51.3350,12.3750], desc:"Treffpunkt zum Skateboard Jam am letzten Tag. Großzügige Fläche im Zentrum, Kanten und offenes Pflaster.", mapsUrl:"https://www.google.com/maps/search/Wilhelm-Leuschner-Platz+Leipzig", img:IMG.wilhelm1,
+        en:{ desc:"Meeting point for the skateboard jam on the final day. Generous space in the city centre, edges and open paving." } },
+  17: { title:"Penny Plagwitz · 15er-Stairset", addr:"Plagwitz, 04229 Leipzig",              coords:[51.3239,12.3325], desc:"Zwischenstopp auf dem Weg zum Giezer DIY. Getränke kaufen, 15er-Stairset und Wallride fahren, kurzer, knackiger Stop.", mapsUrl:"https://www.google.com/maps/search/Penny+Plagwitz+Leipzig", img:IMG.penny1,
+        en:{ title:"Penny Plagwitz · 15-stair set", desc:"Stop on the way to Giezer DIY. Grab drinks, ride the 15-stair set and the wallride — short and sharp." } }
 };
+/* Spot-Datenfeld in aktueller Sprache. DE kommt aus spotsMaster direkt, EN aus
+   s.en[field] falls vorhanden, sonst Fallback auf den deutschen Wert. */
+function tSpot(s, field){
+  const lang = window.__LANG__ || "de";
+  if(lang === "de" || !s) return s ? s[field] : "";
+  return (s.en && s.en[field] != null) ? s.en[field] : s[field];
+}
 function spot(id, time, extras){ return { ...spotsMaster[id], id, time, ...(extras||{}) } }
 
 /* Medien-Zuordnung pro Spot: nur Material vom jeweiligen Ort */
@@ -2295,17 +2322,19 @@ eventDays.forEach(d => {
 const stayGrid = document.getElementById("stayGrid");
 function renderStay(){
   stayGrid.innerHTML = "";
+  const lang = window.__LANG__ || "de";
+  const tAcc = (a, field) => (lang === "en" && a.en && a.en[field] != null) ? a.en[field] : a[field];
   const slotsLbl = t("stay.card.slots");
   const routeLbl = t("stay.card.routelink");
   accommodations.forEach(a => {
     const c = document.createElement("article");
     c.className = "stay__card reveal";
-    const costLine = a.costNote ? `${a.cost} <small style="opacity:.75;font-weight:400">· ${a.costNote}</small> · ${a.slots} ${slotsLbl}` : `${a.cost} · ${a.slots} ${slotsLbl}`;
+    const costLine = tAcc(a,"costNote") ? `${tAcc(a,"cost")} <small style="opacity:.75;font-weight:400">· ${tAcc(a,"costNote")}</small> · ${a.slots} ${slotsLbl}` : `${tAcc(a,"cost")} · ${a.slots} ${slotsLbl}`;
     const webLink = a.webUrl ? ` · <a href="${a.webUrl}" target="_blank" rel="noopener">heizhaus-leipzig.de →</a>` : "";
     c.innerHTML = `
-      <h3>${a.name}</h3>
+      <h3>${tAcc(a,"name")}</h3>
       <span class="pill ${a.cost==='free'?'pill--free':''}">${costLine}</span>
-      <p><strong>${a.city}</strong>, ${a.address}<br>${a.note}</p>
+      <p><strong>${tAcc(a,"city")}</strong>, ${tAcc(a,"address")}<br>${tAcc(a,"note")}</p>
       <a href="${a.mapsUrl}" target="_blank" rel="noopener">${routeLbl}</a>${webLink}`;
     c.addEventListener("mousemove", e => {
       const r = c.getBoundingClientRect();
@@ -2314,6 +2343,13 @@ function renderStay(){
     });
     stayGrid.appendChild(c);
   });
+  /* Neu erzeugte .reveal-Karten beim globalen IntersectionObserver anmelden,
+     sonst bleiben sie nach Sprachwechsel auf opacity:0 (initialer querySelectorAll
+     in Zeile ~3636 lief nur einmal beim Script-Start). io wird weiter unten via const
+     deklariert -> beim ersten renderStay()-Aufruf in TDZ; try/catch verschluckt das. */
+  try {
+    stayGrid.querySelectorAll(".reveal").forEach(el => io.observe(el));
+  } catch(_) {}
 }
 renderStay();
 
@@ -2351,6 +2387,35 @@ function relocalizeDayCards(){
     sec.querySelectorAll(".day__spots .time[data-time-orig]").forEach(el => {
       el.textContent = tTime(el.dataset.timeOrig) || "";
     });
+    /* Stops: Spot-Title + Adresse je Stop neu setzen (data-spot trägt die ID) */
+    sec.querySelectorAll(".day__spots li[data-spot]").forEach(li => {
+      const sm = spotsMaster[+li.dataset.spot];
+      if(!sm) return;
+      const info = li.querySelector(".info");
+      if(info){
+        const b = info.querySelector("b");
+        const em = info.querySelector("em");
+        if(b) b.textContent = tSpot(sm, "title");
+        if(em) em.textContent = tSpot(sm, "addr");
+      }
+    });
+    /* Gallery-Thumbnail-Labels (Spot-Titel) bei Sprachwechsel mitziehen */
+    sec.querySelectorAll(".gal-item").forEach(btn => {
+      const labelEl = btn.querySelector(".gal-item__label");
+      const pin = labelEl ? labelEl.querySelector(".gal-item__pin") : null;
+      if(!labelEl || !pin) return;
+      const spotId = +pin.textContent;
+      const sm = spotsMaster[spotId];
+      if(!sm) return;
+      const newLabel = tSpot(sm, "title");
+      /* labelEl-Inhalt = <span class="gal-item__pin">ID</span> + Spot-Titel */
+      while(labelEl.lastChild && labelEl.lastChild !== pin) labelEl.removeChild(labelEl.lastChild);
+      labelEl.appendChild(document.createTextNode(newLabel));
+      const isVid = btn.classList.contains("gal-item--video");
+      btn.setAttribute("aria-label", isVid ? t("days.aria.video", { label:newLabel }) : newLabel);
+      const img = btn.querySelector("img");
+      if(img) img.alt = newLabel;
+    });
     /* Action-Label */
     setText(".day__action-label", t("days.action.peek"));
     /* Empty-Gallery-Fallback */
@@ -2370,21 +2435,22 @@ eventDays.forEach((d, i) => {
   const spotsHtml = d.stops.map(s => `
     <li data-lat="${s.coords[0]}" data-lng="${s.coords[1]}" data-spot="${s.id}">
       <div class="idx">${s.id}</div>
-      <div class="info"><b>${s.title}</b><em>${s.addr}</em></div>
+      <div class="info"><b>${tSpot(s,"title")}</b><em>${tSpot(s,"addr")}</em></div>
       <div class="time" data-time-orig="${(s.time||'').replace(/"/g,'&quot;')}">${tTime(s.time)||""}</div>
     </li>`).join("");
 
   const gallery = d._gallery.length ? d._gallery.map((it, idx) => {
+    const galLabel = tSpot(spotsMaster[it.spotId], "title");
     if(it.type === "vid"){
-      return `<button type="button" class="gal-item gal-item--video" data-day="${i}" data-idx="${idx}" aria-label="${t("days.aria.video",{label:it.label})}">
+      return `<button type="button" class="gal-item gal-item--video" data-day="${i}" data-idx="${idx}" aria-label="${t("days.aria.video",{label:galLabel})}">
         <video src="${it.src}" muted playsinline preload="metadata"></video>
         <div class="gal-item__play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
-        <div class="gal-item__label"><span class="gal-item__pin">${it.spotId}</span>${it.label}</div>
+        <div class="gal-item__label"><span class="gal-item__pin">${it.spotId}</span>${galLabel}</div>
       </button>`;
     }
-    return `<button type="button" class="gal-item" data-day="${i}" data-idx="${idx}" aria-label="${it.label}">
-      <img src="${it.src}" alt="${it.label}" loading="lazy" />
-      <div class="gal-item__label"><span class="gal-item__pin">${it.spotId}</span>${it.label}</div>
+    return `<button type="button" class="gal-item" data-day="${i}" data-idx="${idx}" aria-label="${galLabel}">
+      <img src="${it.src}" alt="${galLabel}" loading="lazy" />
+      <div class="gal-item__label"><span class="gal-item__pin">${it.spotId}</span>${galLabel}</div>
     </button>`;
   }).join("") : `<div class="gal-empty">${t("days.gallery.empty")}</div>`;
 
@@ -2680,37 +2746,37 @@ Object.keys(spotsMaster).forEach(id => {
 
 /* Quality-of-life POIs · kuratierte Vorschläge */
 const pois = [
-  { type:"food", name:"Seehaus am Markkleeberger See", coords:[51.2799,12.3703], note:"Biergarten am Wasser, Snacks & warmes Essen", mapsUrl:"https://www.google.com/maps/search/Seehaus+Markkleeberger+See" },
-  { type:"wc", name:"WC Strandbad Ost", coords:[51.27128,12.40175], note:"Öffentliche Toiletten am Badestrand (Auenhainer Str.)", mapsUrl:"https://www.google.com/maps/search/Strandbad+Ost+WC" },
-  { type:"wc", name:"WC Pleißenhof", coords:[51.2780,12.3694], note:"Homebase, während Aufenthalt", mapsUrl:"https://maps.app.goo.gl/weCVkzvTJEUxFYG77" },
+  { type:"food", name:"Seehaus am Markkleeberger See", coords:[51.2799,12.3703], note:"Biergarten am Wasser, Snacks & warmes Essen", enNote:"Beer garden by the water, snacks & warm food", mapsUrl:"https://www.google.com/maps/search/Seehaus+Markkleeberger+See" },
+  { type:"wc", name:"WC Strandbad Ost", coords:[51.27128,12.40175], note:"Öffentliche Toiletten am Badestrand (Auenhainer Str.)", enNote:"Public toilets at the lake beach (Auenhainer Str.)", mapsUrl:"https://www.google.com/maps/search/Strandbad+Ost+WC" },
+  { type:"wc", name:"WC Pleißenhof", coords:[51.2780,12.3694], note:"Homebase, während Aufenthalt", enNote:"Homebase, during the stay", mapsUrl:"https://maps.app.goo.gl/weCVkzvTJEUxFYG77" },
 
-  { type:"food", name:"Ludwig im Rosental", coords:[51.3404,12.3760], note:"Biergarten nah Wagner-Platz", mapsUrl:"https://www.google.com/maps/search/Ludwig+Leipzig+Rosental" },
-  { type:"food", name:"Pasta e Basta", coords:[51.3428,12.3740], note:"Schnelle Pasta, Innenstadt", mapsUrl:"https://www.google.com/maps/search/Pasta+e+Basta+Leipzig" },
-  { type:"food", name:"Moritzbastei Café", coords:[51.3389,12.3801], note:"Snacks, Kaffee, Studentenklassiker", mapsUrl:"https://www.google.com/maps/search/Moritzbastei+Cafe" },
-  { type:"wc", name:"WC Hauptbahnhof", coords:[51.3452,12.3821], note:"24/7 · kostenpflichtig", mapsUrl:"https://www.google.com/maps/search/Leipzig+Hauptbahnhof+WC" },
-  { type:"wc", name:"WC Augustusplatz / Oper", coords:[51.3398,12.3820], note:"Öffentlich am Platz", mapsUrl:"https://www.google.com/maps/search/Augustusplatz+Leipzig+WC" },
+  { type:"food", name:"Ludwig im Rosental", coords:[51.3404,12.3760], note:"Biergarten nah Wagner-Platz", enNote:"Beer garden near Wagner-Platz", mapsUrl:"https://www.google.com/maps/search/Ludwig+Leipzig+Rosental" },
+  { type:"food", name:"Pasta e Basta", coords:[51.3428,12.3740], note:"Schnelle Pasta, Innenstadt", enNote:"Quick pasta, city centre", mapsUrl:"https://www.google.com/maps/search/Pasta+e+Basta+Leipzig" },
+  { type:"food", name:"Moritzbastei Café", coords:[51.3389,12.3801], note:"Snacks, Kaffee, Studentenklassiker", enNote:"Snacks, coffee, student classic", mapsUrl:"https://www.google.com/maps/search/Moritzbastei+Cafe" },
+  { type:"wc", name:"WC Hauptbahnhof", coords:[51.3452,12.3821], note:"24/7 · kostenpflichtig", enNote:"24/7 · paid", mapsUrl:"https://www.google.com/maps/search/Leipzig+Hauptbahnhof+WC" },
+  { type:"wc", name:"WC Augustusplatz / Oper", coords:[51.3398,12.3820], note:"Öffentlich am Platz", enNote:"Public at the square", mapsUrl:"https://www.google.com/maps/search/Augustusplatz+Leipzig+WC" },
 
-  { type:"food", name:"Biomare Bistro", coords:[51.3292,12.3742], note:"Bio, Salate, warme Küche", mapsUrl:"https://www.google.com/maps/search/Biomare+Leipzig" },
-  { type:"food", name:"Killiwilly", coords:[51.3258,12.3728], note:"Pub, lange offen, Karli", mapsUrl:"https://www.google.com/maps/search/Killiwilly+Leipzig" },
-  { type:"food", name:"Pano Brot & Kaffee", coords:[51.3312,12.3749], note:"Frühstück, Brote", mapsUrl:"https://www.google.com/maps/search/Pano+Leipzig" },
+  { type:"food", name:"Biomare Bistro", coords:[51.3292,12.3742], note:"Bio, Salate, warme Küche", enNote:"Organic, salads, warm food", mapsUrl:"https://www.google.com/maps/search/Biomare+Leipzig" },
+  { type:"food", name:"Killiwilly", coords:[51.3258,12.3728], note:"Pub, lange offen, Karli", enNote:"Pub, open late, on Karli", mapsUrl:"https://www.google.com/maps/search/Killiwilly+Leipzig" },
+  { type:"food", name:"Pano Brot & Kaffee", coords:[51.3312,12.3749], note:"Frühstück, Brote", enNote:"Breakfast, sandwiches", mapsUrl:"https://www.google.com/maps/search/Pano+Leipzig" },
 
-  { type:"food", name:"Westwerk Kantine", coords:[51.3320,12.3349], note:"Tagesküche, günstig", mapsUrl:"https://www.google.com/maps/search/Westwerk+Kantine+Leipzig" },
-  { type:"food", name:"Noch Besser Leben", coords:[51.3329,12.3339], note:"Kneipe mit Küche, Plagwitz", mapsUrl:"https://www.google.com/maps/search/Noch+besser+leben+Leipzig" },
-  { type:"food", name:"Kumpel & Keule", coords:[51.3326,12.3371], note:"Burger & Bier, Plagwitz", mapsUrl:"https://www.google.com/maps/search/Kumpel+Keule+Leipzig" },
-  { type:"wc", name:"WC Heizhaus", coords:[51.3186,12.2840], note:"Im Heizhaus während Sessions", mapsUrl:"https://maps.app.goo.gl/JShsajAzJpGFTfQu9?g_st=ac" },
+  { type:"food", name:"Westwerk Kantine", coords:[51.3320,12.3349], note:"Tagesküche, günstig", enNote:"Daily kitchen, affordable", mapsUrl:"https://www.google.com/maps/search/Westwerk+Kantine+Leipzig" },
+  { type:"food", name:"Noch Besser Leben", coords:[51.3329,12.3339], note:"Kneipe mit Küche, Plagwitz", enNote:"Pub with kitchen, Plagwitz", mapsUrl:"https://www.google.com/maps/search/Noch+besser+leben+Leipzig" },
+  { type:"food", name:"Kumpel & Keule", coords:[51.3326,12.3371], note:"Burger & Bier, Plagwitz", enNote:"Burgers & beer, Plagwitz", mapsUrl:"https://www.google.com/maps/search/Kumpel+Keule+Leipzig" },
+  { type:"wc", name:"WC Heizhaus", coords:[51.3186,12.2840], note:"Im Heizhaus während Sessions", enNote:"Inside Heizhaus during sessions", mapsUrl:"https://maps.app.goo.gl/JShsajAzJpGFTfQu9?g_st=ac" },
 
-  { type:"food", name:"Conne Island Küche", coords:[51.3129,12.3746], note:"VoKü, meist vegan", mapsUrl:"https://maps.app.goo.gl/1WTkLsJX3HB9veBb6?g_st=ac" },
-  { type:"food", name:"Café Puschkin", coords:[51.3176,12.3778], note:"Kaffee & Kuchen, Connewitz", mapsUrl:"https://www.google.com/maps/search/Cafe+Puschkin+Leipzig" },
-  { type:"wc", name:"WC Conne Island", coords:[51.3131,12.3744], note:"Während Veranstaltungen", mapsUrl:"https://www.google.com/maps/search/Conne+Island+Leipzig" },
+  { type:"food", name:"Conne Island Küche", coords:[51.3129,12.3746], note:"VoKü, meist vegan", enNote:"People's kitchen, mostly vegan", mapsUrl:"https://maps.app.goo.gl/1WTkLsJX3HB9veBb6?g_st=ac" },
+  { type:"food", name:"Café Puschkin", coords:[51.3176,12.3778], note:"Kaffee & Kuchen, Connewitz", enNote:"Coffee & cake, Connewitz", mapsUrl:"https://www.google.com/maps/search/Cafe+Puschkin+Leipzig" },
+  { type:"wc", name:"WC Conne Island", coords:[51.3131,12.3744], note:"Während Veranstaltungen", enNote:"During events only", mapsUrl:"https://www.google.com/maps/search/Conne+Island+Leipzig" },
 
-  { type:"wc", name:"WC Skatepark / AOK", coords:[51.3271,12.3548], note:"Nähe Skatepark Leipzig", mapsUrl:"https://www.google.com/maps/search/AOK+Skatepark+Leipzig" },
-  { type:"food", name:"Imbiss Anton-Bruckner-Allee", coords:[51.3279,12.3561], note:"Snacks in Laufweite zum Park", mapsUrl:"https://www.google.com/maps/search/Anton-Bruckner-Allee+Leipzig+Imbiss" },
+  { type:"wc", name:"WC Skatepark / AOK", coords:[51.3271,12.3548], note:"Nähe Skatepark Leipzig", enNote:"Close to Skatepark Leipzig", mapsUrl:"https://www.google.com/maps/search/AOK+Skatepark+Leipzig" },
+  { type:"food", name:"Imbiss Anton-Bruckner-Allee", coords:[51.3279,12.3561], note:"Snacks in Laufweite zum Park", enNote:"Snacks within walking distance of the park", mapsUrl:"https://www.google.com/maps/search/Anton-Bruckner-Allee+Leipzig+Imbiss" },
 
-  { type:"food", name:"Café Alte Messe", coords:[51.3258,12.3937], note:"Kaffee, Tagesküche, Alte Messe", mapsUrl:"https://www.google.com/maps/search/Alte+Messe+Leipzig+Cafe" },
-  { type:"wc", name:"WC DNB / Alte Messe", coords:[51.3244,12.3948], note:"Nationalbibliothek, Öffnungszeiten", mapsUrl:"https://www.google.com/maps/search/Deutsche+Nationalbibliothek+Leipzig" },
+  { type:"food", name:"Café Alte Messe", coords:[51.3258,12.3937], note:"Kaffee, Tagesküche, Alte Messe", enNote:"Coffee, daily kitchen, Alte Messe", mapsUrl:"https://www.google.com/maps/search/Alte+Messe+Leipzig+Cafe" },
+  { type:"wc", name:"WC DNB / Alte Messe", coords:[51.3244,12.3948], note:"Nationalbibliothek, Öffnungszeiten", enNote:"National Library, opening hours apply", mapsUrl:"https://www.google.com/maps/search/Deutsche+Nationalbibliothek+Leipzig" },
 
-  { type:"food", name:"Pizzeria Reudnitz", coords:[51.3377,12.4198], note:"Nah Reudnitz Skatepark", mapsUrl:"https://www.google.com/maps/search/Pizzeria+Reudnitz+Leipzig" },
-  { type:"wc", name:"WC Reudnitz Skatepark", coords:[51.3378,12.4203], note:"Öffentlich am Park", mapsUrl:"https://www.google.com/maps/search/Reudnitz+Skatepark" }
+  { type:"food", name:"Pizzeria Reudnitz", coords:[51.3377,12.4198], note:"Nah Reudnitz Skatepark", enNote:"Near Reudnitz Skatepark", mapsUrl:"https://www.google.com/maps/search/Pizzeria+Reudnitz+Leipzig" },
+  { type:"wc", name:"WC Reudnitz Skatepark", coords:[51.3378,12.4203], note:"Öffentlich am Park", enNote:"Public at the park", mapsUrl:"https://www.google.com/maps/search/Reudnitz+Skatepark" }
 ];
 
 function haversineKm(a, b){
@@ -2870,7 +2936,7 @@ function popupHtml(s, dayLabel, seq){
   const detailsAria = (window.__LANG__ === "en") ? "Open spot details" : "Spot-Details öffnen";
   return `<div class="pop">${media}
     <div class="pop__body"><div class="pop__eyebrow">Spot ${s.id} · ${dayLabel}</div>
-      <h3>${s.title}</h3>${s.time?`<div class="pop__time">${s.time}</div>`:''}${seqLine}<p>${s.desc}</p>
+      <h3>${tSpot(s,"title")}</h3>${s.time?`<div class="pop__time">${s.time}</div>`:''}${seqLine}<p>${tSpot(s,"desc")}</p>
       <div class="pop__actions">
         <a class="pop__nav" href="${s.mapsUrl}" target="_blank" rel="noopener">${t("map.popup.navigation")}</a>
         <button type="button" class="pop__details" data-pop-details="${s.id}" aria-label="${detailsAria}">${t("map.popup.details")}</button>
@@ -2878,9 +2944,10 @@ function popupHtml(s, dayLabel, seq){
 }
 function poiPopup(p){
   const kind = p.type==="food" ? t("map.popup.poi.food") : t("map.popup.poi.wc");
+  const note = (window.__LANG__ === "en" && p.enNote) ? p.enNote : p.note;
   return `<div class="pop"><div class="pop__body" style="padding:.9rem 1.1rem">
     <div class="pop__eyebrow" style="color:${p.type==='food'?'#ff7a00':'#1e88e5'}">${kind}</div>
-    <h3>${p.name}</h3><p style="margin-bottom:.7rem">${p.note}</p>
+    <h3>${p.name}</h3><p style="margin-bottom:.7rem">${note}</p>
     <a class="pop__nav" href="${p.mapsUrl}" target="_blank" rel="noopener">${t("map.popup.navigation")}</a></div></div>`;
 }
 function bearingDeg(a, b){
@@ -3028,7 +3095,7 @@ Object.entries(spotsMaster).forEach(([id, s]) => {
   const c = s.lake ? '#1e88e5' : dayColor(spotPrimaryDay[nId] || 1);
   const ringSegs = spotRingSegments(nId, null);
   const marker = L.marker(s.coords, { icon:makePin(nId, !!s.home, null, c, null, `all${nId}`, !!s.lake, ringSegs) });
-  attachPinTap(marker, nId, [{...s, id:nId}, "Alle Tage"]);
+  attachPinTap(marker, nId, [{...s, id:nId}, t("map.topbar.all_days")]);
   marker.addTo(allLayer);
   allStopMarkers[nId] = marker;
 });
@@ -3093,7 +3160,7 @@ function renderPanel(){
       return `<button type="button" class="dayCard__stop${activeDayIdx===i && activeStopIdx===si?' is-active':''}" data-stop-day="${i}" data-stop-idx="${si}">
         <span class="dayCard__stopPin" style="--dc:${meta.color}"><span>${seq}</span></span>
         <span class="dayCard__stopInfo">
-          <span class="dayCard__stopName">${s.title}</span>
+          <span class="dayCard__stopName">${tSpot(s,"title")}</span>
           <span class="dayCard__stopTime">${s.time || "…"}</span>
         </span>
       </button>`;
@@ -3162,7 +3229,7 @@ function renderTopbar(){
     const back = document.createElement("button");
     back.type = "button";
     back.className = "map-chip map-chip--back";
-    back.innerHTML = `← Alle Tage`;
+    back.innerHTML = `← ${t("map.topbar.all_days")}`;
     back.addEventListener("click", () => showDay(-1));
     mapTopbar.appendChild(back);
     const sep = document.createElement("div");
@@ -3176,7 +3243,7 @@ function renderTopbar(){
       const seq = d.stops.length > 1 ? (si+1) : "•";
       b.className = "map-chip map-chip--stop" + (activeStopIdx===si?" is-active":"");
       b.style.setProperty("--dc", m.color);
-      b.innerHTML = `<span class="map-chip__num">${seq}</span><span>${s.title}</span>`;
+      b.innerHTML = `<span class="map-chip__num">${seq}</span><span>${tSpot(s,"title")}</span>`;
       b.addEventListener("click", () => focusStop(activeDayIdx, si));
       chips.appendChild(b);
     });
@@ -3420,10 +3487,10 @@ function openSpotDetail(id){
     if(bgImg){
       sdHero.className = "spot-detail__hero";
       sdHero.removeAttribute("data-ph");
-      sdHero.innerHTML = `<img src="${bgImg}" alt="${s.title || ''}" loading="lazy" />`;
+      sdHero.innerHTML = `<img src="${bgImg}" alt="${tSpot(s,"title") || ''}" loading="lazy" />`;
     } else {
       sdHero.className = "spot-detail__hero spot-detail__hero--empty";
-      sdHero.setAttribute("data-ph", `#${id} · ${(s.title||'').split(/[·,]/)[0].trim().slice(0,22)}`);
+      sdHero.setAttribute("data-ph", `#${id} · ${(tSpot(s,"title")||'').split(/[·,]/)[0].trim().slice(0,22)}`);
       sdHero.innerHTML = `<img src="${IMG.titel}" alt="" loading="lazy" />`;
     }
   }
@@ -3431,9 +3498,9 @@ function openSpotDetail(id){
   sdPin.textContent = id;
   sdPin.classList.toggle("spot-detail__pin--lake", isLake);
   sdEyebrow.textContent = isLake ? t("sd.eyebrow.lake") : isHome ? t("sd.eyebrow.home") : `${t("sd.eyebrow.spot")} · ${id}`;
-  sdTitle.innerHTML = s.title;
-  sdAddrText.textContent = s.addr;
-  sdDesc.textContent = s.desc;
+  sdTitle.innerHTML = tSpot(s,"title");
+  sdAddrText.textContent = tSpot(s,"addr");
+  sdDesc.textContent = tSpot(s,"desc");
 
   // Info-Block: z. B. Heizhaus-Schlafplatz-Option + Website (nicht mit Teilnahmegebühr verwechseln)
   if(sdNotice){
@@ -3472,7 +3539,7 @@ function openSpotDetail(id){
         </button>`;
       }
       return `<button type="button" class="spot-detail__media" data-sd-media="img" data-src="${it.src}" aria-label="${t("sd.media.open_img")}">
-        <img src="${it.src}" alt="${s.title}" loading="lazy" />
+        <img src="${it.src}" alt="${tSpot(s,"title")}" loading="lazy" />
       </button>`;
     }).join("");
   } else {
@@ -3725,12 +3792,15 @@ document.addEventListener("keydown", (e) => {
       const tag = s.home ? `<span class="spot-tile__tag">${t("so.tag.home")}</span>`
                 : s.lake ? `<span class="spot-tile__tag">${t("so.tag.lake")}</span>` : '';
       // Adresse kompakt: erste zwei Komma-getrennte Teile (Strasse, PLZ Stadt)
-      const addrShort = (s.addr || "").split(",").slice(0,2).join(",").trim();
-      return `<button type="button" class="${cls}" data-spot-id="${id}" aria-label="Spot ${id}, ${escapeHTML(s.title)} öffnen">
+      const titleLoc = tSpot(s, "title");
+      const addrLoc = tSpot(s, "addr");
+      const addrShort = (addrLoc || "").split(",").slice(0,2).join(",").trim();
+      const openLbl = (window.__LANG__ === "en") ? "open" : "öffnen";
+      return `<button type="button" class="${cls}" data-spot-id="${id}" aria-label="Spot ${id}, ${escapeHTML(titleLoc)} ${openLbl}">
         <span class="spot-tile__pin"><span>${id}</span></span>
         <span class="spot-tile__body">
           <span class="spot-tile__title-row">
-            <span class="spot-tile__title">${escapeHTML(s.title)}</span>
+            <span class="spot-tile__title">${escapeHTML(titleLoc)}</span>
             ${tag}
           </span>
           <span class="spot-tile__addr">${escapeHTML(addrShort)}</span>
@@ -3832,6 +3902,17 @@ document.addEventListener("keydown", (e) => {
           });
         });
       }
+      /* All-Spots-Layer: Popups tragen "Alle Tage" als Label, daher ebenfalls neu binden */
+      if(typeof allStopMarkers !== "undefined" && typeof attachPinTap === "function"){
+        Object.entries(allStopMarkers).forEach(([id, mk]) => {
+          const sm = spotsMaster[+id];
+          if(!sm) return;
+          try { mk.unbindPopup(); } catch(_){}
+          attachPinTap(mk, +id, [{...sm, id:+id}, t("map.topbar.all_days")]);
+        });
+      }
+      /* POI-Marker: poiPopup() ist sprachabhängig, alle Marker neu bauen */
+      if(typeof renderPois === "function") renderPois();
     } catch(_){}
     /* Spots-Übersicht-Modal-Grid: clear, damit beim naechsten Oeffnen neu gebaut wird */
     try {
