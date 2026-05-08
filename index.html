@@ -740,7 +740,7 @@ a{color:inherit;text-decoration:none}
 #mapLegend .grid9 .row{margin-bottom:0}
 
 .pin{width:46px;height:46px;position:relative;overflow:visible;filter:drop-shadow(0 3px 8px rgba(0,0,0,.45))}
-.pin__body{position:absolute;inset:0;background:var(--dc,var(--red));border:3.5px solid #fff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);transition:transform .3s var(--ease);box-shadow:0 0 0 1.5px rgba(0,0,0,.3);z-index:2}
+.pin__body{position:absolute;inset:0;background:var(--dc,var(--red));border:3.5px solid #fff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);transition:transform .3s var(--ease);box-shadow:0 0 0 1.5px rgba(0,0,0,.3);z-index:1}
 .pin__num{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--font-pin);font-size:1.7rem;color:#fff;font-weight:400;letter-spacing:.03em;line-height:1;font-feature-settings:"tnum" 1;text-shadow:0 1px 0 rgba(0,0,0,.6),0 2px 4px rgba(0,0,0,.55),0 0 1px rgba(0,0,0,.95);-webkit-text-stroke:.5px rgba(0,0,0,.55);z-index:3}
 .pin:hover{z-index:600}
 .pin:hover .pin__body{transform:rotate(-45deg) scale(1.2)}
@@ -750,17 +750,18 @@ a{color:inherit;text-decoration:none}
 .pin--home .pin__num{color:var(--dc,var(--red));-webkit-text-stroke:.3px rgba(255,255,255,.7);text-shadow:0 1px 0 rgba(255,255,255,.7),0 0 4px rgba(255,255,255,.7)}
 .pin--lake .pin__body{background:#1e88e5;border-color:#fff;box-shadow:0 0 0 1.5px rgba(0,0,0,.35),0 0 14px rgba(30,136,229,.55)}
 .pin--lake .pin__num{color:#fff;font-family:var(--font-pin);font-size:1.6rem}
-/* Mehrtages-Spots (ausser Pleissenhof + See): SVG-Multi-Segment-Ring als Halo
-   AUSSERHALB des Pin-Body. Body inkl. weisser 3.5px-Border bleibt komplett intakt
-   und ueberlagert die Ring-Unterseite (z-index Body=2 > Ring=1), die Tropfen-Spitze
-   ueberdeckt den unteren Bogen sauber, oberer 3/4-Halo ist sichtbar als bewusster
-   Hinweis-Indikator fuer Mehrtages-Besuche. */
+/* Mehrtages-Spots (ausser Pleissenhof + See): SVG-270deg-Bogen DIREKT IM weissen
+   Body-Rahmen (r=21.25, stroke=3.5 sitzt exakt im Bereich r=19.5..23, also genau
+   im 3.5px breiten weissen Border-Streifen). In den Segmenten wird das Weiss
+   durch die Tagesfarbe ersetzt. Die unteren 90deg fehlen bewusst, damit die
+   tropfenfoermige Spitze des Pins voll erhalten bleibt und nichts abgeschnitten
+   wirkt. Z-Index Ring (2) liegt UEBER Body (1), aber unter Num/Sub. */
 .pin--ring .pin__body{border-color:#fff;box-shadow:0 0 0 1.5px rgba(0,0,0,.3)}
 .pin--lake.pin--ring .pin__body{border-color:#fff;box-shadow:0 0 0 1.5px rgba(0,0,0,.35),0 0 14px rgba(30,136,229,.55)}
-.pin__ring{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;transition:transform .3s var(--ease);z-index:1}
-.pin__ring circle{fill:none;stroke-width:3;transform-origin:center;transform:rotate(-90deg);filter:drop-shadow(0 1px 2px rgba(0,0,0,.25))}
-.pin:hover .pin__ring{transform:scale(1.15)}
-.pin.is-focused .pin__ring{transform:scale(1.25)}
+.pin__ring{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;transition:transform .3s var(--ease);z-index:2}
+.pin__ring path{fill:none;stroke-width:3.5;stroke-linecap:butt}
+.pin:hover .pin__ring{transform:scale(1.2)}
+.pin.is-focused .pin__ring{transform:scale(1.3)}
 .pin__sub{position:absolute;top:-9px;right:-9px;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:#111;color:#fff;font-family:var(--font-mono);font-size:.55rem;font-weight:700;letter-spacing:.05em;display:grid;place-items:center;border:1.5px solid var(--dc,var(--red));box-shadow:0 2px 5px rgba(0,0,0,.4);z-index:5;line-height:1}
 .pin__start,.pin__end{position:absolute;bottom:-4px;right:-4px;width:18px;height:18px;border-radius:50%;background:#fff;border:2px solid var(--dc);display:grid;place-items:center;z-index:4;box-shadow:0 2px 5px rgba(0,0,0,.35)}
 .pin__start{background:#fff;color:var(--dc)}
@@ -2805,33 +2806,39 @@ map.getContainer().addEventListener("mouseleave", () => map.scrollWheelZoom.disa
   apply();
 })();
 
-/* SVG-Multi-Segment-Ring als HALO ausserhalb des Pin-Body.
+/* SVG-Multi-Segment-Ring als 270deg-BOGEN exakt im weissen Body-Rahmen.
    Geometrie:
-     - r=25 platziert den Ring komplett ausserhalb der 3.5px-Body-White-Border (bis r~23)
-     - SVG nutzt overflow:visible damit der Kreis die viewBox 46x46 verlassen kann
-     - Z-Index: Body (2) liegt VOR Ring (1), Tropfen-Spitze ueberdeckt unteren Ring-
-       Bogen sauber, oberer ~270deg-Halo ist sichtbar als Mehrtages-Indikator
+     - r=21.25 mit stroke=3.5 sitzt genau im 3.5px-Body-White-Border-Streifen
+       (Body-Color-Interior endet bei r~19.5, schwarzer Outline beginnt bei r~23)
+     - 270deg-Arc von -135deg bis +135deg (Top zentriert), die unteren 90deg sind
+       AUSGELASSEN, damit die tropfenfoermige Pin-Spitze voll erhalten bleibt
    Segmente:
-     - Start oben (12 Uhr) via rotate(-90deg) am Circle
-     - 2px Gap zwischen Segmenten fuer visuelle Trennschaerfe
-     - Bei nur einem anderen Tag: Vollkreis ohne Gap */
+     - N Segmente verteilt auf 270deg, Gap (8deg) zwischen ihnen
+     - Bei N=1: ein 270deg-Vollbogen
+     - Jedes Segment ist ein eigener <path> mit Arc-Command */
 function ringSvg(segments){
   if(!segments || segments.length === 0) return "";
-  const r = 25, cx = 23, cy = 23;
-  const C = 2 * Math.PI * r;
+  const r = 21.25, cx = 23, cy = 23;
+  const VISIBLE = 270;
   const N = segments.length;
-  const gap = N > 1 ? 2 : 0;
-  const seg = (C - gap*N) / N;
-  let off = 0;
+  const gapDeg = N > 1 ? 8 : 0;
+  const segDeg = (VISIBLE - gapDeg * (N - 1)) / N;
+  const startAngle = -VISIBLE / 2;
   const titles = segments.map(s => `T${s.day}`).join(" + ");
-  let circles = "";
-  for(let i=0; i<N; i++){
-    const dasharray = `${seg} ${C - seg}`;
-    const dashoffset = -off;
-    circles += `<circle cx="${cx}" cy="${cy}" r="${r}" stroke="${segments[i].color}" stroke-dasharray="${dasharray}" stroke-dashoffset="${dashoffset}"></circle>`;
-    off += seg + gap;
+  let paths = "";
+  for(let i = 0; i < N; i++){
+    const a1 = startAngle + i * (segDeg + gapDeg);
+    const a2 = a1 + segDeg;
+    const r1 = (a1 - 90) * Math.PI / 180;
+    const r2 = (a2 - 90) * Math.PI / 180;
+    const x1 = (cx + r * Math.cos(r1)).toFixed(2);
+    const y1 = (cy + r * Math.sin(r1)).toFixed(2);
+    const x2 = (cx + r * Math.cos(r2)).toFixed(2);
+    const y2 = (cy + r * Math.sin(r2)).toFixed(2);
+    const largeArc = segDeg > 180 ? 1 : 0;
+    paths += `<path d="M ${x1} ${y1} A ${r} ${r} 0 ${largeArc} 1 ${x2} ${y2}" stroke="${segments[i].color}"></path>`;
   }
-  return `<svg class="pin__ring" viewBox="0 0 46 46" aria-label="Weitere Besuchstage: ${titles}"><g>${circles}</g></svg>`;
+  return `<svg class="pin__ring" viewBox="0 0 46 46" aria-label="Weitere Besuchstage: ${titles}"><g>${paths}</g></svg>`;
 }
 
 function makePin(spotId, isHome, seq, color, role, focusKey, isLake, ringSegments){
