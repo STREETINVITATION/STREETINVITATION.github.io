@@ -3009,15 +3009,21 @@ function computeOverviewBounds(){
   const cityCoords = Object.values(spotsMaster)
     .filter(s => !s.home && !s.lake)
     .map(s => s.coords);
-  return L.latLngBounds(cityCoords).pad(0.12);
+  /* Kein .pad() — Stadt-Pins fuellen den Fit-Bereich, der visuelle Buffer
+     kommt allein aus dem Padding unten (= Suedrichtung, geografischer Kontext). */
+  return L.latLngBounds(cityCoords);
 }
 function overviewPadding(){
-  /* Auf Mobile (Container ~340-360px hoch) sind grosse Top-Paddings prozentual zu viel.
-     Auf Desktop (~600-820px) sind 90px nur ~12% — angemessen. */
+  /* Top minimal (Topbar-Klar), Bottom doppelt so gross — die Stadt-Pins liegen damit
+     in der oberen Haelfte des Canvas und der Suedraum (Richtung Markkleeberg) bekommt
+     visuell Luft nach unten. Skaliert mit Canvas-Hoehe, mit sinnvollen Mindestwerten. */
+  const mc = document.getElementById("mapCanvas");
+  const h = (mc && mc.clientHeight) ? mc.clientHeight : 700;
   const isMobile = matchMedia("(max-width:960px)").matches;
-  return isMobile
-    ? { paddingTopLeft:[16, 70], paddingBottomRight:[16, 30] }
-    : { paddingTopLeft:[24, 90], paddingBottomRight:[24, 50] };
+  const topPx = Math.max(isMobile ? 40 : 70,  Math.round(h * 0.07));
+  const botPx = Math.max(isMobile ? 80 : 150, Math.round(h * 0.18));
+  const sidePx = isMobile ? 16 : 24;
+  return { paddingTopLeft:[sidePx, topPx], paddingBottomRight:[sidePx, botPx] };
 }
 function applyOverview(opts){
   const animated = !!(opts && opts.animated);
