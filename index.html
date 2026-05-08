@@ -167,12 +167,29 @@ a{color:inherit;text-decoration:none}
 .nav.is-open .nav__burger span:nth-child(2){opacity:0}
 .nav.is-open .nav__burger span:nth-child(3){top:19px;transform:rotate(-45deg);background:var(--red)}
 @media (max-width:900px){
-  .nav__burger{display:block}
+  .nav__burger{display:block;flex-shrink:0}
   .nav__links{position:fixed;top:60px;left:0;right:0;flex-direction:column;align-items:stretch;background:rgba(5,5,7,.98);backdrop-filter:blur(20px);padding:1rem;gap:.15rem;border-bottom:1px solid var(--line);transform:translateY(-10px);opacity:0;visibility:hidden;transition:transform .3s,opacity .3s,visibility .3s}
   .nav.is-open .nav__links{transform:translateY(0);opacity:1;visibility:visible}
   .nav__links a{padding:.9rem 1rem;font-size:.95rem}
   .nav__cta{padding:.5rem .8rem;font-size:.6rem;letter-spacing:.12em;border-width:1.5px}
   .nav__cta svg{width:12px;height:12px}
+}
+/* Schmale Mobiles: CTA noch kompakter, Nav-Padding kleiner — sonst kollidiert
+   die laenge von "ANMELDEN" mit dem Burger-Menue. */
+@media (max-width:560px){
+  .nav{padding:.7rem .8rem;gap:.4rem}
+  .nav__brand{font-size:.85rem;gap:.45rem}
+  .nav__brand i{width:8px;height:8px}
+  .nav__lang{margin-right:.15rem}
+  .nav__lang-toggle{padding:.4rem .55rem;font-size:.6rem;letter-spacing:.12em;gap:.3rem}
+  .nav__cta{padding:.42rem .65rem;font-size:.55rem;letter-spacing:.1em;gap:.35rem}
+  .nav__cta svg{width:11px;height:11px}
+  .nav__burger{width:36px;height:36px}
+}
+/* Sehr klein: CTA nur Icon */
+@media (max-width:380px){
+  .nav__cta span{display:none}
+  .nav__cta{padding:.45rem .55rem;gap:0}
 }
 
 /* HERO */
@@ -1026,7 +1043,7 @@ a{color:inherit;text-decoration:none}
       <li role="option" data-lang="en"><b>EN</b><em>English</em></li>
     </ul>
   </div>
-  <button type="button" class="nav__cta" id="joinBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M4 6h16v12H4zM4 6l8 7 8-7"/></svg><span data-i18n="nav.cta">Jetzt anmelden</span></button>
+  <button type="button" class="nav__cta" id="joinBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M4 6h16v12H4zM4 6l8 7 8-7"/></svg><span data-i18n="nav.cta">Anmelden</span></button>
   <button type="button" class="nav__burger" id="burger" data-i18n-attr="aria-label:nav.menu_label"><span></span><span></span><span></span></button>
 </header>
 
@@ -1485,7 +1502,7 @@ const I18N = {
   strings: {
     de: {
       "nav.event":"Event","nav.stay":"Stay","nav.lineup":"Lineup","nav.map":"Map","nav.faq":"FAQ",
-      "nav.cta":"Jetzt anmelden","nav.lang":"Sprache","nav.lang_switch":"Sprache wechseln","nav.menu_label":"Menü",
+      "nav.cta":"Anmelden","nav.lang":"Sprache","nav.lang_switch":"Sprache wechseln","nav.menu_label":"Menü",
       "hero.meta.trip":"Post-Unicon Ride Trip","hero.meta.place":"Leipzig · Markkleeberg",
       "hero.meta.spots":"35 Plätze","hero.meta.fsk":"16+","hero.dateline":"08.–16. August 2026",
       "hero.tag.lead":"Das erste Street Einrad & Skate Event in Leipzig",
