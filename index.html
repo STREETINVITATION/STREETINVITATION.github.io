@@ -1525,6 +1525,14 @@ const I18N = {
       "sponsor.label":"Mit Unterstützung von","sponsor.aria":"Sponsor &amp; Partner",
       "sd.cta.maps":"Route in Google Maps","sd.cta.tomap":"Auf der Karte zeigen","sd.close":"Schließen",
       "sd.gallery.empty":"Noch kein Bild- oder Video-Material für diesen Ort — kommt beim Event dazu.",
+      "sd.eyebrow.lake":"Spot · See","sd.eyebrow.home":"Spot · Homebase","sd.eyebrow.spot":"Spot",
+      "sd.notice.title.stay":"Übernachtung · optional","sd.notice.unit.night":"pro Nacht","sd.notice.title.web":"Website",
+      "sd.notice.heizhaus.html":"Anmeldung für die Übernachtung direkt auf der <a href=\"https://heizhaus-leipzig.de/\" target=\"_blank\" rel=\"noopener\">Heizhaus-Webseite</a>. <b>10 € die Nacht</b> — das Geld geht ans Heizhaus. Kommt <b>zusätzlich</b> zur Anmeldegebühr drauf. Max. 10 Schlafplätze.",
+      "sd.chip.dates":"Termine","sd.chip.type":"Typ","sd.chip.type.home":"Homebase","sd.chip.type.lake":"Bade-See","sd.chip.coords":"Koord",
+      "sd.media.open_img":"Bild öffnen","sd.media.open_vid":"Video öffnen",
+      "stay.card.routelink":"Route öffnen →","stay.card.slots":"Plätze","stay.card.web_suffix":"→",
+      "map.day_pin_label":"Tag {n} · {tag}",
+      "spotsbtn.label":"Spot Übersicht",
       "so.eyebrow":"Alle Orte · 1 Klick","so.title":"Spot Übersicht",
       "so.lede":"Sortiert nach Spot-ID. Klick auf einen Spot öffnet die Details mit Adresse, Galerie und Routenlink.",
       "so.legend.spot":"Spot","so.legend.home":"Homebase","so.legend.lake":"Badesee",
@@ -1619,6 +1627,14 @@ const I18N = {
       "sponsor.label":"Supported by","sponsor.aria":"Sponsor &amp; partner",
       "sd.cta.maps":"Route in Google Maps","sd.cta.tomap":"Show on map","sd.close":"Close",
       "sd.gallery.empty":"No photos or videos yet for this spot — they'll come during the event.",
+      "sd.eyebrow.lake":"Spot · Lake","sd.eyebrow.home":"Spot · Homebase","sd.eyebrow.spot":"Spot",
+      "sd.notice.title.stay":"Overnight · optional","sd.notice.unit.night":"per night","sd.notice.title.web":"Website",
+      "sd.notice.heizhaus.html":"Sign up for the overnight stay directly on the <a href=\"https://heizhaus-leipzig.de/\" target=\"_blank\" rel=\"noopener\">Heizhaus website</a>. <b>€10 per night</b> — the money goes to Heizhaus. Comes <b>on top of</b> the entry fee. Max. 10 sleeping spots.",
+      "sd.chip.dates":"Dates","sd.chip.type":"Type","sd.chip.type.home":"Homebase","sd.chip.type.lake":"Swim Lake","sd.chip.coords":"Coords",
+      "sd.media.open_img":"Open image","sd.media.open_vid":"Open video",
+      "stay.card.routelink":"Open route →","stay.card.slots":"spots","stay.card.web_suffix":"→",
+      "map.day_pin_label":"Day {n} · {tag}",
+      "spotsbtn.label":"Spot Overview",
       "so.eyebrow":"All spots · 1 click","so.title":"Spot Overview",
       "so.lede":"Sorted by spot ID. Click a spot to open details with address, gallery and route link.",
       "so.legend.spot":"Spot","so.legend.home":"Homebase","so.legend.lake":"Lake",
@@ -2080,23 +2096,29 @@ eventDays.forEach(d => {
 
 /* ============ RENDER · Accommodations ============ */
 const stayGrid = document.getElementById("stayGrid");
-accommodations.forEach(a => {
-  const c = document.createElement("article");
-  c.className = "stay__card reveal";
-  const costLine = a.costNote ? `${a.cost} <small style="opacity:.75;font-weight:400">· ${a.costNote}</small> · ${a.slots} Plätze` : `${a.cost} · ${a.slots} Plätze`;
-  const webLink = a.webUrl ? ` · <a href="${a.webUrl}" target="_blank" rel="noopener">heizhaus-leipzig.de →</a>` : "";
-  c.innerHTML = `
-    <h3>${a.name}</h3>
-    <span class="pill ${a.cost==='free'?'pill--free':''}">${costLine}</span>
-    <p><strong>${a.city}</strong> — ${a.address}<br>${a.note}</p>
-    <a href="${a.mapsUrl}" target="_blank" rel="noopener">Route öffnen →</a>${webLink}`;
-  c.addEventListener("mousemove", e => {
-    const r = c.getBoundingClientRect();
-    c.style.setProperty("--mx", `${e.clientX - r.left}px`);
-    c.style.setProperty("--my", `${e.clientY - r.top}px`);
+function renderStay(){
+  stayGrid.innerHTML = "";
+  const slotsLbl = t("stay.card.slots");
+  const routeLbl = t("stay.card.routelink");
+  accommodations.forEach(a => {
+    const c = document.createElement("article");
+    c.className = "stay__card reveal";
+    const costLine = a.costNote ? `${a.cost} <small style="opacity:.75;font-weight:400">· ${a.costNote}</small> · ${a.slots} ${slotsLbl}` : `${a.cost} · ${a.slots} ${slotsLbl}`;
+    const webLink = a.webUrl ? ` · <a href="${a.webUrl}" target="_blank" rel="noopener">heizhaus-leipzig.de →</a>` : "";
+    c.innerHTML = `
+      <h3>${a.name}</h3>
+      <span class="pill ${a.cost==='free'?'pill--free':''}">${costLine}</span>
+      <p><strong>${a.city}</strong> — ${a.address}<br>${a.note}</p>
+      <a href="${a.mapsUrl}" target="_blank" rel="noopener">${routeLbl}</a>${webLink}`;
+    c.addEventListener("mousemove", e => {
+      const r = c.getBoundingClientRect();
+      c.style.setProperty("--mx", `${e.clientX - r.left}px`);
+      c.style.setProperty("--my", `${e.clientY - r.top}px`);
+    });
+    stayGrid.appendChild(c);
   });
-  stayGrid.appendChild(c);
-});
+}
+renderStay();
 
 /* ============ RENDER · Days ============ */
 const daysList = document.getElementById("daysList");
@@ -2135,7 +2157,7 @@ eventDays.forEach((d, i) => {
   sec.innerHTML = `
     <summary class="day__bar">
       <div class="day__bar-bg"><img src="${d.image}" alt="" loading="lazy" />${d._gallery.some(it=>it.type==="vid") ? `<video class="day__bar-video" muted autoplay playsinline preload="metadata" crossorigin="anonymous"></video>` : ""}</div>
-      <div class="day__bar-num">Tag ${num2}</div>
+      <div class="day__bar-num">${t("days.bar.day")} ${num2}</div>
       <div class="day__bar-date"><b>${weekday}</b><span>${dateTail}</span></div>
       <div class="day__bar-tag">${d.tag}</div>
       <div class="day__bar-title">${d.title}</div>
@@ -2359,8 +2381,10 @@ function lbRender(){
     lbImg.style.display = "block";
     lbImg.src = it.src;
   }
-  lbInfo.innerHTML = `<span class="lb-pin">${it.spotId}</span><span class="lb-label">${it.label}</span> <a class="lb-nav" href="${it.mapsUrl}" target="_blank" rel="noopener">Navigation ↗</a>`;
-  lbCounter.textContent = `${lbIdx+1} / ${items.length} · Tag ${eventDays[lbDay].n}`;
+  const navLbl = (window.__LANG__ === "en") ? "Navigation ↗" : "Navigation ↗";
+  const dayLbl = t("days.bar.day");
+  lbInfo.innerHTML = `<span class="lb-pin">${it.spotId}</span><span class="lb-label">${it.label}</span> <a class="lb-nav" href="${it.mapsUrl}" target="_blank" rel="noopener">${navLbl}</a>`;
+  lbCounter.textContent = `${lbIdx+1} / ${items.length} · ${dayLbl} ${eventDays[lbDay].n}`;
 }
 function openLightbox(dayIdx, idx){
   lbDay = dayIdx; lbIdx = idx;
@@ -2661,7 +2685,7 @@ eventDays.forEach((d, i) => {
     const pinColor = s.lake ? '#1e88e5' : c;
     const ringSegs = spotRingSegments(s.id, d.n);
     const marker = L.marker(s.coords, { icon:makePin(s.id, !!s.home, seq, pinColor, role, `d${i}s${si}`, !!s.lake, ringSegs), zIndexOffset:1000 });
-    attachPinTap(marker, s.id, [s, `Tag ${d.n} · ${d.tag}`, seq]);
+    attachPinTap(marker, s.id, [s, t("map.day_pin_label", { n:d.n, tag:d.tag }), seq]);
     marker.addTo(group);
     markers.push(marker);
     latlngs.push(s.coords);
@@ -3131,7 +3155,8 @@ function openSpotDetail(id){
   sdCurrentId = id;
   const m = spotMedia[id] || { img:[], vid:[] };
   const daySet = spotDayMap[id];
-  const days = daySet ? [...daySet].sort((a,b)=>a-b).map(n => `Tag ${String(n).padStart(2,'0')}`) : [];
+  const dayLbl = t("days.bar.day");
+  const days = daySet ? [...daySet].sort((a,b)=>a-b).map(n => `${dayLbl} ${String(n).padStart(2,'0')}`) : [];
   const isLake = !!s.lake;
   const isHome = !!s.home;
 
@@ -3155,7 +3180,7 @@ function openSpotDetail(id){
 
   sdPin.textContent = id;
   sdPin.classList.toggle("spot-detail__pin--lake", isLake);
-  sdEyebrow.textContent = isLake ? "Spot · See" : isHome ? "Spot · Homebase" : `Spot · ${id}`;
+  sdEyebrow.textContent = isLake ? t("sd.eyebrow.lake") : isHome ? t("sd.eyebrow.home") : `${t("sd.eyebrow.spot")} · ${id}`;
   sdTitle.innerHTML = s.title;
   sdAddrText.textContent = s.addr;
   sdDesc.textContent = s.desc;
@@ -3165,13 +3190,13 @@ function openSpotDetail(id){
     if(id === 3){
       sdNotice.hidden = false;
       sdNotice.innerHTML = `
-        <span class="sd-notice__title">Übernachtung · optional</span>
-        <span class="sd-notice__price"><b>10 €</b><small>pro Nacht</small></span>
-        Anmeldung für die Übernachtung direkt auf der <a href="https://heizhaus-leipzig.de/" target="_blank" rel="noopener">Heizhaus-Webseite</a>. <b>10 € die Nacht</b> — das Geld geht ans Heizhaus. Kommt <b>zusätzlich</b> zur Anmeldegebühr drauf. Max. 10 Schlafplätze.`;
+        <span class="sd-notice__title">${t("sd.notice.title.stay")}</span>
+        <span class="sd-notice__price"><b>10 €</b><small>${t("sd.notice.unit.night")}</small></span>
+        ${t("sd.notice.heizhaus.html")}`;
     } else if(s.webUrl){
       sdNotice.hidden = false;
       const host = s.webUrl.replace(/^https?:\/\//,'').replace(/\/$/,'');
-      sdNotice.innerHTML = `<span class="sd-notice__title">Website</span><a href="${s.webUrl}" target="_blank" rel="noopener">${host} →</a>`;
+      sdNotice.innerHTML = `<span class="sd-notice__title">${t("sd.notice.title.web")}</span><a href="${s.webUrl}" target="_blank" rel="noopener">${host} →</a>`;
     } else {
       sdNotice.hidden = true;
       sdNotice.innerHTML = "";
@@ -3179,10 +3204,10 @@ function openSpotDetail(id){
   }
 
   const chips = [];
-  if(days.length) chips.push({ k:"Termine", v:days.join(" · ") });
-  if(isHome) chips.push({ k:"Typ", v:"Homebase" });
-  if(isLake) chips.push({ k:"Typ", v:"Bade-See" });
-  chips.push({ k:"Koord", v:`${s.coords[0].toFixed(4)}, ${s.coords[1].toFixed(4)}` });
+  if(days.length) chips.push({ k:t("sd.chip.dates"), v:days.join(" · ") });
+  if(isHome) chips.push({ k:t("sd.chip.type"), v:t("sd.chip.type.home") });
+  if(isLake) chips.push({ k:t("sd.chip.type"), v:t("sd.chip.type.lake") });
+  chips.push({ k:t("sd.chip.coords"), v:`${s.coords[0].toFixed(4)}, ${s.coords[1].toFixed(4)}` });
   sdMeta.innerHTML = chips.map(c => `<span class="spot-detail__chip"><b>${c.k}</b> ${c.v}</span>`).join("");
 
   const mediaItems = [
@@ -3192,11 +3217,11 @@ function openSpotDetail(id){
   if(mediaItems.length){
     sdGallery.innerHTML = mediaItems.map(it => {
       if(it.type === "vid"){
-        return `<button type="button" class="spot-detail__media spot-detail__media--vid" data-sd-media="vid" data-src="${it.src}" aria-label="Video öffnen">
+        return `<button type="button" class="spot-detail__media spot-detail__media--vid" data-sd-media="vid" data-src="${it.src}" aria-label="${t("sd.media.open_vid")}">
           <video src="${it.src}" muted playsinline preload="metadata"></video>
         </button>`;
       }
-      return `<button type="button" class="spot-detail__media" data-sd-media="img" data-src="${it.src}" aria-label="Bild öffnen">
+      return `<button type="button" class="spot-detail__media" data-sd-media="img" data-src="${it.src}" aria-label="${t("sd.media.open_img")}">
         <img src="${it.src}" alt="${s.title}" loading="lazy" />
       </button>`;
     }).join("");
@@ -3531,7 +3556,7 @@ document.addEventListener("keydown", (e) => {
 
   /* 2) Re-render dynamischer Inhalte beim Sprachwechsel.
         Static HTML wird ueber data-i18n direkt von applyTranslations() upgedated.
-        Dynamic HTML (renderLegend/Panel/Topbar/Mail-Body, Spot-Cards in Lineup,
+        Dynamic HTML (renderLegend/Panel/Topbar/Mail-Body, Stay-Cards,
         Spot-Übersicht-Modal-Grid, etc.) muss neu gebaut werden. */
   onLanguageChange(() => {
     /* Map-Panel */
@@ -3539,14 +3564,20 @@ document.addEventListener("keydown", (e) => {
     try { if(typeof renderTopbar === "function") renderTopbar(); } catch(_){}
     try { if(typeof renderLegend === "function") renderLegend(); } catch(_){}
     try { if(typeof updatePanelHead === "function") updatePanelHead(); } catch(_){}
-    /* Spots-Übersicht-Modal-Grid (rebuild bei naechster Oeffnung; wenn offen, jetzt) */
+    /* Stay-Cards (Übernachtungs-Sektion) */
+    try { if(typeof renderStay === "function") renderStay(); } catch(_){}
+    /* Spots-Übersicht-Modal-Grid: clear, damit beim naechsten Oeffnen neu gebaut wird */
     try {
       const soGrid = document.getElementById("soGrid");
       const soModal = document.getElementById("spotsOverview");
-      if(soGrid){ soGrid.innerHTML = ""; if(soModal && soModal.classList.contains("open")){
-        document.getElementById("spotsOverviewBtn").click();
-        document.getElementById("spotsOverviewBtn").click();
-      }}
+      if(soGrid) soGrid.innerHTML = "";
+      /* Wenn Modal aktuell offen ist: schliessen + neu oeffnen, damit User aktualisierte Tiles sieht */
+      if(soModal && soModal.classList.contains("open")){
+        const btn = document.getElementById("spotsOverviewBtn");
+        const closeBtn = soModal.querySelector("[data-so-close]");
+        if(closeBtn) closeBtn.click();
+        if(btn) setTimeout(() => btn.click(), 100);
+      }
     } catch(_){}
     /* Spot-Detail (falls offen): re-trigger fuer aktuelle Sprache */
     try {
