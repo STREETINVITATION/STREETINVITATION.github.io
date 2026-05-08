@@ -224,8 +224,10 @@ a{color:inherit;text-decoration:none}
    wie eine Lichtkante vom Background ab, plus dunkler Tiefen-Schatten. */
 .hero__title .l:nth-child(2)>span{animation-delay:.4s;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(1px 1px 0 rgba(255,255,255,.92)) drop-shadow(2px 3px 4px rgba(0,0,0,.65))}
 /* Italic-"tion" knapper an "Invita" anschliessen, sonst sieht es wegen
-   der Italic-Schraege wie zwei separate Worte aus. */
-.hero__title .l:nth-child(2)>span i{font-style:italic;margin-left:-.08em;letter-spacing:-.02em}
+   der Italic-Schraege wie zwei separate Worte aus. Padding-right ist
+   noetig damit das italic geneigte "n" + die weisse Rechts-Outline +
+   der dunkle Tiefen-Shadow nicht vom Hero-overflow abgeschnitten werden. */
+.hero__title .l:nth-child(2)>span i{font-style:italic;margin-left:-.08em;letter-spacing:-.02em;padding-right:.18em}
 @keyframes lift{to{transform:translateY(0)}}
 
 .hero__tag{max-width:580px;font-size:clamp(.95rem,1.2vw,1.1rem);color:var(--text-dim);margin-bottom:1.6rem;line-height:1.55;opacity:0;transform:translateY(20px);animation:fadeUp 1s var(--ease-out) .8s forwards}
