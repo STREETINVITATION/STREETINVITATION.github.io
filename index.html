@@ -1422,9 +1422,9 @@ a{color:inherit;text-decoration:none}
   <div class="lightbox__stage">
     <img class="lightbox__img" id="lbImg" alt="" />
     <video class="lightbox__video" id="lbVideo" controls playsinline></video>
-    <button type="button" class="lightbox__close" id="lbClose" aria-label="Schließen">✕</button>
-    <button type="button" class="lightbox__prev" id="lbPrev" aria-label="Zurück">‹</button>
-    <button type="button" class="lightbox__next" id="lbNext" aria-label="Weiter">›</button>
+    <button type="button" class="lightbox__close" id="lbClose" data-i18n-attr="aria-label:lb.close" aria-label="Schließen">✕</button>
+    <button type="button" class="lightbox__prev" id="lbPrev" data-i18n-attr="aria-label:lb.prev" aria-label="Zurück">‹</button>
+    <button type="button" class="lightbox__next" id="lbNext" data-i18n-attr="aria-label:lb.next" aria-label="Weiter">›</button>
     <div class="lightbox__info" id="lbInfo"></div>
     <div class="lightbox__counter" id="lbCounter"></div>
   </div>
@@ -2157,7 +2157,7 @@ eventDays.forEach((d, i) => {
           <p class="day__lead"><span class="pretext">${d.pretext}</span> ${d.description}</p>
           <div class="day__summary">${summary}</div>
           <div class="day__actions">
-            <button type="button" class="btn btn--primary" data-focus-day="${i}"><span>Blick in den Tag<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
+            <button type="button" class="btn btn--primary" data-focus-day="${i}"><span>${t("days.action.peek")}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
           </div>
         </div>
         <div class="day__side">
@@ -2592,24 +2592,26 @@ function spotRingSegments(spotId, currentDayN){
   return others.map(d => ({ day:d, color:dayColor(d) }));
 }
 function popupHtml(s, dayLabel, seq){
-  const seqLine = seq ? `<div class="pop__time">Stop ${seq} im Tag</div>` : "";
+  const stopInDayLbl = (window.__LANG__ === "en") ? `Stop ${seq} of the day` : `Stop ${seq} im Tag`;
+  const seqLine = seq ? `<div class="pop__time">${stopInDayLbl}</div>` : "";
   const media = s.img
     ? `<img class="pop__img" src="${s.img}" alt="" onerror="this.outerHTML='<div class=\\'pop__img pop__img--ghost\\'><span>${s.id}</span></div>'" />`
     : `<div class="pop__img pop__img--ghost"><span>${s.id}</span></div>`;
+  const detailsAria = (window.__LANG__ === "en") ? "Open spot details" : "Spot-Details öffnen";
   return `<div class="pop">${media}
     <div class="pop__body"><div class="pop__eyebrow">Spot ${s.id} · ${dayLabel}</div>
       <h3>${s.title}</h3>${s.time?`<div class="pop__time">${s.time}</div>`:''}${seqLine}<p>${s.desc}</p>
       <div class="pop__actions">
-        <a class="pop__nav" href="${s.mapsUrl}" target="_blank" rel="noopener">Navigation →</a>
-        <button type="button" class="pop__details" data-pop-details="${s.id}" aria-label="Spot-Details oeffnen">Details</button>
+        <a class="pop__nav" href="${s.mapsUrl}" target="_blank" rel="noopener">${t("map.popup.navigation")}</a>
+        <button type="button" class="pop__details" data-pop-details="${s.id}" aria-label="${detailsAria}">${t("map.popup.details")}</button>
       </div></div></div>`;
 }
 function poiPopup(p){
-  const kind = p.type==="food" ? "Essen · Café" : "WC · Toilette";
+  const kind = p.type==="food" ? t("map.popup.poi.food") : t("map.popup.poi.wc");
   return `<div class="pop"><div class="pop__body" style="padding:.9rem 1.1rem">
     <div class="pop__eyebrow" style="color:${p.type==='food'?'#ff7a00':'#1e88e5'}">${kind}</div>
     <h3>${p.name}</h3><p style="margin-bottom:.7rem">${p.note}</p>
-    <a class="pop__nav" href="${p.mapsUrl}" target="_blank" rel="noopener">Navigation →</a></div></div>`;
+    <a class="pop__nav" href="${p.mapsUrl}" target="_blank" rel="noopener">${t("map.popup.navigation")}</a></div></div>`;
 }
 function bearingDeg(a, b){
   const toRad = d => d*Math.PI/180, toDeg = r => r*180/Math.PI;
@@ -3199,7 +3201,7 @@ function openSpotDetail(id){
       </button>`;
     }).join("");
   } else {
-    sdGallery.innerHTML = `<div class="spot-detail__empty">Noch kein Bild- oder Video-Material für diesen Ort — kommt beim Event dazu.</div>`;
+    sdGallery.innerHTML = `<div class="spot-detail__empty">${t("sd.gallery.empty")}</div>`;
   }
 
   sdMapsLink.href = s.mapsUrl;
@@ -3445,8 +3447,8 @@ document.addEventListener("keydown", (e) => {
       const daySet = (typeof spotDayMap !== "undefined" && spotDayMap[id]) ? spotDayMap[id] : null;
       const days = daySet ? [...daySet].sort((a,b)=>a-b).map(n => "T"+n).join(" · ") : null;
       const cls = "spot-tile" + (s.home ? " spot-tile--home" : "") + (s.lake ? " spot-tile--lake" : "");
-      const tag = s.home ? '<span class="spot-tile__tag">Home</span>'
-                : s.lake ? '<span class="spot-tile__tag">See</span>' : '';
+      const tag = s.home ? `<span class="spot-tile__tag">${t("so.tag.home")}</span>`
+                : s.lake ? `<span class="spot-tile__tag">${t("so.tag.lake")}</span>` : '';
       // Adresse kompakt: erste zwei Komma-getrennte Teile (Strasse, PLZ Stadt)
       const addrShort = (s.addr || "").split(",").slice(0,2).join(",").trim();
       return `<button type="button" class="${cls}" data-spot-id="${id}" aria-label="Spot ${id} — ${escapeHTML(s.title)} öffnen">
