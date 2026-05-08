@@ -71,8 +71,36 @@ html:not([data-i18n-ready]) body > :not(.loader){visibility:hidden}
   --font-label:"Space Grotesk","Helvetica Neue",system-ui,sans-serif;
   --font-pin:"Anton","Bebas Neue","Oswald","Impact","Helvetica Neue",system-ui,sans-serif;
   --ease:cubic-bezier(.2,.8,.2,1);--ease-out:cubic-bezier(.16,1,.3,1);
+  /* Text-Scrim: zwei gestapelte Text-Shadows als sanfter ~5px-Halo fuer
+     weisse Schrift auf wechselnden Bildhintergruenden.
+     Layer 1 (1.5px tight, 65%): subtile Kontur direkt am Buchstaben
+     Layer 2 (5px blur, 45%):    weicher Auslauf, ueberlappt zwischen Zeilen
+     Bewusst schwaecher gewaehlt damit Gradient-Text (z.B. .section__title em)
+     nicht ueberlagert wird, aber weisse Body-Texte klar lesbar bleiben. */
+  --text-scrim:0 0 1.5px rgba(0,0,0,.65),0 0 5px rgba(0,0,0,.45);
+  --text-scrim-strong:0 0 1px rgba(0,0,0,.85),0 0 3px rgba(0,0,0,.65),0 0 5px rgba(0,0,0,.4);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* Text-Scrim: weisse Schrift auf wechselnden Bildhintergruenden bleibt lesbar.
+   Wird auf alle Headlines/Bodies in Hero, Day-Bars, Outro und Section-Folds
+   gelegt — Effekt max ~5px ueber Text-Outline, ueberlappt zwischen Zeilen.
+   Gradient-Text (em inside .section__title oder .outro__title) wird AUSGENOMMEN,
+   weil dunkle Halos die Pink-Gradient-Lesbarkeit ueberlagern wuerden. */
+.hero__title,.hero__tag,.hero__tag p,.hero__meta span:not(.hero__fsk),
+.day__bar-num,.day__bar-date b,.day__bar-date span,.day__bar-title,
+.outro__eyebrow,
+.section--fold__head .section__title,.section--fold__head .section__lede,
+.section--fold__head .section__eyebrow{
+  text-shadow:var(--text-scrim);
+}
+/* Gradient-Clipped Text (em mit background-clip:text) hat eigene Lesbarkeit
+   durch Pink/Rot-Gradient — kein dunkler Scrim noetig, der wuerde die Farbe truebem. */
+.section--fold__head .section__title em,.outro__title em,h1.hero__title em,h2 em{
+  text-shadow:none;
+}
+/* Outro-Title behaelt seinen ambient Glow-Drop-Shadow zusaetzlich zum Scrim */
+.outro__title{text-shadow:var(--text-scrim),0 2px 24px rgba(5,5,7,.55)}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;scroll-padding-top:76px}
 body{font-family:var(--font-body);background:var(--bg);color:var(--text);line-height:1.55;overflow-x:hidden;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-weight:400}
 h1,h2,h3,h4{font-family:var(--font-head);font-weight:400;letter-spacing:.005em;line-height:1.05}
@@ -900,7 +928,7 @@ a{color:inherit;text-decoration:none}
 .outro__eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.36em;text-transform:uppercase;color:var(--red);display:flex;align-items:center;justify-content:center;gap:.75rem;margin:0 auto 1.2rem;max-width:max-content}
 .outro__eyebrow::before,.outro__eyebrow::after{content:"";width:34px;height:1px;background:linear-gradient(90deg,transparent,var(--red))}
 .outro__eyebrow::after{background:linear-gradient(270deg,transparent,var(--red))}
-.outro__title{font-family:var(--font-head);font-weight:400;font-size:clamp(1.7rem,4.6vw,3.1rem);line-height:1.22;letter-spacing:.01em;color:var(--text);margin:0 auto 1.4rem;padding:.05em .1em;max-width:22ch;text-shadow:0 2px 24px rgba(5,5,7,.55)}
+.outro__title{font-family:var(--font-head);font-weight:400;font-size:clamp(1.7rem,4.6vw,3.1rem);line-height:1.22;letter-spacing:.01em;color:var(--text);margin:0 auto 1.4rem;padding:.05em .1em;max-width:22ch}
 .outro__title em{font-style:italic;background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;padding:0 .05em}
 .outro__rule{width:clamp(64px,18vw,120px);height:1px;margin:0 auto 1.5rem;background:linear-gradient(90deg,transparent,rgba(255,0,64,.8),transparent);position:relative}
 .outro__rule::before{content:"";position:absolute;left:50%;top:50%;width:6px;height:6px;border-radius:50%;background:var(--red);transform:translate(-50%,-50%);box-shadow:0 0 10px var(--red)}
@@ -1035,84 +1063,69 @@ a{color:inherit;text-decoration:none}
     <div class="section--fold__bg" aria-hidden="true">
       <svg viewBox="0 0 800 260" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <radialGradient id="mapBg" cx="55%" cy="50%" r="78%">
-            <stop offset="0%" stop-color="#16161c"/>
+          <radialGradient id="mapBg" cx="60%" cy="50%" r="80%">
+            <stop offset="0%" stop-color="#13131a"/>
             <stop offset="100%" stop-color="#06060a"/>
           </radialGradient>
-          <linearGradient id="riverGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="#1a2530" stop-opacity=".7"/>
-            <stop offset="100%" stop-color="#0e1820" stop-opacity=".95"/>
-          </linearGradient>
           <symbol id="mapPin" viewBox="-13 -32 26 32">
-            <path d="M 0,0 C -10,-12 -12,-22 -8,-27 C -3,-32 3,-32 8,-27 C 12,-22 10,-12 0,0 Z" fill="currentColor" stroke="#fff" stroke-width="1.4"/>
+            <path d="M 0,0 C -11,-13 -12,-22 -8,-27 C -3,-32 3,-32 8,-27 C 12,-22 11,-13 0,0 Z" fill="currentColor" stroke="#fff" stroke-width="1.6"/>
             <circle cx="0" cy="-22" r="4.5" fill="#fff"/>
           </symbol>
         </defs>
 
-        <!-- Background -->
         <rect width="800" height="260" fill="url(#mapBg)"/>
 
-        <!-- Subtle topographic contours -->
-        <g stroke="#1f1f28" stroke-width=".9" fill="none" opacity=".55">
-          <path d="M -20,70 Q 200,50 400,80 T 820,68"/>
-          <path d="M -20,118 Q 200,100 400,128 T 820,112"/>
-          <path d="M -20,166 Q 200,148 400,178 T 820,160"/>
-          <path d="M -20,212 Q 200,194 400,222 T 820,206"/>
+        <!-- Sehr feines Karten-Raster (kaum sichtbar, gibt Karten-Feeling) -->
+        <g stroke="#1a1a22" stroke-width="1" fill="none" opacity=".5">
+          <path d="M 100,0 V 260 M 220,0 V 260 M 340,0 V 260 M 460,0 V 260 M 580,0 V 260 M 700,0 V 260"/>
+          <path d="M 0,55 H 800 M 0,110 H 800 M 0,165 H 800 M 0,215 H 800"/>
         </g>
 
-        <!-- Auwald-Park (subtle green) -->
-        <g fill="#1d2a1d" opacity=".75">
-          <path d="M 250,90 Q 320,75 400,95 Q 460,120 440,165 Q 380,180 320,170 Q 260,155 250,120 Z"/>
-          <path d="M 540,40 Q 600,30 640,55 Q 645,80 615,90 Q 565,85 545,65 Z"/>
-        </g>
-
-        <!-- Pleisse / Elster river (winding north-south) -->
-        <path d="M 565,-10 Q 540,40 530,90 Q 528,140 545,180 Q 575,225 615,250 L 625,250 Q 590,225 560,180 Q 545,140 547,90 Q 555,40 575,-10 Z" fill="url(#riverGrad)"/>
-
-        <!-- Markkleeberger See (south-east) -->
+        <!-- Markkleeberger See (Hauptmerkmal Suedosten, einziges grosses Wasser-Element) -->
         <g>
-          <ellipse cx="650" cy="225" rx="68" ry="22" fill="url(#riverGrad)"/>
-          <ellipse cx="650" cy="225" rx="65" ry="20" fill="none" stroke="#3a5060" stroke-width=".8" opacity=".7"/>
+          <ellipse cx="630" cy="220" rx="92" ry="26" fill="#152230" opacity=".95"/>
+          <ellipse cx="630" cy="220" rx="86" ry="22" fill="none" stroke="#3a5876" stroke-width="1" opacity=".6"/>
         </g>
 
-        <!-- Subtle road network (very dim) -->
-        <g stroke="#26262e" stroke-width="1.1" fill="none" opacity=".55" stroke-linecap="round">
-          <path d="M -20,90 Q 200,80 380,95 Q 500,115 620,130"/>
-          <path d="M 380,-20 Q 400,80 405,180 Q 420,250 425,290"/>
-          <path d="M 130,-20 Q 145,80 160,170"/>
-          <path d="M 700,-20 Q 685,90 695,180"/>
-          <path d="M -20,200 Q 200,190 410,205 Q 580,220 720,210"/>
-        </g>
-
-        <!-- Tour route (dashed, animated suggestion) connecting key spots -->
+        <!-- Tour-Route: eine durchgehende geschwungene Linie quer durch die Karte -->
         <g fill="none" stroke-linecap="round">
-          <path d="M 130,210 Q 240,180 360,140 Q 460,110 540,95" stroke="#ff3a78" stroke-width="2.4" stroke-dasharray="6 7" opacity=".75"/>
-          <path d="M 540,95 Q 600,110 660,180 Q 670,210 660,222" stroke="#f58231" stroke-width="2.4" stroke-dasharray="6 7" opacity=".75"/>
+          <!-- Glow-Underlay -->
+          <path d="M 110,205 Q 220,170 340,135 Q 440,105 540,95 Q 600,105 640,160 Q 660,200 640,222"
+                stroke="#ff0040" stroke-width="6" opacity=".15"/>
+          <!-- Haupt-Route gestrichelt -->
+          <path d="M 110,205 Q 220,170 340,135 Q 440,105 540,95 Q 600,105 640,160 Q 660,200 640,222"
+                stroke="#ff3a78" stroke-width="2.4" stroke-dasharray="7 8" opacity=".85"/>
         </g>
 
-        <!-- Pins (color-coded, real teardrop shape, prominent) -->
+        <!-- Pins entlang der Route, verschiedene Tagesfarben -->
         <g>
-          <use href="#mapPin" x="130" y="210" width="34" height="40" color="#3cb44b"/>
-          <use href="#mapPin" x="240" y="180" width="34" height="40" color="#ffb400"/>
-          <use href="#mapPin" x="360" y="140" width="34" height="40" color="#7c3aed"/>
-          <use href="#mapPin" x="460" y="110" width="34" height="40" color="#1e88e5"/>
-          <use href="#mapPin" x="540" y="95" width="38" height="44" color="#ff0040"/>
-          <use href="#mapPin" x="600" y="120" width="34" height="40" color="#009688"/>
-          <use href="#mapPin" x="660" y="180" width="34" height="40" color="#f58231"/>
-          <use href="#mapPin" x="650" y="222" width="32" height="38" color="#1e88e5"/>
+          <use href="#mapPin" x="110" y="205" width="34" height="40" color="#3cb44b"/>
+          <use href="#mapPin" x="240" y="165" width="34" height="40" color="#ffb400"/>
+          <use href="#mapPin" x="360" y="130" width="34" height="40" color="#7c3aed"/>
+          <use href="#mapPin" x="460" y="105" width="34" height="40" color="#009688"/>
+          <use href="#mapPin" x="540" y="95"  width="40" height="46" color="#ff0040"/>
+          <use href="#mapPin" x="620" y="135" width="34" height="40" color="#f58231"/>
+          <use href="#mapPin" x="640" y="222" width="30" height="36" color="#1e88e5"/>
         </g>
 
-        <!-- LEIPZIG watermark, large, subtle, behind pins -->
-        <g fill="#e8e8ec" opacity=".09" font-family="Permanent Marker,sans-serif">
-          <text x="40" y="195" font-size="64" letter-spacing="10" font-weight="400">LEIPZIG</text>
+        <!-- Kompass-Rose -->
+        <g transform="translate(750,42)" opacity=".7">
+          <circle r="22" fill="rgba(8,8,12,.78)" stroke="#e8e8ec" stroke-width="1.3"/>
+          <path d="M 0,-14 L 5,0 L 0,-4 L -5,0 Z" fill="#ff3a78"/>
+          <path d="M 0,14 L 5,0 L 0,4 L -5,0 Z" fill="#666"/>
+          <line x1="-14" y1="0" x2="-5" y2="0" stroke="#e8e8ec" stroke-width=".8" opacity=".5"/>
+          <line x1="14" y1="0" x2="5" y2="0" stroke="#e8e8ec" stroke-width=".8" opacity=".5"/>
+          <text y="-28" text-anchor="middle" fill="#e8e8ec" font-family="Space Grotesk,sans-serif" font-size="11" letter-spacing="2" font-weight="700">N</text>
         </g>
 
-        <!-- Compass rose (top-right) -->
-        <g transform="translate(750,42)" opacity=".75">
-          <circle r="20" fill="rgba(8,8,12,.7)" stroke="#e8e8ec" stroke-width="1.2"/>
-          <path d="M 0,-13 L 4,0 L 0,-3 L -4,0 Z" fill="#ff3a78"/>
-          <path d="M 0,13 L 4,0 L 0,3 L -4,0 Z" fill="#7a7a82"/>
-          <text y="-26" text-anchor="middle" fill="#e8e8ec" font-family="Space Grotesk,sans-serif" font-size="10" letter-spacing="2" font-weight="700">N</text>
+        <!-- Map-Skala unten links (typisches Karten-Element) -->
+        <g transform="translate(40,235)" opacity=".55">
+          <line x1="0" y1="0" x2="60" y2="0" stroke="#e8e8ec" stroke-width="1.2"/>
+          <line x1="0" y1="-3" x2="0" y2="3" stroke="#e8e8ec" stroke-width="1.2"/>
+          <line x1="30" y1="-3" x2="30" y2="3" stroke="#e8e8ec" stroke-width="1.2"/>
+          <line x1="60" y1="-3" x2="60" y2="3" stroke="#e8e8ec" stroke-width="1.2"/>
+          <text x="0" y="14" fill="#e8e8ec" font-family="Space Grotesk,sans-serif" font-size="8" letter-spacing="1">0</text>
+          <text x="60" y="14" fill="#e8e8ec" font-family="Space Grotesk,sans-serif" font-size="8" letter-spacing="1" text-anchor="middle">2 km</text>
         </g>
       </svg>
     </div>
