@@ -219,6 +219,9 @@ a{color:inherit;text-decoration:none}
 .section--fold__bg svg{width:100%;height:100%;display:block;filter:grayscale(1) contrast(1.4) brightness(1.6)}
 .section--fold__bg::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(6,6,8,.75) 0%,rgba(6,6,8,.28) 50%,rgba(6,6,8,.05) 100%)}
 .section--fold[open] .section--fold__bg{display:none}
+/* Map-Sektion: Karten-Vorschau mit Farb-Pins soll volle Farben behalten */
+#map .section--fold__bg svg{filter:saturate(.9) brightness(.95)}
+#map .section--fold__bg::after{background:linear-gradient(100deg,rgba(6,6,8,.78) 0%,rgba(6,6,8,.18) 55%,rgba(6,6,8,.0) 100%)}
 .section--fold > summary > *:not(.section--fold__bg){position:relative;z-index:2}
 .section--fold > summary::-webkit-details-marker{display:none}
 .section--fold > summary::marker{content:""}
@@ -1032,109 +1035,84 @@ a{color:inherit;text-decoration:none}
     <div class="section--fold__bg" aria-hidden="true">
       <svg viewBox="0 0 800 260" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <radialGradient id="mapVig" cx="50%" cy="50%" r="70%">
-            <stop offset="0%" stop-color="#1c1c1e"/>
-            <stop offset="100%" stop-color="#0a0a0c"/>
+          <radialGradient id="mapBg" cx="55%" cy="50%" r="78%">
+            <stop offset="0%" stop-color="#16161c"/>
+            <stop offset="100%" stop-color="#06060a"/>
           </radialGradient>
+          <linearGradient id="riverGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#1a2530" stop-opacity=".7"/>
+            <stop offset="100%" stop-color="#0e1820" stop-opacity=".95"/>
+          </linearGradient>
+          <symbol id="mapPin" viewBox="-13 -32 26 32">
+            <path d="M 0,0 C -10,-12 -12,-22 -8,-27 C -3,-32 3,-32 8,-27 C 12,-22 10,-12 0,0 Z" fill="currentColor" stroke="#fff" stroke-width="1.4"/>
+            <circle cx="0" cy="-22" r="4.5" fill="#fff"/>
+          </symbol>
         </defs>
-        <rect width="800" height="260" fill="url(#mapVig)"/>
 
-        <!-- Wasser: Markkleeberger See (Südostbereich) -->
-        <ellipse cx="650" cy="232" rx="75" ry="28" fill="#2a3038" opacity=".9"/>
-        <ellipse cx="650" cy="232" rx="72" ry="26" fill="none" stroke="#3a4048" stroke-width="1"/>
+        <!-- Background -->
+        <rect width="800" height="260" fill="url(#mapBg)"/>
 
-        <!-- Auwald/Parks -->
-        <path d="M 340,120 Q 400,110 430,130 Q 440,170 390,180 Q 340,170 335,145 Z" fill="#22281f" opacity=".7"/>
-        <path d="M 580,90 Q 620,85 635,105 Q 625,125 595,120 Q 575,110 580,90 Z" fill="#22281f" opacity=".7"/>
-
-        <!-- Hauptstraßen (Leipzig Ring + Magistralen, stilisiert) -->
-        <g stroke="#b8b8c0" stroke-width="4" fill="none" stroke-linecap="round" opacity="1">
-          <!-- Innenstadtring (Augustusplatz-Bereich) -->
-          <circle cx="530" cy="38" r="26" stroke-width="2.5"/>
-          <!-- Karli / Südachse Richtung Connewitz -->
-          <path d="M 520,40 Q 510,90 500,140 L 502,175"/>
-          <!-- Tarostraße / Westachse -->
-          <path d="M 540,40 Q 450,55 350,80 Q 250,80 180,120"/>
-          <!-- Prager Str. / Ostachse -->
-          <path d="M 555,40 Q 600,70 640,95 Q 665,140 650,200"/>
-          <!-- B2/Bornaische (Süd nach Markkleeberg) -->
-          <path d="M 500,140 Q 550,180 620,225"/>
-          <!-- Ostring/Reudnitz -->
-          <path d="M 555,40 Q 620,45 650,55"/>
+        <!-- Subtle topographic contours -->
+        <g stroke="#1f1f28" stroke-width=".9" fill="none" opacity=".55">
+          <path d="M -20,70 Q 200,50 400,80 T 820,68"/>
+          <path d="M -20,118 Q 200,100 400,128 T 820,112"/>
+          <path d="M -20,166 Q 200,148 400,178 T 820,160"/>
+          <path d="M -20,212 Q 200,194 400,222 T 820,206"/>
         </g>
 
-        <!-- Nebenstraßen/Raster -->
-        <g stroke="#7a7a82" stroke-width="1.5" fill="none" opacity=".8">
-          <path d="M 0,60 L 800,70"/>
-          <path d="M 0,130 L 800,120"/>
-          <path d="M 0,200 L 800,195"/>
-          <path d="M 120,0 L 130,260"/>
-          <path d="M 260,0 L 270,260"/>
-          <path d="M 400,0 L 410,260"/>
-          <path d="M 580,0 L 575,260"/>
-          <path d="M 720,0 L 715,260"/>
+        <!-- Auwald-Park (subtle green) -->
+        <g fill="#1d2a1d" opacity=".75">
+          <path d="M 250,90 Q 320,75 400,95 Q 460,120 440,165 Q 380,180 320,170 Q 260,155 250,120 Z"/>
+          <path d="M 540,40 Q 600,30 640,55 Q 645,80 615,90 Q 565,85 545,65 Z"/>
         </g>
 
-        <!-- Labels (Watermark) -->
-        <g fill="#e8e8ec" opacity=".18" font-family="Permanent Marker, sans-serif">
-          <text x="40" y="90" font-size="46" letter-spacing="6">LEIPZIG</text>
-          <text x="520" y="230" font-size="24" letter-spacing="4">MARKKLEEBERG</text>
-        </g>
+        <!-- Pleisse / Elster river (winding north-south) -->
+        <path d="M 565,-10 Q 540,40 530,90 Q 528,140 545,180 Q 575,225 615,250 L 625,250 Q 590,225 560,180 Q 545,140 547,90 Q 555,40 575,-10 Z" fill="url(#riverGrad)"/>
 
-        <!-- PINS (alle 17 Orte, echte Positionen) -->
-        <!-- bbox: lat 51.265..51.350, lon 12.28..12.43 -->
+        <!-- Markkleeberger See (south-east) -->
         <g>
-          <!-- Verbindungslinien (Routen-Andeutung) -->
-          <g stroke="#e5e5ea" stroke-width=".8" fill="none" opacity=".18" stroke-dasharray="2 3">
-            <path d="M 621,227 L 492,21 L 102,90 L 243,70 L 502,67 L 495,45 L 529,39 L 541,34 L 390,67 L 504,146 L 502,129 L 558,105 L 625,85 L 650,47 L 650,234 Z"/>
-          </g>
-          <!-- Pin-Kreise: weiß/transparent, Homebase größer, See blau -->
-          <g>
-            <!-- 1 Pleißenhof (Homebase, größer, Ring) -->
-            <circle cx="621" cy="227" r="9" fill="rgba(255,255,255,.15)" stroke="#fff" stroke-width="1.8"/>
-            <circle cx="621" cy="227" r="3.5" fill="#fff"/>
-            <!-- 15 See (blau) -->
-            <circle cx="650" cy="234" r="7" fill="rgba(150,200,240,.2)" stroke="#a8c8e4" stroke-width="1.5"/>
-            <circle cx="650" cy="234" r="2.5" fill="#a8c8e4"/>
-            <!-- Street-Spots (weiß/grau, transparent) -->
-            <g fill="rgba(255,255,255,.12)" stroke="#d0d0d6" stroke-width="1.3">
-              <circle cx="492" cy="21" r="6"/>
-              <circle cx="102" cy="90" r="6"/>
-              <circle cx="243" cy="70" r="6"/>
-              <circle cx="502" cy="67" r="6"/>
-              <circle cx="495" cy="45" r="6"/>
-              <circle cx="529" cy="39" r="6"/>
-              <circle cx="541" cy="34" r="6"/>
-              <circle cx="390" cy="67" r="6"/>
-              <circle cx="504" cy="146" r="6"/>
-              <circle cx="502" cy="129" r="6"/>
-              <circle cx="558" cy="105" r="6"/>
-              <circle cx="625" cy="85" r="6"/>
-              <circle cx="650" cy="47" r="6"/>
-            </g>
-            <g fill="#fff">
-              <circle cx="492" cy="21" r="1.8"/>
-              <circle cx="102" cy="90" r="1.8"/>
-              <circle cx="243" cy="70" r="1.8"/>
-              <circle cx="502" cy="67" r="1.8"/>
-              <circle cx="495" cy="45" r="1.8"/>
-              <circle cx="529" cy="39" r="1.8"/>
-              <circle cx="541" cy="34" r="1.8"/>
-              <circle cx="390" cy="67" r="1.8"/>
-              <circle cx="504" cy="146" r="1.8"/>
-              <circle cx="502" cy="129" r="1.8"/>
-              <circle cx="558" cy="105" r="1.8"/>
-              <circle cx="625" cy="85" r="1.8"/>
-              <circle cx="650" cy="47" r="1.8"/>
-            </g>
-          </g>
+          <ellipse cx="650" cy="225" rx="68" ry="22" fill="url(#riverGrad)"/>
+          <ellipse cx="650" cy="225" rx="65" ry="20" fill="none" stroke="#3a5060" stroke-width=".8" opacity=".7"/>
         </g>
 
-        <!-- Kompass-Indikator oben links -->
-        <g transform="translate(30,210)" opacity=".3">
-          <circle r="14" fill="none" stroke="#e8e8ec" stroke-width="1"/>
-          <path d="M 0,-10 L 3,0 L 0,-3 L -3,0 Z" fill="#e8e8ec"/>
-          <text y="-16" text-anchor="middle" fill="#e8e8ec" font-family="Space Grotesk" font-size="8" letter-spacing="2">N</text>
+        <!-- Subtle road network (very dim) -->
+        <g stroke="#26262e" stroke-width="1.1" fill="none" opacity=".55" stroke-linecap="round">
+          <path d="M -20,90 Q 200,80 380,95 Q 500,115 620,130"/>
+          <path d="M 380,-20 Q 400,80 405,180 Q 420,250 425,290"/>
+          <path d="M 130,-20 Q 145,80 160,170"/>
+          <path d="M 700,-20 Q 685,90 695,180"/>
+          <path d="M -20,200 Q 200,190 410,205 Q 580,220 720,210"/>
+        </g>
+
+        <!-- Tour route (dashed, animated suggestion) connecting key spots -->
+        <g fill="none" stroke-linecap="round">
+          <path d="M 130,210 Q 240,180 360,140 Q 460,110 540,95" stroke="#ff3a78" stroke-width="2.4" stroke-dasharray="6 7" opacity=".75"/>
+          <path d="M 540,95 Q 600,110 660,180 Q 670,210 660,222" stroke="#f58231" stroke-width="2.4" stroke-dasharray="6 7" opacity=".75"/>
+        </g>
+
+        <!-- Pins (color-coded, real teardrop shape, prominent) -->
+        <g>
+          <use href="#mapPin" x="130" y="210" width="34" height="40" color="#3cb44b"/>
+          <use href="#mapPin" x="240" y="180" width="34" height="40" color="#ffb400"/>
+          <use href="#mapPin" x="360" y="140" width="34" height="40" color="#7c3aed"/>
+          <use href="#mapPin" x="460" y="110" width="34" height="40" color="#1e88e5"/>
+          <use href="#mapPin" x="540" y="95" width="38" height="44" color="#ff0040"/>
+          <use href="#mapPin" x="600" y="120" width="34" height="40" color="#009688"/>
+          <use href="#mapPin" x="660" y="180" width="34" height="40" color="#f58231"/>
+          <use href="#mapPin" x="650" y="222" width="32" height="38" color="#1e88e5"/>
+        </g>
+
+        <!-- LEIPZIG watermark, large, subtle, behind pins -->
+        <g fill="#e8e8ec" opacity=".09" font-family="Permanent Marker,sans-serif">
+          <text x="40" y="195" font-size="64" letter-spacing="10" font-weight="400">LEIPZIG</text>
+        </g>
+
+        <!-- Compass rose (top-right) -->
+        <g transform="translate(750,42)" opacity=".75">
+          <circle r="20" fill="rgba(8,8,12,.7)" stroke="#e8e8ec" stroke-width="1.2"/>
+          <path d="M 0,-13 L 4,0 L 0,-3 L -4,0 Z" fill="#ff3a78"/>
+          <path d="M 0,13 L 4,0 L 0,3 L -4,0 Z" fill="#7a7a82"/>
+          <text y="-26" text-anchor="middle" fill="#e8e8ec" font-family="Space Grotesk,sans-serif" font-size="10" letter-spacing="2" font-weight="700">N</text>
         </g>
       </svg>
     </div>
