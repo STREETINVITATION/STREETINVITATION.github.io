@@ -211,12 +211,12 @@ a{color:inherit;text-decoration:none}
 .hero__title .l{display:block;padding:.08em .08em}
 .hero__title .l>span{display:inline-block;opacity:0;transform:translateY(30px);animation:heroLift 1.05s var(--ease-out) forwards;padding:0 .1em}
 @keyframes heroLift{to{opacity:1;transform:translateY(0)}}
-/* Heller, leuchtender Gradient + Glow speziell fuer den Hero-Titel
-   damit "INVITATION" auf dunklem Background optimal lesbar bleibt
-   und nicht in Weinrot/Schwarz versinkt. */
-.hero__dateline{font-family:var(--font-head);font-weight:400;font-size:clamp(1.05rem,2.2vw,1.7rem);letter-spacing:.04em;color:var(--text);margin:0 0 1.3rem;padding:.2rem 0;background:linear-gradient(100deg,#ff5070 0%,#ff7ad3 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;opacity:0;transform:translateY(20px);animation:fadeUp 1s var(--ease-out) .7s forwards;filter:drop-shadow(0 0 8px rgba(255,80,120,.35))}
+/* Sattes leuchtendes Rot + harter Glow speziell fuer den Hero-Titel.
+   Farbe bleibt deutlich ROT (nicht rosa), aber durch Drop-Shadow-Halo
+   kommt sie aus dem dunklen Background heraus und wird optimal lesbar. */
+.hero__dateline{font-family:var(--font-head);font-weight:400;font-size:clamp(1.05rem,2.2vw,1.7rem);letter-spacing:.04em;color:var(--text);margin:0 0 1.3rem;padding:.2rem 0;background:linear-gradient(100deg,#ff1c40 0%,#ff3a70 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;opacity:0;transform:translateY(20px);animation:fadeUp 1s var(--ease-out) .7s forwards;filter:drop-shadow(0 0 6px rgba(255,30,72,.55))}
 .hero__title .l:nth-child(1)>span{animation-delay:.25s;text-shadow:0 2px 18px rgba(0,0,0,.7),0 1px 0 rgba(0,0,0,.3)}
-.hero__title .l:nth-child(2)>span{animation-delay:.4s;background:linear-gradient(100deg,#ff5070 0%,#ff7ad3 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 18px rgba(255,80,120,.55)) drop-shadow(0 2px 4px rgba(0,0,0,.55))}
+.hero__title .l:nth-child(2)>span{animation-delay:.4s;background:linear-gradient(100deg,#ff1538 0%,#ff336a 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 22px rgba(255,30,72,.7)) drop-shadow(0 0 4px rgba(255,40,80,.85)) drop-shadow(0 2px 3px rgba(0,0,0,.5))}
 .hero__title .l:nth-child(2)>span i{font-style:italic;color:var(--text);-webkit-text-fill-color:var(--text)}
 @keyframes lift{to{transform:translateY(0)}}
 
