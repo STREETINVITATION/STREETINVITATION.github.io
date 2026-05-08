@@ -3674,15 +3674,29 @@ spotDetail.querySelectorAll("[data-sd-close]").forEach(el => el.addEventListener
 }));
 document.addEventListener("keydown", e => { if(e.key === "Escape" && spotDetail.classList.contains("open")) closeSpotDetail(); });
 /* Leaflet-Popup-Close: vor dem Schliessen die Spin-and-Fade-Animation
-   abspielen, dann erst Leaflet das Popup zumachen lassen. */
+   abspielen, dann erst Leaflet das Popup zumachen lassen. WICHTIG: Leaflet
+   recycelt pro Marker dasselbe Popup-DOM, also muss nach dem Close die
+   .is-closing-Klasse vom Button runter, sonst startet der naechste Open
+   schon im "verschwundenen" Endzustand (= Close-X waere unsichtbar). */
 document.addEventListener("click", e => {
   const btn = e.target.closest(".leaflet-popup-close-button");
   if(!btn || btn.classList.contains("is-closing")) return;
   e.preventDefault();
   e.stopPropagation();
   btn.classList.add("is-closing");
-  setTimeout(() => { try{ if(typeof map !== "undefined" && map.closePopup) map.closePopup(); }catch(_){} }, 320);
+  setTimeout(() => {
+    try{ if(typeof map !== "undefined" && map.closePopup) map.closePopup(); }catch(_){}
+    btn.classList.remove("is-closing");
+  }, 320);
 }, true);
+/* Safety-Net: bei jedem popupopen alle Close-Buttons in einen sauberen
+   Default-Zustand setzen, falls eine Animation aus einem vorherigen Cycle
+   haengen geblieben ist. */
+if(typeof map !== "undefined" && map.on){
+  map.on("popupopen", () => {
+    document.querySelectorAll(".leaflet-popup-close-button.is-closing").forEach(b => b.classList.remove("is-closing"));
+  });
+}
 
 /* Mobile Bottom-Sheet: Drag-to-dismiss am Handle */
 (function(){
