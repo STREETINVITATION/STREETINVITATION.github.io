@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="theme-color" content="#0a0a0a" />
-<title>LEIPZIG INVITATION 2026 — Street Unicycle</title>
-<meta name="description" content="Leipzig Invitation — 9 Tage Street Unicycle nach der Unicon. 08.–16.08.2026." />
+<title>LEIPZIG INVITATION 2026 · Street Unicycle</title>
+<meta name="description" content="Leipzig Invitation. 9 Tage Street Unicycle nach der Unicon. 08.–16.08.2026." />
 
 <script>
 /* === I18N · Bootstrap (FOUC-Prevention, laeuft synchron im <head>) === */
@@ -212,7 +212,7 @@ a{color:inherit;text-decoration:none}
 .section{position:relative;padding:clamp(4rem,8vw,7rem) 1.25rem;max-width:1400px;margin:0 auto}
 .section__head{display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;margin-bottom:3rem;flex-wrap:wrap}
 
-/* SECTION FOLD — Stay / Map / FAQ / Join collapsible */
+/* SECTION FOLD, Stay / Map / FAQ / Join collapsible */
 .section--fold{padding:0 1.25rem;margin-bottom:2rem;max-width:1400px;margin-left:auto;margin-right:auto;width:100%}
 .section--fold > summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:end;padding:2rem 1.75rem;border-radius:var(--radius-lg);border:1px solid var(--line);background:linear-gradient(135deg,rgba(12,12,16,.92),rgba(22,22,28,.82));transition:border-color .25s,background .25s;position:relative;overflow:hidden;isolation:isolate}
 .section--fold__bg{position:absolute;inset:0;z-index:0;pointer-events:none;opacity:1}
@@ -739,9 +739,9 @@ a{color:inherit;text-decoration:none}
 #mapLegend .grid9{display:grid;grid-template-columns:repeat(3,1fr);gap:.22rem;margin-top:.15rem}
 #mapLegend .grid9 .row{margin-bottom:0}
 
-.pin{width:46px;height:46px;position:relative;filter:drop-shadow(0 3px 8px rgba(0,0,0,.45))}
-.pin__body{position:absolute;inset:0;background:var(--dc,var(--red));border:3.5px solid #fff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);transition:transform .3s var(--ease);box-shadow:0 0 0 1.5px rgba(0,0,0,.3)}
-.pin__num{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--font-pin);font-size:1.7rem;color:#fff;font-weight:400;letter-spacing:.03em;line-height:1;font-feature-settings:"tnum" 1;text-shadow:0 1px 0 rgba(0,0,0,.6),0 2px 4px rgba(0,0,0,.55),0 0 1px rgba(0,0,0,.95);-webkit-text-stroke:.5px rgba(0,0,0,.55)}
+.pin{width:46px;height:46px;position:relative;overflow:visible;filter:drop-shadow(0 3px 8px rgba(0,0,0,.45))}
+.pin__body{position:absolute;inset:0;background:var(--dc,var(--red));border:3.5px solid #fff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);transition:transform .3s var(--ease);box-shadow:0 0 0 1.5px rgba(0,0,0,.3);z-index:2}
+.pin__num{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--font-pin);font-size:1.7rem;color:#fff;font-weight:400;letter-spacing:.03em;line-height:1;font-feature-settings:"tnum" 1;text-shadow:0 1px 0 rgba(0,0,0,.6),0 2px 4px rgba(0,0,0,.55),0 0 1px rgba(0,0,0,.95);-webkit-text-stroke:.5px rgba(0,0,0,.55);z-index:3}
 .pin:hover{z-index:600}
 .pin:hover .pin__body{transform:rotate(-45deg) scale(1.2)}
 .pin.is-focused{z-index:700}
@@ -750,17 +750,19 @@ a{color:inherit;text-decoration:none}
 .pin--home .pin__num{color:var(--dc,var(--red));-webkit-text-stroke:.3px rgba(255,255,255,.7);text-shadow:0 1px 0 rgba(255,255,255,.7),0 0 4px rgba(255,255,255,.7)}
 .pin--lake .pin__body{background:#1e88e5;border-color:#fff;box-shadow:0 0 0 1.5px rgba(0,0,0,.35),0 0 14px rgba(30,136,229,.55)}
 .pin--lake .pin__num{color:#fff;font-family:var(--font-pin);font-size:1.6rem}
-/* Mehrtages-Spots (ausser Pleissenhof / See): SVG-Multi-Segment-Ring zeigt ALLE
-   anderen Besuchstage in jeweiliger Tagesfarbe als Kreis-Segmente.
-   Innen-Body bleibt mit weissem Border (3.5px) als Separator zum farbigen Ring. */
+/* Mehrtages-Spots (ausser Pleissenhof + See): SVG-Multi-Segment-Ring als Halo
+   AUSSERHALB des Pin-Body. Body inkl. weisser 3.5px-Border bleibt komplett intakt
+   und ueberlagert die Ring-Unterseite (z-index Body=2 > Ring=1), die Tropfen-Spitze
+   ueberdeckt den unteren Bogen sauber, oberer 3/4-Halo ist sichtbar als bewusster
+   Hinweis-Indikator fuer Mehrtages-Besuche. */
 .pin--ring .pin__body{border-color:#fff;box-shadow:0 0 0 1.5px rgba(0,0,0,.3)}
 .pin--lake.pin--ring .pin__body{border-color:#fff;box-shadow:0 0 0 1.5px rgba(0,0,0,.35),0 0 14px rgba(30,136,229,.55)}
-.pin__ring{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;transition:transform .3s var(--ease)}
-.pin__ring circle{fill:none;stroke-width:4;transform-origin:center;transform:rotate(-90deg)}
-.pin:hover .pin__ring{transform:scale(1.2)}
-.pin.is-focused .pin__ring{transform:scale(1.3)}
-.pin__sub{position:absolute;top:-8px;right:-8px;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:#111;color:#fff;font-family:var(--font-mono);font-size:.55rem;font-weight:700;letter-spacing:.05em;display:grid;place-items:center;border:1.5px solid var(--dc,var(--red));box-shadow:0 2px 5px rgba(0,0,0,.4);z-index:2;line-height:1}
-.pin__start,.pin__end{position:absolute;bottom:-4px;right:-4px;width:18px;height:18px;border-radius:50%;background:#fff;border:2px solid var(--dc);display:grid;place-items:center;z-index:3;box-shadow:0 2px 5px rgba(0,0,0,.35)}
+.pin__ring{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;transition:transform .3s var(--ease);z-index:1}
+.pin__ring circle{fill:none;stroke-width:3;transform-origin:center;transform:rotate(-90deg);filter:drop-shadow(0 1px 2px rgba(0,0,0,.25))}
+.pin:hover .pin__ring{transform:scale(1.15)}
+.pin.is-focused .pin__ring{transform:scale(1.25)}
+.pin__sub{position:absolute;top:-9px;right:-9px;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:#111;color:#fff;font-family:var(--font-mono);font-size:.55rem;font-weight:700;letter-spacing:.05em;display:grid;place-items:center;border:1.5px solid var(--dc,var(--red));box-shadow:0 2px 5px rgba(0,0,0,.4);z-index:5;line-height:1}
+.pin__start,.pin__end{position:absolute;bottom:-4px;right:-4px;width:18px;height:18px;border-radius:50%;background:#fff;border:2px solid var(--dc);display:grid;place-items:center;z-index:4;box-shadow:0 2px 5px rgba(0,0,0,.35)}
 .pin__start{background:#fff;color:var(--dc)}
 .pin__end{background:var(--dc);color:#fff}
 .pin__start::before{content:"▶";font-size:.55rem;margin-left:1px}
@@ -925,7 +927,7 @@ a{color:inherit;text-decoration:none}
   <img class="loader__mark" src="Bilder/Load.png" alt="" />
   <div class="loader__brand"><span>LEIPZIG</span><span>INVITATION</span></div>
   <div class="loader__bar"></div>
-  <div class="loader__meta">08 — 16 · 08 · 2026</div>
+  <div class="loader__meta">08–16 · 08 · 2026</div>
 </div>
 
 <header class="nav" id="nav">
@@ -992,10 +994,10 @@ a{color:inherit;text-decoration:none}
   <div class="overview-grid reveal">
     <div class="overview-cell"><b>08–16</b><div><div class="label" data-i18n="overview.cell.dates.label">August 2026</div><div class="desc" data-i18n="overview.cell.dates.desc">Samstag zu Sonntag. Ankommen, riden, abreisen.</div></div></div>
     <div class="overview-cell"><b>35</b><div><div class="label" data-i18n="overview.cell.slots.label">Plätze maximal</div><div class="desc" data-i18n="overview.cell.slots.desc">25 Pleißenhof · 10 Heizhaus-Schlafplatz. Ab Platz 36 selbst.</div></div></div>
-    <div class="overview-cell overview-cell--jump" data-jump="stay" role="button" tabindex="0" data-i18n-attr="aria-label:overview.jump_aria" aria-label="Zu 'Wo du schläfst' springen"><b>25 €</b><div><div class="label" data-i18n="overview.cell.fee.label">Einmalige Teilnahmegebühr · vor Ort</div><div class="desc" data-i18n-html="overview.cell.fee.desc.html">Pro Person, einmalig — Zahlung bar bei Anmeldung am Pleißenhof. Inkl. Zelten. <span class="overview-cell__cta">Details zu Übernachtung → „Wo du schläfst" ↗</span></div></div></div>
-    <div class="overview-cell"><b>17</b><div><div class="label" data-i18n-html="overview.cell.spots.label">Spots &amp; Locations</div><div class="desc" data-i18n="overview.cell.spots.desc">Street, Flat, DIY, Parks — plus Bade-See direkt am Camp.</div></div></div>
+    <div class="overview-cell overview-cell--jump" data-jump="stay" role="button" tabindex="0" data-i18n-attr="aria-label:overview.jump_aria" aria-label="Zu 'Wo du schläfst' springen"><b>25 €</b><div><div class="label" data-i18n="overview.cell.fee.label">Einmalige Teilnahmegebühr · vor Ort</div><div class="desc" data-i18n-html="overview.cell.fee.desc.html">Pro Person, einmalig, Zahlung bar bei Anmeldung am Pleißenhof. Inkl. Zelten. <span class="overview-cell__cta">Details zu Übernachtung → „Wo du schläfst" ↗</span></div></div></div>
+    <div class="overview-cell"><b>17</b><div><div class="label" data-i18n-html="overview.cell.spots.label">Spots &amp; Locations</div><div class="desc" data-i18n="overview.cell.spots.desc">Street, Flat, DIY, Parks, plus Bade-See direkt am Camp.</div></div></div>
     <div class="overview-cell"><b>Self</b><div><div class="label" data-i18n="overview.cell.self.label">Selbstverpflegung</div><div class="desc" data-i18n="overview.cell.self.desc">Crew kocht, teilt, grillt. Foodliste für Tag 2 bei Ankunft.</div></div></div>
-    <div class="overview-cell"><b>16+</b><div><div class="label" data-i18n="overview.cell.age.label">Mindestalter</div><div class="desc" data-i18n="overview.cell.age.desc">Ab 16 Jahren — keine Ausnahme.</div></div></div>
+    <div class="overview-cell"><b>16+</b><div><div class="label" data-i18n="overview.cell.age.label">Mindestalter</div><div class="desc" data-i18n="overview.cell.age.desc">Ab 16 Jahren, keine Ausnahme.</div></div></div>
   </div>
 </section>
 
@@ -1004,7 +1006,7 @@ a{color:inherit;text-decoration:none}
     <div class="section--fold__head">
       <div class="section__eyebrow" data-i18n="stay.eyebrow">Unterkunft</div>
       <h2 class="section__title" data-i18n-html="stay.title.html">Wo du <em>schläfst.</em></h2>
-      <p class="section__lede" data-i18n="stay.lede">Selbstverpflegung, selbst kümmern. Homebase gestellt — der Rest ist eigene Entscheidung.</p>
+      <p class="section__lede" data-i18n="stay.lede">Selbstverpflegung, selbst kümmern. Homebase gestellt, der Rest ist eigene Entscheidung.</p>
     </div>
     <span class="section--fold__toggle" aria-hidden="true"></span>
   </summary>
@@ -1135,7 +1137,7 @@ a{color:inherit;text-decoration:none}
     <div class="section--fold__head">
       <div class="section__eyebrow" data-i18n="map.eyebrow">The Map</div>
       <h2 class="section__title" data-i18n-html="map.title.html">Jeder Tag. <em>Eigene Farbe.</em></h2>
-      <p class="section__lede" data-i18n="map.lede">Links Tag wählen — rechts die Route in der Tagesfarbe. Nummerierte Pins zeigen Reihenfolge. Essen &amp; WCs zuschaltbar. Klick auf einen Stop zoomt die Karte.</p>
+      <p class="section__lede" data-i18n="map.lede">Links Tag wählen, rechts die Route in der Tagesfarbe. Nummerierte Pins zeigen Reihenfolge. Essen &amp; WCs zuschaltbar. Klick auf einen Stop zoomt die Karte.</p>
     </div>
     <span class="section--fold__toggle" aria-hidden="true"></span>
   </summary>
@@ -1193,30 +1195,30 @@ a{color:inherit;text-decoration:none}
     <div class="section--fold__head">
       <div class="section__eyebrow" data-i18n="faq.eyebrow">FAQ</div>
       <h2 class="section__title" data-i18n-html="faq.title.html">Good to <em>know.</em></h2>
-      <p class="section__lede" data-i18n="faq.lede">Anmeldung, Kosten, Anreise, Schlafen, Verpflegung, Spots, Sicherheit — alle Antworten auf einen Klick.</p>
+      <p class="section__lede" data-i18n="faq.lede">Anmeldung, Kosten, Anreise, Schlafen, Verpflegung, Spots, Sicherheit, alle Antworten auf einen Klick.</p>
     </div>
     <span class="section--fold__toggle" aria-hidden="true"></span>
   </summary>
   <div class="section--fold__body">
   <div class="faq">
-    <details class="faq__item"><summary data-i18n="faq.q1.q">Wer kann mitmachen — und welches Level brauche ich?</summary><div class="answer" data-i18n-html="faq.q1.a.html">Alle Einrad-Fahrer:innen ab 16 Jahren, jedes Level.</div></details>
-    <details class="faq__item"><summary data-i18n="faq.q2.q">Was kostet die Teilnahme — und was ist enthalten?</summary><div class="answer" data-i18n-html="faq.q2.a.html"><strong>25 €</strong> pro Person, einmalig.</div></details>
-    <details class="faq__item"><summary data-i18n="faq.q3.q">Wie melde ich mich an?</summary><div class="answer" data-i18n-html="faq.q3.a.html">Mail an folke.kleinrad@gmail.com — Vorlage gibt's auf der Anmelde-Sektion.</div></details>
+    <details class="faq__item"><summary data-i18n="faq.q1.q">Wer kann mitmachen, und welches Level brauche ich?</summary><div class="answer" data-i18n-html="faq.q1.a.html">Alle Einrad-Fahrer:innen ab 16 Jahren, jedes Level.</div></details>
+    <details class="faq__item"><summary data-i18n="faq.q2.q">Was kostet die Teilnahme, und was ist enthalten?</summary><div class="answer" data-i18n-html="faq.q2.a.html"><strong>25 €</strong> pro Person, einmalig.</div></details>
+    <details class="faq__item"><summary data-i18n="faq.q3.q">Wie melde ich mich an?</summary><div class="answer" data-i18n-html="faq.q3.a.html">Mail an folke.kleinrad@gmail.com, Vorlage gibt's auf der Anmelde-Sektion.</div></details>
     <details class="faq__item"><summary data-i18n="faq.q4.q">Wo schlafe ich?</summary><div class="answer" data-i18n-html="faq.q4.a.html">Zelten am Pleißenhof oder Heizhaus-Schlafplatz.</div></details>
     <details class="faq__item"><summary data-i18n="faq.q5.q">Wie läuft die Verpflegung?</summary><div class="answer" data-i18n-html="faq.q5.a.html">Selbstverpflegung mit gemeinsamen Crew-Mahlzeiten.</div></details>
     <details class="faq__item"><summary data-i18n="faq.q6.q">Wie komme ich nach Leipzig?</summary><div class="answer" data-i18n-html="faq.q6.a.html">Bahn (Hbf), Auto oder Flughafen LEJ.</div></details>
-    <details class="faq__item"><summary data-i18n="faq.q7.q">Wie bewege ich mich zwischen den Spots?</summary><div class="answer" data-i18n-html="faq.q7.a.html">Primär auf dem Einrad — wir sind ein Ride-Trip.</div></details>
+    <details class="faq__item"><summary data-i18n="faq.q7.q">Wie bewege ich mich zwischen den Spots?</summary><div class="answer" data-i18n-html="faq.q7.a.html">Primär auf dem Einrad, wir sind ein Ride-Trip.</div></details>
     <details class="faq__item"><summary data-i18n="faq.q8.q">Welche Ausrüstung & Schutzkleidung brauche ich?</summary><div class="answer" data-i18n-html="faq.q8.a.html">Einrad, Helm, Protektoren, Camp-Kram.</div></details>
     <details class="faq__item"><summary data-i18n="faq.q9.q">Was passiert bei Regen?</summary><div class="answer" data-i18n-html="faq.q9.a.html">Plan B: Heizhaus Indoor-Skatepark.</div></details>
     <details class="faq__item"><summary data-i18n="faq.q10.q">Welche Sprachen werden gesprochen?</summary><div class="answer" data-i18n-html="faq.q10.a.html">Deutsch und Englisch.</div></details>
-    <details class="faq__item"><summary data-i18n="faq.q11.q">Sind die Spots öffentlich — wie verhalten wir uns?</summary><div class="answer" data-i18n-html="faq.q11.a.html">Ja (außer Heizhaus). Spot-Etikette beachten.</div></details>
-    <details class="faq__item"><summary data-i18n="faq.q12.q">Foto / Video — was ist mit Konsens?</summary><div class="answer" data-i18n-html="faq.q12.a.html">Niemand muss aufs Bild. Opt-out bei Anmeldung möglich.</div></details>
-    <details class="faq__item"><summary data-i18n="faq.q13.q">Mindestalter — und Minderjährige?</summary><div class="answer" data-i18n-html="faq.q13.a.html">16+, mit Zustimmung der Erziehungsberechtigten.</div></details>
-    <details class="faq__item"><summary data-i18n="faq.q14.q">Skateboards / BMX / Rollerblades — auch willkommen?</summary><div class="answer" data-i18n-html="faq.q14.a.html">Ja, besonders Tag 8 (Finale).</div></details>
+    <details class="faq__item"><summary data-i18n="faq.q11.q">Sind die Spots öffentlich, wie verhalten wir uns?</summary><div class="answer" data-i18n-html="faq.q11.a.html">Ja (außer Heizhaus). Spot-Etikette beachten.</div></details>
+    <details class="faq__item"><summary data-i18n="faq.q12.q">Foto / Video, was ist mit Konsens?</summary><div class="answer" data-i18n-html="faq.q12.a.html">Niemand muss aufs Bild. Opt-out bei Anmeldung möglich.</div></details>
+    <details class="faq__item"><summary data-i18n="faq.q13.q">Mindestalter, und Minderjährige?</summary><div class="answer" data-i18n-html="faq.q13.a.html">16+, mit Zustimmung der Erziehungsberechtigten.</div></details>
+    <details class="faq__item"><summary data-i18n="faq.q14.q">Skateboards / BMX / Rollerblades, auch willkommen?</summary><div class="answer" data-i18n-html="faq.q14.a.html">Ja, besonders Tag 8 (Finale).</div></details>
     <details class="faq__item"><summary data-i18n="faq.q15.q">Crew-Kommunikation vor & während des Events?</summary><div class="answer" data-i18n-html="faq.q15.a.html">Mail vorab, Telegram/Signal-Gruppe nach Anmeldung.</div></details>
     <details class="faq__item"><summary data-i18n="faq.q16.q">WCs, Wasser, Strom & Duschen?</summary><div class="answer" data-i18n-html="faq.q16.a.html">Pleißenhof hat alles Nötige.</div></details>
     <details class="faq__item"><summary data-i18n="faq.q17.q">Auto, Parken & Wertsachen?</summary><div class="answer" data-i18n-html="faq.q17.a.html">Pleißenhof hat Stellplätze.</div></details>
-    <details class="faq__item"><summary data-i18n="faq.q18.q">Stornierung & Wetter-Absage?</summary><div class="answer" data-i18n-html="faq.q18.a.html">Keine Online-Vorabzahlung — Stornierung per Mail jederzeit ohne Gebühr.</div></details>
+    <details class="faq__item"><summary data-i18n="faq.q18.q">Stornierung & Wetter-Absage?</summary><div class="answer" data-i18n-html="faq.q18.a.html">Keine Online-Vorabzahlung, Stornierung per Mail jederzeit ohne Gebühr.</div></details>
   </div>
   </div>
 </details>
@@ -1348,14 +1350,14 @@ a{color:inherit;text-decoration:none}
       <span class="spot-detail__pin" id="sdPin">?</span>
       <div>
         <div class="spot-detail__eyebrow" id="sdEyebrow">Spot</div>
-        <h2 class="spot-detail__title" id="sdTitle">—</h2>
+        <h2 class="spot-detail__title" id="sdTitle">…</h2>
       </div>
     </header>
     <p class="spot-detail__addr" id="sdAddr">
       <svg viewBox="0 0 24 24"><path d="M12 21s-7-6.5-7-12a7 7 0 1 1 14 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
-      <span id="sdAddrText">—</span>
+      <span id="sdAddrText">…</span>
     </p>
-    <p class="spot-detail__desc" id="sdDesc">—</p>
+    <p class="spot-detail__desc" id="sdDesc">…</p>
     <div class="spot-detail__notice" id="sdNotice" hidden></div>
     <div class="spot-detail__meta" id="sdMeta"></div>
     <div class="spot-detail__gallery" id="sdGallery"></div>
@@ -1371,11 +1373,11 @@ a{color:inherit;text-decoration:none}
     <div class="ps-head__brand">
       <div class="ps-head__eyebrow" data-i18n="ps.head.eyebrow">STREET · UNICYCLE · LEIPZIG</div>
       <h1 class="ps-head__title">LEIPZIG INVITATION <span>2026</span></h1>
-      <div class="ps-head__dateline" data-i18n-html="ps.head.dateline">08. — 16. August 2026 · 9 Tage · Leipzig &amp; Markkleeberg</div>
+      <div class="ps-head__dateline" data-i18n-html="ps.head.dateline">08., 16. August 2026 · 9 Tage · Leipzig &amp; Markkleeberg</div>
     </div>
     <div class="ps-head__meta">
       <div><b data-i18n="ps.head.meta.contact">Kontakt</b><span>Folke · folke.kleinrad@gmail.com</span></div>
-      <div><b data-i18n="ps.head.meta.web">Web</b><span id="psUrl">—</span></div>
+      <div><b data-i18n="ps.head.meta.web">Web</b><span id="psUrl">…</span></div>
       <div><b data-i18n="ps.head.meta.fsk">FSK</b><span data-i18n="ps.head.meta.fsk_value">16+ · keine Ausnahme</span></div>
     </div>
   </header>
@@ -1416,7 +1418,7 @@ a{color:inherit;text-decoration:none}
     </div>
     <div class="ps-foot__col" data-i18n-html="ps.foot.dropin.full.html">
       <b>Drop-In-Regel</b>
-      16+ · eigene Verantwortung · Zelt &amp; Schlafzeug mitbringen · Einrad/Helm selbstverständlich. Keine Online-Vorabzahlung — die 25 € werden <b>bar vor Ort bei Anmeldung</b> kassiert und decken Location, Strom, Müll, Orga.
+      16+ · eigene Verantwortung · Zelt &amp; Schlafzeug mitbringen · Einrad/Helm selbstverständlich. Keine Online-Vorabzahlung, die 25 € werden <b>bar vor Ort bei Anmeldung</b> kassiert und decken Location, Strom, Müll, Orga.
     </div>
     <div class="ps-foot__stamp">LI · 2026</div>
   </footer>
@@ -1463,17 +1465,17 @@ const I18N = {
       "overview.cell.dates.label":"August 2026","overview.cell.dates.desc":"Samstag zu Sonntag. Ankommen, riden, abreisen.",
       "overview.cell.slots.label":"Plätze maximal","overview.cell.slots.desc":"25 Pleißenhof · 10 Heizhaus-Schlafplatz. Ab Platz 36 selbst.",
       "overview.cell.fee.label":"Einmalige Teilnahmegebühr · vor Ort",
-      "overview.cell.fee.desc.html":"Pro Person, einmalig — Zahlung bar bei Anmeldung am Pleißenhof. Inkl. Zelten. <span class=\"overview-cell__cta\">Details zu Übernachtung → „Wo du schläfst“ ↗</span>",
-      "overview.cell.spots.label":"Spots &amp; Locations","overview.cell.spots.desc":"Street, Flat, DIY, Parks — plus Bade-See direkt am Camp.",
+      "overview.cell.fee.desc.html":"Pro Person, einmalig, Zahlung bar bei Anmeldung am Pleißenhof. Inkl. Zelten. <span class=\"overview-cell__cta\">Details zu Übernachtung → „Wo du schläfst“ ↗</span>",
+      "overview.cell.spots.label":"Spots &amp; Locations","overview.cell.spots.desc":"Street, Flat, DIY, Parks, plus Bade-See direkt am Camp.",
       "overview.cell.self.label":"Selbstverpflegung","overview.cell.self.desc":"Crew kocht, teilt, grillt. Foodliste für Tag 2 bei Ankunft.",
-      "overview.cell.age.label":"Mindestalter","overview.cell.age.desc":"Ab 16 Jahren — keine Ausnahme.",
+      "overview.cell.age.label":"Mindestalter","overview.cell.age.desc":"Ab 16 Jahren, keine Ausnahme.",
       "stay.eyebrow":"Unterkunft","stay.title.html":"Wo du <em>schläfst.</em>",
-      "stay.lede":"Selbstverpflegung, selbst kümmern. Homebase gestellt — der Rest ist eigene Entscheidung.",
+      "stay.lede":"Selbstverpflegung, selbst kümmern. Homebase gestellt, der Rest ist eigene Entscheidung.",
       "days.eyebrow":"Lineup · 9 Days","days.title.html":"Jeder Tag<br>verschiedene <em>Spots.</em>",
       "days.lede":"Klick auf ein Thumbnail öffnet Bild oder Video in der Galerie.",
       "days.bar.day":"Tag","days.action.peek":"Blick in den Tag",
       "map.eyebrow":"The Map","map.title.html":"Jeder Tag. <em>Eigene Farbe.</em>",
-      "map.lede":"Links Tag wählen — rechts die Route in der Tagesfarbe. Nummerierte Pins zeigen Reihenfolge. Essen & WCs zuschaltbar. Klick auf einen Stop zoomt die Karte.",
+      "map.lede":"Links Tag wählen, rechts die Route in der Tagesfarbe. Nummerierte Pins zeigen Reihenfolge. Essen & WCs zuschaltbar. Klick auf einen Stop zoomt die Karte.",
       "map.panel.view":"Ansicht","map.panel.allspots":"Alle Spots",
       "map.panel.box.days":"Tage","map.panel.box.legend":"Legende","map.panel.box.poi":"POI","map.panel.box.poi_subtitle":"Nähe",
       "map.panel.poi.toggle":"Zuschalten","map.panel.poi.food":"Essen","map.panel.poi.wc":"WC",
@@ -1489,47 +1491,47 @@ const I18N = {
       "map.popup.poi.food":"Essen · Café","map.popup.poi.wc":"WC · Toilette",
       "map.reset_back":"Zurück zur Übersicht",
       "faq.eyebrow":"FAQ","faq.title.html":"Good to <em>know.</em>",
-      "faq.lede":"Anmeldung, Kosten, Anreise, Schlafen, Verpflegung, Spots, Sicherheit — alle Antworten auf einen Klick.",
-      "faq.q1.q":"Wer kann mitmachen — und welches Level brauche ich?",
-      "faq.q1.a.html":"<strong>Primär Einrad-Fahrer:innen ab 16 Jahren, jedes Level.</strong> Wir haben Spots für Flat, Street, technisches Riden und Chill-Sessions. Wichtiger als Skill-Level ist Motivation und Respekt vor den Spots.<br><br><strong>Wir grenzen aber niemanden aus.</strong> <strong>Tag 8 (Finale)</strong> ist der offizielle gemeinsame Skate + Einrad-Day — Skateboarder sind dort ausdrücklich Teil des Events. An den anderen Tagen liegt der Fokus auf Einrad; wer als Skater:in mitkommen möchte, ist trotzdem willkommen.",
-      "faq.q2.q":"Was kostet die Teilnahme — und was ist enthalten?",
-      "faq.q2.a.html":"<strong>25 € pro Person, einmalig</strong> für die ganzen 9 Tage — bar vor Ort bei Anmeldung am Pleißenhof. Keine Online-Vorabzahlung.<br><br><strong>Enthalten:</strong> Zelten am Pleißenhof, Crew-Orga, Strom, Trocken-WCs, Müll. <strong>Nicht enthalten:</strong> Verpflegung (Selbstversorgung), ÖPNV-Tickets, optionale Heizhaus-Übernachtung (10 € / Nacht direkt ans Heizhaus, max. 10 Plätze, läuft <strong>nicht</strong> über uns).",
+      "faq.lede":"Anmeldung, Kosten, Anreise, Schlafen, Verpflegung, Spots, Sicherheit, alle Antworten auf einen Klick.",
+      "faq.q1.q":"Wer kann mitmachen, und welches Level brauche ich?",
+      "faq.q1.a.html":"<strong>Primär Einrad-Fahrer:innen ab 16 Jahren, jedes Level.</strong> Wir haben Spots für Flat, Street, technisches Riden und Chill-Sessions. Wichtiger als das Skill-Level ist Motivation und Respekt vor den Spots.<br><br><strong>Wir grenzen aber niemanden aus.</strong> <strong>Tag 8 (Finale)</strong> ist der offizielle gemeinsame Skate &amp; Einrad-Day, Skateboarder sind dort ausdrücklich Teil des Events. An den anderen Tagen liegt der Fokus auf Einrad Street und Flatland. Wer als Skater:in mitkommen möchte, ist trotzdem willkommen.",
+      "faq.q2.q":"Was kostet die Teilnahme, und was ist enthalten?",
+      "faq.q2.a.html":"<strong>25 € pro Person, einmalig</strong> für die ganzen 9 Tage, bar vor Ort bei Anmeldung am Pleißenhof. Keine Online-Vorabzahlung.<br><br><strong>Enthalten:</strong> Zelten am Pleißenhof, Crew-Orga, Strom, Trocken-WCs, Müll. <strong>Nicht enthalten:</strong> Verpflegung (Selbstversorgung), ÖPNV-Tickets, optionale Heizhaus-Übernachtung (10 € / Nacht direkt ans Heizhaus, max. 10 Plätze, läuft <strong>nicht</strong> über uns).",
       "faq.q3.q":"Wie melde ich mich an?",
-      "faq.q3.a.html":"<strong>Anmeldung läuft ausschließlich per Mail</strong> an <strong>folke.kleinrad@gmail.com</strong> mit Betreff <em>„Anmeldung · Leipzig Invitation 2026“</em>. Die fertige Vorlage findest du in der Anmelde-Sektion (Button „Vorlage kopieren“) — gefragt sind: Name, Ankunft, Abreise, Unterkunftswunsch, Allergien, Sonstiges. Antwort meist innerhalb von 48 h. Keine Online-Vorabzahlung — die 25 € werden bar vor Ort am Pleißenhof kassiert.",
+      "faq.q3.a.html":"<strong>Anmeldung läuft ausschließlich per Mail</strong> an <strong>folke.kleinrad@gmail.com</strong> mit Betreff <em>„Anmeldung · Leipzig Invitation 2026“</em>. Die fertige Vorlage findest du in der Anmelde-Sektion (Button „Vorlage kopieren“), gefragt sind: Name, Ankunft, Abreise, Unterkunftswunsch, Allergien, Sonstiges. Antwort meist innerhalb von 48 h. Keine Online-Vorabzahlung, die 25 € werden bar vor Ort am Pleißenhof kassiert.",
       "faq.q4.q":"Wo schlafe ich?",
-      "faq.q4.a.html":"<strong>Hauptoption: Pleißenhof</strong> in Markkleeberg, Zelten auf der Obstbaumwiese — <strong>25 Plätze, im Teilnahmepreis enthalten</strong>, first come, first serve.<br><br><strong>Alternative: Heizhaus</strong> (Leipzig-West) — 10 € pro Nacht, max. 10 Plätze. Buchung direkt über <a href=\"https://heizhaus-leipzig.de/\" target=\"_blank\" rel=\"noopener\">heizhaus-leipzig.de</a> — läuft <strong>nicht</strong> über uns.<br><br><strong>Ab Platz 36:</strong> selbst organisieren (Hostel, Hotel, Campingplatz, Jugendherberge).",
+      "faq.q4.a.html":"<strong>Hauptoption: Pleißenhof</strong> in Markkleeberg, Zelten auf der Obstbaumwiese, <strong>25 Plätze, im Teilnahmepreis enthalten</strong>, first come, first serve.<br><br><strong>Alternative: Heizhaus</strong> (Leipzig-West), 10 € pro Nacht, max. 10 Plätze. Buchung direkt über <a href=\"https://heizhaus-leipzig.de/\" target=\"_blank\" rel=\"noopener\">heizhaus-leipzig.de</a>, läuft <strong>nicht</strong> über uns.<br><br><strong>Ab Platz 36:</strong> selbst organisieren (Hostel, Hotel, Campingplatz, Jugendherberge).",
       "faq.q5.q":"Wie läuft die Verpflegung?",
-      "faq.q5.a.html":"<strong>Selbstverpflegung.</strong> Am Ankunftstag gibt's eine Foodliste für Tag 2. Danach organisiert sich die Crew über den Community-Tisch — Frühstück gemeinsam, Abends wird gegrillt wenn geplant. Allergien und Diätbedürfnisse bitte direkt in die Anmelde-Mail schreiben.<br><br><strong>Auf Tour:</strong> Bäcker, Imbisse, Cafés. Die Karte hat einen <em>POI-Layer</em> für Essen + WCs — zuschaltbar.",
+      "faq.q5.a.html":"<strong>Selbstverpflegung.</strong> Am Ankunftstag gibt's eine Foodliste für Tag 2. Danach organisiert sich die Crew über den Community-Tisch, Frühstück gemeinsam, Abends wird gegrillt wenn geplant. Allergien und Diätbedürfnisse bitte direkt in die Anmelde-Mail schreiben.<br><br><strong>Auf Tour:</strong> Bäcker, Imbisse, Cafés. Die Karte hat einen <em>POI-Layer</em> für Essen + WCs, zuschaltbar.",
       "faq.q6.q":"Wie komme ich nach Leipzig?",
       "faq.q6.a.html":"<strong>Bahn:</strong> Leipzig Hbf, von dort weiter mit der S-Bahn nach Markkleeberg.<br><strong>Auto:</strong> Pleißenhof hat Stellplätze auf umzäuntem Gelände.<br><strong>Flughafen:</strong> Leipzig/Halle (LEJ) oder über Berlin/Dresden mit der Bahn weiter.<br><br>Treffpunkt am Pleißenhof ab Samstag Nachmittag (Tag 1).",
       "faq.q7.q":"Wie bewege ich mich zwischen den Spots?",
-      "faq.q7.a.html":"<strong>Primär auf dem Einrad</strong> — wir sind ein Ride-Trip. Tour-Routen sind auf der Karte als verbundene Linien sichtbar, jeder Stop nummeriert nach Reihenfolge im Tag.<br><br><strong>Längere Strecken</strong> (Homebase ↔ Innenstadt: 8 km): <strong>LVB S-Bahn & Straßenbahn</strong>, Leipzig-Tageskarte 8,80 €. App: <em>LVB.MOBIL</em>.",
+      "faq.q7.a.html":"<strong>Primär auf dem Einrad</strong>, wir sind ein Ride-Trip. Tour-Routen sind auf der Karte als verbundene Linien sichtbar, jeder Stop nummeriert nach Reihenfolge im Tag.<br><br><strong>Längere Strecken</strong> (Homebase ↔ Innenstadt: 8 km): <strong>LVB S-Bahn & Straßenbahn</strong>, Leipzig-Tageskarte 8,80 €. App: <em>LVB.MOBIL</em>.",
       "faq.q8.q":"Welche Ausrüstung & Schutzkleidung brauche ich?",
       "faq.q8.a.html":"<strong>Pflicht:</strong> Einrad (ideal 19″ oder 24/26″ Street-Setup) und Helm.<br><strong>Stark empfohlen:</strong> Schienbein- und Knieprotektoren, Handschuhe.<br><strong>Camp:</strong> Zelt, Schlafsack, Isomatte, Stirnlampe, persönliche Hygiene.<br><strong>Optional:</strong> Reserve-Pedale, Pumpe, Multitool.",
       "faq.q9.q":"Was passiert bei Regen?",
-      "faq.q9.a.html":"<strong>Plan B: Heizhaus.</strong> Das Heizhaus ist eine Indoor-Skatehalle (Street, Bowl, Miniramp) — bei Regen unsere Indoor-Option. Der Tagesplan kann flexibel angepasst werden, Heizhaus-Sessions ggf. vorgezogen.",
+      "faq.q9.a.html":"<strong>Plan B: Heizhaus.</strong> Das Heizhaus ist eine Indoor-Skatehalle (Street, Bowl, Miniramp), bei Regen unsere Indoor-Option. Der Tagesplan kann flexibel angepasst werden, Heizhaus-Sessions ggf. vorgezogen.",
       "faq.q10.q":"Welche Sprachen werden gesprochen?",
-      "faq.q10.a.html":"Die Webseite ist <strong>DE/EN umschaltbar</strong> (🌐-Button oben rechts). Die Mail-Anmeldung kannst du auf Deutsch oder Englisch schreiben — wenn du Englisch bevorzugst, schreib das einfach in die Mail dazu, Folke meldet sich zurück.",
-      "faq.q11.q":"Sind die Spots öffentlich — wie verhalten wir uns?",
-      "faq.q11.a.html":"Ja, bis auf das <strong>Heizhaus</strong> (vereinsbetrieben — <a href=\"https://heizhaus-leipzig.de/\" target=\"_blank\" rel=\"noopener\">heizhaus-leipzig.de</a>). Für unsere Sessions dort läuft alles über die Crew. Alle Straßenspots sind öffentlicher Raum.<br><br><strong>Spot-Etikette:</strong> keine Schäden, keine Lautstärke zur Unzeit, Müll mitnehmen. Bei Ansprache: freundlich bleiben, gegebenenfalls Spot wechseln. <em>Wir sind Gäste.</em>",
-      "faq.q12.q":"Foto / Video — was ist mit Konsens?",
+      "faq.q10.a.html":"Die Webseite ist <strong>DE/EN umschaltbar</strong> (🌐-Button oben rechts). Die Mail-Anmeldung kannst du auf Deutsch oder Englisch schreiben, wenn du Englisch bevorzugst, schreib das einfach in die Mail dazu, Folke meldet sich zurück.",
+      "faq.q11.q":"Sind die Spots öffentlich, wie verhalten wir uns?",
+      "faq.q11.a.html":"Ja, bis auf das <strong>Heizhaus</strong> (vereinsbetrieben, <a href=\"https://heizhaus-leipzig.de/\" target=\"_blank\" rel=\"noopener\">heizhaus-leipzig.de</a>). Für unsere Sessions dort läuft alles über die Crew. Alle Straßenspots sind öffentlicher Raum.<br><br><strong>Spot-Etikette:</strong> keine Schäden, keine Lautstärke zur Unzeit, Müll mitnehmen. Bei Ansprache: freundlich bleiben, gegebenenfalls Spot wechseln. <em>Wir sind Gäste.</em>",
+      "faq.q12.q":"Foto / Video, was ist mit Konsens?",
       "faq.q12.a.html":"Geplant ist Doku per Foto + Video (siehe Outro-Sektion). <strong>Niemand muss aufs Bild.</strong> Wenn du nicht gefilmt oder fotografiert werden willst, schreib das in die Anmelde-Mail oder sag der Crew vor Ort Bescheid.",
-      "faq.q13.q":"Mindestalter — und Minderjährige?",
+      "faq.q13.q":"Mindestalter, und Minderjährige?",
       "faq.q13.a.html":"<strong>16 Jahre, keine Ausnahme.</strong> Street-Sessions, späte Abende und Eigenverantwortung am Zeltplatz setzen das voraus.<br><br><strong>Wenn du zwischen 16 und 17 bist:</strong> schreib das einfach in die Anmelde-Mail. Folke meldet sich zurück und klärt den Rest individuell. Erziehungsberechtigte können sich bei Sorge ebenfalls an Folke wenden.",
-      "faq.q14.q":"Was ist mit Skateboarden & anderen Roll-Disziplinen?",
-      "faq.q14.a.html":"Der <strong>Fokus liegt auf Einrad</strong> — das ist der Kern des Events.<br><br><strong>Tag 8 (Finale)</strong> ist der offizielle <em>Skate + Einrad-Day &amp; DIY Night</em> mit Skateboard- und Einrad-Jam: Treffen 13 Uhr am Wilhelm-Leuschner-Platz, später AOK Skatepark und Giezer DIY mit DJs und BBQ. Skateboarder sind hier ausdrücklich Teil des Events.<br><br>An den anderen Tagen sind die Spots Einrad-fokussiert — wer als Skater:in trotzdem mitfahren möchte, wird nicht ausgeschlossen. Bei Fragen zu anderen Disziplinen: schreib das in die Anmelde-Mail.",
+      "faq.q14.q":"Was ist mit Skateboarden und anderen Roll-Disziplinen?",
+      "faq.q14.a.html":"Der <strong>Fokus liegt auf Einrad Street und Flatland</strong>, das ist der Kern des Events.<br><br><strong>Tag 8 (Finale)</strong> ist der offizielle <em>Skate &amp; Einrad-Day mit DIY Night</em>: Treffen 13 Uhr am Wilhelm-Leuschner-Platz, später AOK Skatepark und Giezer DIY mit DJs und BBQ. Skateboarder sind hier ausdrücklich Teil des Events.<br><br>An den anderen Tagen sind die Spots Einrad-fokussiert. Wer als Skater:in trotzdem mitfahren möchte, wird nicht ausgeschlossen. Bei Fragen zu anderen Disziplinen schreib das gerne in die Anmelde-Mail.",
       "faq.q15.q":"Wie erreiche ich die Crew?",
-      "faq.q15.a.html":"<strong>Vor dem Event:</strong> Mail an folke.kleinrad@gmail.com — alles läuft direkt über Folke.<br><strong>Während des Events:</strong> Crew ist am Pleißenhof vor Ort, Tagesplan wird vor Ort gemeinsam besprochen.",
+      "faq.q15.a.html":"<strong>Vor dem Event:</strong> Mail an folke.kleinrad@gmail.com, alles läuft direkt über Folke.<br><strong>Während des Events:</strong> Crew ist am Pleißenhof vor Ort, Tagesplan wird vor Ort gemeinsam besprochen.",
       "faq.q16.q":"WCs und Wasser an den Spots?",
       "faq.q16.a.html":"<strong>Pleißenhof:</strong> wir bauen am Tag 1 ein Trocken-WC am Camp.<br><strong>Heizhaus und Skatepark Leipzig (AOK):</strong> reguläre WCs vor Ort.<br><strong>Stadtspots:</strong> Gastronomie (Plaza, Biomare, Moritzbastei) oder öffentliche Anlagen am Augustusplatz.<br><strong>Wasser:</strong> Mehrwegflasche mitbringen, Leipziger Trinkwasser ist überall trinkbar.",
       "faq.q17.q":"Auto, Parken & Wertsachen?",
-      "faq.q17.a.html":"<strong>Pleißenhof:</strong> Stellplätze auf umzäuntem Gelände, keine Garage.<br><br><strong>Wertsachen</strong> nicht im Auto lassen — besser im Zelt oder im Hauptgebäude. Für Innenstadt-Touren: Auto am Pleißenhof lassen, ÖPNV oder Einrad nehmen — Parken in der Innenstadt ist teuer und stressig.",
+      "faq.q17.a.html":"<strong>Pleißenhof:</strong> Stellplätze auf umzäuntem Gelände, keine Garage.<br><br><strong>Wertsachen</strong> nicht im Auto lassen, besser im Zelt oder im Hauptgebäude. Für Innenstadt-Touren: Auto am Pleißenhof lassen, ÖPNV oder Einrad nehmen, Parken in der Innenstadt ist teuer und stressig.",
       "faq.q18.q":"Stornierung & Wetter-Absage?",
-      "faq.q18.a.html":"<strong>Keine Online-Vorabzahlung — keine Stornogebühren.</strong> Wenn du nicht kommen kannst, einfach kurz per Mail Bescheid geben, damit wir den Platz freigeben können.<br><br><strong>Wetter:</strong> Komplett-Absage gibt's nicht (siehe Frage zum Regen). Bei Extremwetter werden einzelne Tagespläne flexibel angepasst, Indoor-Alternativen aktiviert.",
+      "faq.q18.a.html":"<strong>Keine Online-Vorabzahlung, keine Stornogebühren.</strong> Wenn du nicht kommen kannst, einfach kurz per Mail Bescheid geben, damit wir den Platz freigeben können.<br><br><strong>Wetter:</strong> Komplett-Absage gibt's nicht (siehe Frage zum Regen). Bei Extremwetter werden einzelne Tagespläne flexibel angepasst, Indoor-Alternativen aktiviert.",
       "join.eyebrow":"Anmeldung · Direkt","join.title.html":"Bock <em>dabei</em><br>zu sein?",
       "join.lede":"Ein Klick → Mail-Programm öffnet sich mit fertig ausgefülltem Formular an Folke. Oder kopiere die Vorlage per Button und nutze dein bevorzugtes Mail-Tool. Antwort meist innerhalb von 48 h.",
       "join.cost.amount":"25 €",
-      "join.cost.text.html":"<strong>Einmalige Teilnahmegebühr pro Person · Zahlung bar vor Ort bei Anmeldung am Pleißenhof.</strong> Zelten im Pleißenhof inklusive. First come, first serve (25 Plätze).<br><strong>Heizhaus-Übernachtung separat: 10 € pro Nacht</strong> direkt ans <a href=\"https://heizhaus-leipzig.de/\" target=\"_blank\" rel=\"noopener\">Heizhaus</a> — <strong>nur Schlafplatz</strong>, nicht der Session-Besuch (10 Plätze, läuft nicht über Veranstalter). Ab Platz 36 selbst organisieren. <strong>Mindestalter 16.</strong>",
+      "join.cost.text.html":"<strong>Einmalige Teilnahmegebühr pro Person · Zahlung bar vor Ort bei Anmeldung am Pleißenhof.</strong> Zelten im Pleißenhof inklusive. First come, first serve (25 Plätze).<br><strong>Heizhaus-Übernachtung separat: 10 € pro Nacht</strong> direkt ans <a href=\"https://heizhaus-leipzig.de/\" target=\"_blank\" rel=\"noopener\">Heizhaus</a>, <strong>nur Schlafplatz</strong>, nicht der Session-Besuch (10 Plätze, läuft nicht über Veranstalter). Ab Platz 36 selbst organisieren. <strong>Mindestalter 16.</strong>",
       "join.cta.openmail":"Mail-Programm öffnen","join.cta.copyaddr":"Adresse kopieren","join.cta.copybody":"Vorlage kopieren","join.cta.pdf":"PDF · Infopaket","join.cta.pdf_title":"Alle Infos + Lineup als PDF drucken/speichern",
       "join.preview":"Vorschau der Mail-Vorlage","join.meta.to":"An:","join.meta.subject":"Betreff: Anmeldung · Leipzig Invitation 2026",
       "join.fsk_title":"Mindestalter 16 Jahre","join.fsk_aria":"Ab 16 Jahren · Einrad",
@@ -1538,17 +1540,17 @@ const I18N = {
       "outro.sign":"Leipzig Invitation · 2026",
       "sponsor.label":"Mit Unterstützung von","sponsor.aria":"Sponsor & Partner",
       "sd.cta.maps":"Route in Google Maps","sd.cta.tomap":"Auf der Karte zeigen","sd.close":"Schließen",
-      "sd.gallery.empty":"Noch kein Bild- oder Video-Material für diesen Ort — kommt beim Event dazu.",
+      "sd.gallery.empty":"Noch kein Bild- oder Video-Material für diesen Ort, kommt beim Event dazu.",
       "sd.eyebrow.lake":"Spot · See","sd.eyebrow.home":"Spot · Homebase","sd.eyebrow.spot":"Spot",
       "sd.notice.title.stay":"Übernachtung · optional","sd.notice.unit.night":"pro Nacht","sd.notice.title.web":"Website",
-      "sd.notice.heizhaus.html":"Anmeldung für die Übernachtung direkt auf der <a href=\"https://heizhaus-leipzig.de/\" target=\"_blank\" rel=\"noopener\">Heizhaus-Webseite</a>. <b>10 € die Nacht</b> — das Geld geht ans Heizhaus. Kommt <b>zusätzlich</b> zur Anmeldegebühr drauf. Max. 10 Schlafplätze.",
+      "sd.notice.heizhaus.html":"Anmeldung für die Übernachtung direkt auf der <a href=\"https://heizhaus-leipzig.de/\" target=\"_blank\" rel=\"noopener\">Heizhaus-Webseite</a>. <b>10 € die Nacht</b>, das Geld geht ans Heizhaus. Kommt <b>zusätzlich</b> zur Anmeldegebühr drauf. Max. 10 Schlafplätze.",
       "sd.chip.dates":"Termine","sd.chip.type":"Typ","sd.chip.type.home":"Homebase","sd.chip.type.lake":"Bade-See","sd.chip.coords":"Koord",
       "sd.media.open_img":"Bild öffnen","sd.media.open_vid":"Video öffnen",
       "stay.card.routelink":"Route öffnen →","stay.card.slots":"Plätze","stay.card.web_suffix":"→",
       "map.day_pin_label":"Tag {n} · {tag}",
       "spotsbtn.label":"Spot Übersicht",
       "ps.head.eyebrow":"STREET · UNICYCLE · LEIPZIG",
-      "ps.head.dateline":"08. — 16. August 2026 · 9 Tage · Leipzig &amp; Markkleeberg",
+      "ps.head.dateline":"08., 16. August 2026 · 9 Tage · Leipzig &amp; Markkleeberg",
       "ps.head.meta.contact":"Kontakt","ps.head.meta.web":"Web","ps.head.meta.fsk":"FSK",
       "ps.head.meta.fsk_value":"16+ · keine Ausnahme",
       "ps.fact.fee.amount":"25 €",
@@ -1561,12 +1563,12 @@ const I18N = {
       "ps.fact.days.text":"Event-Tage · 17 Orte · eine Crew",
       "ps.stay.title":"Unterkunft &amp; Kosten",
       "ps.stay.col.option":"Option","ps.stay.col.city":"Ort","ps.stay.col.address":"Adresse","ps.stay.col.slots":"Plätze","ps.stay.col.cost":"Kosten",
-      "ps.stay.note.html":"<b>25 € = einmalige Teilnahmegebühr pro Person, bar vor Ort bei Anmeldung am Pleißenhof zu zahlen</b> (Zelten im Pleißenhof inklusive). <b>Heizhaus-Übernachtung = 10 € pro Nacht</b>, <b>direkt ans Heizhaus</b> (heizhaus-leipzig.de) — <b>nur Schlafplatz-Preis, NICHT für den Session-Besuch</b>. Optionale Alternative zu Hotel oder Campingplatz, läuft <b>nicht über den Veranstalter</b>. First come, first serve. Ab Platz 36 selbst organisieren (Camping · Hostel · Hotel · Jugendherberge). Verpflegung Selbstversorgung; gemeinsam wird gekocht und gegrillt. <b>Mindestalter 16 Jahre.</b>",
+      "ps.stay.note.html":"<b>25 € = einmalige Teilnahmegebühr pro Person, bar vor Ort bei Anmeldung am Pleißenhof zu zahlen</b> (Zelten im Pleißenhof inklusive). <b>Heizhaus-Übernachtung = 10 € pro Nacht</b>, <b>direkt ans Heizhaus</b> (heizhaus-leipzig.de), <b>nur Schlafplatz-Preis, NICHT für den Session-Besuch</b>. Optionale Alternative zu Hotel oder Campingplatz, läuft <b>nicht über den Veranstalter</b>. First come, first serve. Ab Platz 36 selbst organisieren (Camping · Hostel · Hotel · Jugendherberge). Verpflegung Selbstversorgung; gemeinsam wird gekocht und gegrillt. <b>Mindestalter 16 Jahre.</b>",
       "ps.lineup.title":"Lineup · 9 Tage auf einen Blick",
       "ps.spots.title":"Alle Orte · 17 Spots",
       "ps.spots.col.num":"#","ps.spots.col.name":"Name","ps.spots.col.address":"Adresse","ps.spots.col.days":"Tage",
       "ps.foot.signup.full.html":"<b>Anmeldung</b>Mail an <span>folke.kleinrad@gmail.com</span> · Betreff: „Anmeldung · Leipzig Invitation 2026“. Nötig: Name, Ankunft, Abreise, Unterkunftswunsch (Pleißenhof 25 € einmalig / Heizhaus-Übernachtung 10 € pro Nacht / selbst), Allergien, Sonstiges. Antwort i. d. R. innerhalb 48 h.",
-      "ps.foot.dropin.full.html":"<b>Drop-In-Regel</b>16+ · eigene Verantwortung · Zelt &amp; Schlafzeug mitbringen · Einrad/Helm selbstverständlich. Keine Online-Vorabzahlung — die 25 € werden <b>bar vor Ort bei Anmeldung</b> kassiert und decken Location, Strom, Müll, Orga.",
+      "ps.foot.dropin.full.html":"<b>Drop-In-Regel</b>16+ · eigene Verantwortung · Zelt &amp; Schlafzeug mitbringen · Einrad/Helm selbstverständlich. Keine Online-Vorabzahlung, die 25 € werden <b>bar vor Ort bei Anmeldung</b> kassiert und decken Location, Strom, Müll, Orga.",
       "overview.jump_aria":"Zu „Wo du schläfst“ springen",
       "map.gate.aria":"Karte aktivieren",
       "map.lock.aria":"Karte sperren",
@@ -1578,8 +1580,8 @@ const I18N = {
       "so.tag.home":"Home","so.tag.lake":"See",
       "lb.close":"Schließen","lb.prev":"Zurück","lb.next":"Weiter",
       "toast.copied":"Kopiert ✓",
-      "meta.title":"LEIPZIG INVITATION 2026 — Street Unicycle",
-      "meta.description":"Leipzig Invitation — 9 Tage Street Unicycle nach der Unicon. 08.–16.08.2026.",
+      "meta.title":"LEIPZIG INVITATION 2026 · Street Unicycle",
+      "meta.description":"Leipzig Invitation. 9 Tage Street Unicycle nach der Unicon. 08.–16.08.2026.",
       "mail.subject":"Anmeldung · Leipzig Invitation 2026"
     },
     en: {
@@ -1589,7 +1591,7 @@ const I18N = {
       "hero.meta.spots":"35 spots","hero.meta.fsk":"16+","hero.dateline":"Aug 8 – 16, 2026",
       "hero.tag.lead":"The first street unicycle & skate event in Leipzig",
       "hero.tag.p1":"Right after Unicon, the Leipzig Invitation continues the ride.",
-      "hero.tag.p2":"Nine days together in Leipzig — riding street & flatland and hitting different spots every day.",
+      "hero.tag.p2":"Nine days together in Leipzig, riding street & flatland and hitting different spots every day.",
       "hero.tag.p3":"We ride, film, share music, and enjoy the time together.",
       "hero.cta.signup":"Sign up","hero.cta.lineup":"Lineup","hero.cta.map":"Map",
       "overview.eyebrow":"The Event",
@@ -1600,17 +1602,17 @@ const I18N = {
       "overview.cell.dates.label":"August 2026","overview.cell.dates.desc":"Saturday to Sunday. Arrive, ride, leave.",
       "overview.cell.slots.label":"Max spots","overview.cell.slots.desc":"25 Pleißenhof · 10 Heizhaus sleep spots. Beyond #36: organise yourself.",
       "overview.cell.fee.label":"One-time entry fee · pay on site",
-      "overview.cell.fee.desc.html":"Per person, one-time — cash on arrival at Pleißenhof. Camping included. <span class=\"overview-cell__cta\">Lodging details → \"Where you sleep\" ↗</span>",
-      "overview.cell.spots.label":"Spots &amp; locations","overview.cell.spots.desc":"Street, flat, DIY, parks — plus a swim lake right at camp.",
+      "overview.cell.fee.desc.html":"Per person, one-time, cash on arrival at Pleißenhof. Camping included. <span class=\"overview-cell__cta\">Lodging details → \"Where you sleep\" ↗</span>",
+      "overview.cell.spots.label":"Spots &amp; locations","overview.cell.spots.desc":"Street, flat, DIY, parks, plus a swim lake right at camp.",
       "overview.cell.self.label":"Self-catering","overview.cell.self.desc":"Crew cooks, shares, grills. Food list for day 2 on arrival.",
-      "overview.cell.age.label":"Minimum age","overview.cell.age.desc":"16 and up — no exceptions.",
+      "overview.cell.age.label":"Minimum age","overview.cell.age.desc":"16 and up, no exceptions.",
       "stay.eyebrow":"Lodging","stay.title.html":"Where you <em>sleep.</em>",
-      "stay.lede":"Self-catering, self-organised. Homebase provided — the rest is up to you.",
+      "stay.lede":"Self-catering, self-organised. Homebase provided, the rest is up to you.",
       "days.eyebrow":"Lineup · 9 Days","days.title.html":"Every day<br>different <em>spots.</em>",
       "days.lede":"Click a thumbnail to open the photo or video in the gallery.",
       "days.bar.day":"Day","days.action.peek":"Peek into the day",
       "map.eyebrow":"The Map","map.title.html":"Each day. <em>Its own colour.</em>",
-      "map.lede":"Pick a day on the left — the route shows in the day's colour on the right. Numbered pins show order. Food & toilets toggleable. Click a stop to zoom in.",
+      "map.lede":"Pick a day on the left, the route shows in the day's colour on the right. Numbered pins show order. Food & toilets toggleable. Click a stop to zoom in.",
       "map.panel.view":"View","map.panel.allspots":"All spots",
       "map.panel.box.days":"Days","map.panel.box.legend":"Legend","map.panel.box.poi":"POI","map.panel.box.poi_subtitle":"nearby",
       "map.panel.poi.toggle":"Toggle","map.panel.poi.food":"Food","map.panel.poi.wc":"WC",
@@ -1626,47 +1628,47 @@ const I18N = {
       "map.popup.poi.food":"Food · café","map.popup.poi.wc":"WC · toilet",
       "map.reset_back":"Back to overview",
       "faq.eyebrow":"FAQ","faq.title.html":"Good to <em>know.</em>",
-      "faq.lede":"Sign-up, costs, travel, sleep, food, spots, safety — all the answers in one click.",
-      "faq.q1.q":"Who can join — and what skill level do I need?",
-      "faq.q1.a.html":"<strong>Primarily unicyclists 16 and up, any skill level.</strong> We have spots for flat, street, technical riding and chill sessions. More important than skill level is motivation and respect for the spots.<br><br><strong>That said, we don't exclude anyone.</strong> <strong>Day 8 (Finale)</strong> is the official joint Skate + Unicycle Day — skateboarders are explicitly part of the event there. On other days the focus is on unicycle; skaters who want to come along are still welcome.",
-      "faq.q2.q":"What does it cost — and what's included?",
-      "faq.q2.a.html":"<strong>€25 per person, one-time</strong> for the full 9 days — cash on site at sign-up at Pleißenhof. No online prepayment.<br><br><strong>Included:</strong> camping at Pleißenhof, crew organisation, power, dry toilets, trash. <strong>Not included:</strong> food (self-catering), public transport tickets, optional Heizhaus overnight (€10 / night paid directly to Heizhaus, max. 10 spots, <strong>not</strong> handled via us).",
+      "faq.lede":"Sign-up, costs, travel, sleep, food, spots, safety, all the answers in one click.",
+      "faq.q1.q":"Who can join, and what skill level do I need?",
+      "faq.q1.a.html":"<strong>Primarily unicyclists 16 and up, any skill level.</strong> We have spots for flat, street, technical riding and chill sessions. More important than skill level is motivation and respect for the spots.<br><br><strong>That said, we don't exclude anyone.</strong> <strong>Day 8 (Finale)</strong> is the official joint Skate &amp; Unicycle Day, where skateboarders are explicitly part of the event. On other days the focus is on unicycle Street and Flatland. Skaters who want to come along are still welcome.",
+      "faq.q2.q":"What does it cost, and what's included?",
+      "faq.q2.a.html":"<strong>€25 per person, one-time</strong> for the full 9 days, cash on site at sign-up at Pleißenhof. No online prepayment.<br><br><strong>Included:</strong> camping at Pleißenhof, crew organisation, power, dry toilets, trash. <strong>Not included:</strong> food (self-catering), public transport tickets, optional Heizhaus overnight (€10 / night paid directly to Heizhaus, max. 10 spots, <strong>not</strong> handled via us).",
       "faq.q3.q":"How do I sign up?",
-      "faq.q3.a.html":"<strong>Sign-up runs exclusively by mail</strong> to <strong>folke.kleinrad@gmail.com</strong> with subject <em>\"Sign-up · Leipzig Invitation 2026\"</em>. The pre-filled template is in the sign-up section (button \"Copy template\") — required: name, arrival, departure, lodging preference, allergies, notes. Reply usually within 48 h. No online prepayment — €25 is collected in cash on site at Pleißenhof.",
+      "faq.q3.a.html":"<strong>Sign-up runs exclusively by mail</strong> to <strong>folke.kleinrad@gmail.com</strong> with subject <em>\"Sign-up · Leipzig Invitation 2026\"</em>. The pre-filled template is in the sign-up section (button \"Copy template\"), required: name, arrival, departure, lodging preference, allergies, notes. Reply usually within 48 h. No online prepayment, €25 is collected in cash on site at Pleißenhof.",
       "faq.q4.q":"Where do I sleep?",
-      "faq.q4.a.html":"<strong>Main option: Pleißenhof</strong> in Markkleeberg, camping on the orchard meadow — <strong>25 spots, included in the entry fee</strong>, first come, first serve.<br><br><strong>Alternative: Heizhaus</strong> (Leipzig west) — €10 per night, max. 10 spots. Book directly at <a href=\"https://heizhaus-leipzig.de/\" target=\"_blank\" rel=\"noopener\">heizhaus-leipzig.de</a> — <strong>not</strong> via us.<br><br><strong>Beyond spot #36:</strong> organise yourself (hostel, hotel, campsite).",
+      "faq.q4.a.html":"<strong>Main option: Pleißenhof</strong> in Markkleeberg, camping on the orchard meadow, <strong>25 spots, included in the entry fee</strong>, first come, first serve.<br><br><strong>Alternative: Heizhaus</strong> (Leipzig west), €10 per night, max. 10 spots. Book directly at <a href=\"https://heizhaus-leipzig.de/\" target=\"_blank\" rel=\"noopener\">heizhaus-leipzig.de</a>, <strong>not</strong> via us.<br><br><strong>Beyond spot #36:</strong> organise yourself (hostel, hotel, campsite).",
       "faq.q5.q":"How does food work?",
-      "faq.q5.a.html":"<strong>Self-catering.</strong> On arrival day there's a food list for day 2. After that the crew organises around the community table — breakfast together, grilling at night when planned. Please mention any allergies or diet needs directly in the sign-up mail.<br><br><strong>On the road:</strong> bakeries, food stalls, cafés. The map has a <em>POI layer</em> for food + toilets — toggleable.",
+      "faq.q5.a.html":"<strong>Self-catering.</strong> On arrival day there's a food list for day 2. After that the crew organises around the community table, breakfast together, grilling at night when planned. Please mention any allergies or diet needs directly in the sign-up mail.<br><br><strong>On the road:</strong> bakeries, food stalls, cafés. The map has a <em>POI layer</em> for food + toilets, toggleable.",
       "faq.q6.q":"How do I get to Leipzig?",
-      "faq.q6.a.html":"<strong>Train:</strong> Leipzig Hbf — from there continue with the S-Bahn to Markkleeberg.<br><strong>Car:</strong> Pleißenhof has parking on a fenced property.<br><strong>Airport:</strong> Leipzig/Halle (LEJ) or via Berlin/Dresden by train.<br><br>Meeting at Pleißenhof from Saturday afternoon (Day 1).",
+      "faq.q6.a.html":"<strong>Train:</strong> Leipzig Hbf, from there continue with the S-Bahn to Markkleeberg.<br><strong>Car:</strong> Pleißenhof has parking on a fenced property.<br><strong>Airport:</strong> Leipzig/Halle (LEJ) or via Berlin/Dresden by train.<br><br>Meeting at Pleißenhof from Saturday afternoon (Day 1).",
       "faq.q7.q":"How do we get between spots?",
-      "faq.q7.a.html":"<strong>Primarily by unicycle</strong> — this is a ride trip. Tour routes are on the map as connected lines, each stop numbered by order in the day.<br><br><strong>Longer hops</strong> (homebase ↔ city: 8 km): <strong>LVB S-Bahn & tram</strong>, Leipzig day ticket €8.80. App: <em>LVB.MOBIL</em>.",
+      "faq.q7.a.html":"<strong>Primarily by unicycle</strong>, this is a ride trip. Tour routes are on the map as connected lines, each stop numbered by order in the day.<br><br><strong>Longer hops</strong> (homebase ↔ city: 8 km): <strong>LVB S-Bahn & tram</strong>, Leipzig day ticket €8.80. App: <em>LVB.MOBIL</em>.",
       "faq.q8.q":"What gear & protection do I need?",
       "faq.q8.a.html":"<strong>Required:</strong> unicycle (ideally 19″ or 24/26″ street setup) and helmet.<br><strong>Strongly recommended:</strong> shin and knee pads, gloves.<br><strong>Camp:</strong> tent, sleeping bag, sleeping pad, headlamp, personal hygiene.<br><strong>Optional:</strong> spare pedals, pump, multitool.",
       "faq.q9.q":"What happens if it rains?",
-      "faq.q9.a.html":"<strong>Plan B: Heizhaus.</strong> The Heizhaus is an indoor skate hall (street, bowl, miniramp) — our indoor option for rainy days. The day plan can be adjusted flexibly, Heizhaus sessions moved up if needed.",
+      "faq.q9.a.html":"<strong>Plan B: Heizhaus.</strong> The Heizhaus is an indoor skate hall (street, bowl, miniramp), our indoor option for rainy days. The day plan can be adjusted flexibly, Heizhaus sessions moved up if needed.",
       "faq.q10.q":"What languages are spoken?",
-      "faq.q10.a.html":"The website is <strong>bilingual DE/EN</strong> (🌐 button top right). You can write the sign-up mail in German or English — if you prefer English, just mention it in the mail and Folke will get back to you.",
-      "faq.q11.q":"Are the spots public — how do we behave?",
-      "faq.q11.a.html":"Yes, except for the <strong>Heizhaus</strong> (club-run — <a href=\"https://heizhaus-leipzig.de/\" target=\"_blank\" rel=\"noopener\">heizhaus-leipzig.de</a>). The crew handles our sessions there. All street spots are public space.<br><br><strong>Spot etiquette:</strong> no damage, no noise at bad times, take your trash. If approached: stay friendly, switch spots if needed. <em>We are guests.</em>",
-      "faq.q12.q":"Photo / video — what about consent?",
+      "faq.q10.a.html":"The website is <strong>bilingual DE/EN</strong> (🌐 button top right). You can write the sign-up mail in German or English, if you prefer English, just mention it in the mail and Folke will get back to you.",
+      "faq.q11.q":"Are the spots public, how do we behave?",
+      "faq.q11.a.html":"Yes, except for the <strong>Heizhaus</strong> (club-run, <a href=\"https://heizhaus-leipzig.de/\" target=\"_blank\" rel=\"noopener\">heizhaus-leipzig.de</a>). The crew handles our sessions there. All street spots are public space.<br><br><strong>Spot etiquette:</strong> no damage, no noise at bad times, take your trash. If approached: stay friendly, switch spots if needed. <em>We are guests.</em>",
+      "faq.q12.q":"Photo / video, what about consent?",
       "faq.q12.a.html":"Documentation via photo + video is planned (see outro section). <strong>Nobody has to be in the picture.</strong> If you don't want to be filmed or photographed, mention it in the sign-up mail or tell the crew on site.",
-      "faq.q13.q":"Minimum age — and minors?",
+      "faq.q13.q":"Minimum age, and minors?",
       "faq.q13.a.html":"<strong>16 years, no exceptions.</strong> Street sessions, late nights and self-responsibility at the camp require it.<br><br><strong>If you're 16 or 17:</strong> just mention it in the sign-up mail. Folke will get back to you and clarify the rest individually. Guardians can reach out to Folke if they have concerns.",
-      "faq.q14.q":"What about skateboarding & other rolling disciplines?",
-      "faq.q14.a.html":"The <strong>focus is on unicycle</strong> — that's the core of the event.<br><br><strong>Day 8 (Finale)</strong> is the official <em>Skate + Unicycle Day &amp; DIY Night</em> with a skateboard and unicycle jam: meeting 13:00 at Wilhelm-Leuschner-Platz, later AOK skatepark and Giezer DIY with DJs and BBQ. Skateboarders are explicitly part of the event here.<br><br>On other days the spots are unicycle-focused — anyone who wants to come along on a skateboard is not turned away. For questions about other disciplines, just mention it in the sign-up mail.",
+      "faq.q14.q":"What about skateboarding and other rolling disciplines?",
+      "faq.q14.a.html":"The <strong>focus is on unicycle Street and Flatland</strong>, that's the core of the event.<br><br><strong>Day 8 (Finale)</strong> is the official <em>Skate &amp; Unicycle Day with DIY Night</em>: meeting 13:00 at Wilhelm-Leuschner-Platz, later AOK skatepark and Giezer DIY with DJs and BBQ. Skateboarders are explicitly part of the event here.<br><br>On other days the spots are unicycle-focused. Anyone who wants to come along on a skateboard is not turned away. For questions about other disciplines, just mention it in the sign-up mail.",
       "faq.q15.q":"How do I reach the crew?",
-      "faq.q15.a.html":"<strong>Before the event:</strong> mail to folke.kleinrad@gmail.com — everything runs directly through Folke.<br><strong>During the event:</strong> the crew is on site at Pleißenhof, the day plan gets discussed together on the spot.",
+      "faq.q15.a.html":"<strong>Before the event:</strong> mail to folke.kleinrad@gmail.com, everything runs directly through Folke.<br><strong>During the event:</strong> the crew is on site at Pleißenhof, the day plan gets discussed together on the spot.",
       "faq.q16.q":"Toilets and water at the spots?",
       "faq.q16.a.html":"<strong>Pleißenhof:</strong> we build a dry toilet at the camp on Day 1.<br><strong>Heizhaus and Skatepark Leipzig (AOK):</strong> regular toilets on site.<br><strong>City spots:</strong> cafés (Plaza, Biomare, Moritzbastei) or public facilities at Augustusplatz.<br><strong>Water:</strong> bring a refillable bottle, Leipzig tap water is drinkable everywhere.",
       "faq.q17.q":"Car, parking & valuables?",
-      "faq.q17.a.html":"<strong>Pleißenhof:</strong> parking on a fenced property, no garage.<br><br><strong>Don't leave valuables</strong> in the car — better in your tent or the main building. For city trips: leave the car at Pleißenhof, take public transport or unicycle — parking in the city is expensive and stressful.",
+      "faq.q17.a.html":"<strong>Pleißenhof:</strong> parking on a fenced property, no garage.<br><br><strong>Don't leave valuables</strong> in the car, better in your tent or the main building. For city trips: leave the car at Pleißenhof, take public transport or unicycle, parking in the city is expensive and stressful.",
       "faq.q18.q":"Cancellation & weather cancellation?",
-      "faq.q18.a.html":"<strong>No online prepayment — no cancellation fees.</strong> If you can't make it, just send a quick mail so we can free up the spot.<br><br><strong>Weather:</strong> No full cancellation (see rain question). For extreme weather, individual day plans get adjusted flexibly and indoor alternatives activated.",
+      "faq.q18.a.html":"<strong>No online prepayment, no cancellation fees.</strong> If you can't make it, just send a quick mail so we can free up the spot.<br><br><strong>Weather:</strong> No full cancellation (see rain question). For extreme weather, individual day plans get adjusted flexibly and indoor alternatives activated.",
       "join.eyebrow":"Sign up · direct","join.title.html":"Want to <em>join</em><br>the ride?",
       "join.lede":"One click → mail app opens with a pre-filled message to Folke. Or copy the template and use your favourite mail tool. Reply usually within 48h.",
       "join.cost.amount":"€25",
-      "join.cost.text.html":"<strong>One-time entry fee per person · cash on site at Pleißenhof on arrival.</strong> Camping at Pleißenhof included. First come, first serve (25 spots).<br><strong>Heizhaus overnight separate: €10 per night</strong> paid directly to <a href=\"https://heizhaus-leipzig.de/\" target=\"_blank\" rel=\"noopener\">Heizhaus</a> — <strong>sleeping only</strong>, not the session visit (10 spots, not via organiser). Beyond #36: organise yourself. <strong>Min age 16.</strong>",
+      "join.cost.text.html":"<strong>One-time entry fee per person · cash on site at Pleißenhof on arrival.</strong> Camping at Pleißenhof included. First come, first serve (25 spots).<br><strong>Heizhaus overnight separate: €10 per night</strong> paid directly to <a href=\"https://heizhaus-leipzig.de/\" target=\"_blank\" rel=\"noopener\">Heizhaus</a>, <strong>sleeping only</strong>, not the session visit (10 spots, not via organiser). Beyond #36: organise yourself. <strong>Min age 16.</strong>",
       "join.cta.openmail":"Open mail app","join.cta.copyaddr":"Copy address","join.cta.copybody":"Copy template","join.cta.pdf":"PDF · info pack","join.cta.pdf_title":"Print/save all info + lineup as PDF",
       "join.preview":"Mail template preview","join.meta.to":"To:","join.meta.subject":"Subject: Sign-up · Leipzig Invitation 2026",
       "join.fsk_title":"Minimum age 16","join.fsk_aria":"16 and up · unicycle",
@@ -1675,10 +1677,10 @@ const I18N = {
       "outro.sign":"Leipzig Invitation · 2026",
       "sponsor.label":"Supported by","sponsor.aria":"Sponsor & partner",
       "sd.cta.maps":"Route in Google Maps","sd.cta.tomap":"Show on map","sd.close":"Close",
-      "sd.gallery.empty":"No photos or videos yet for this spot — they'll come during the event.",
+      "sd.gallery.empty":"No photos or videos yet for this spot, they'll come during the event.",
       "sd.eyebrow.lake":"Spot · Lake","sd.eyebrow.home":"Spot · Homebase","sd.eyebrow.spot":"Spot",
       "sd.notice.title.stay":"Overnight · optional","sd.notice.unit.night":"per night","sd.notice.title.web":"Website",
-      "sd.notice.heizhaus.html":"Sign up for the overnight stay directly on the <a href=\"https://heizhaus-leipzig.de/\" target=\"_blank\" rel=\"noopener\">Heizhaus website</a>. <b>€10 per night</b> — the money goes to Heizhaus. Comes <b>on top of</b> the entry fee. Max. 10 sleeping spots.",
+      "sd.notice.heizhaus.html":"Sign up for the overnight stay directly on the <a href=\"https://heizhaus-leipzig.de/\" target=\"_blank\" rel=\"noopener\">Heizhaus website</a>. <b>€10 per night</b>, the money goes to Heizhaus. Comes <b>on top of</b> the entry fee. Max. 10 sleeping spots.",
       "sd.chip.dates":"Dates","sd.chip.type":"Type","sd.chip.type.home":"Homebase","sd.chip.type.lake":"Swim Lake","sd.chip.coords":"Coords",
       "sd.media.open_img":"Open image","sd.media.open_vid":"Open video",
       "stay.card.routelink":"Open route →","stay.card.slots":"spots","stay.card.web_suffix":"→",
@@ -1698,12 +1700,12 @@ const I18N = {
       "ps.fact.days.text":"event days · 17 locations · one crew",
       "ps.stay.title":"Lodging &amp; Costs",
       "ps.stay.col.option":"Option","ps.stay.col.city":"City","ps.stay.col.address":"Address","ps.stay.col.slots":"Spots","ps.stay.col.cost":"Cost",
-      "ps.stay.note.html":"<b>€25 = one-time entry fee per person, paid in cash on site at sign-up at Pleißenhof</b> (camping at Pleißenhof included). <b>Heizhaus overnight = €10 per night</b>, <b>paid directly to Heizhaus</b> (heizhaus-leipzig.de) — <b>sleeping price only, NOT for the session visit</b>. Optional alternative to a hotel or campsite, <b>not handled via the organiser</b>. First come, first serve. Beyond spot #36: organise yourself (camping · hostel · hotel). Self-catering; the crew cooks and grills together. <b>Min age 16.</b>",
+      "ps.stay.note.html":"<b>€25 = one-time entry fee per person, paid in cash on site at sign-up at Pleißenhof</b> (camping at Pleißenhof included). <b>Heizhaus overnight = €10 per night</b>, <b>paid directly to Heizhaus</b> (heizhaus-leipzig.de), <b>sleeping price only, NOT for the session visit</b>. Optional alternative to a hotel or campsite, <b>not handled via the organiser</b>. First come, first serve. Beyond spot #36: organise yourself (camping · hostel · hotel). Self-catering; the crew cooks and grills together. <b>Min age 16.</b>",
       "ps.lineup.title":"Lineup · 9 days at a glance",
       "ps.spots.title":"All locations · 17 spots",
       "ps.spots.col.num":"#","ps.spots.col.name":"Name","ps.spots.col.address":"Address","ps.spots.col.days":"Days",
       "ps.foot.signup.full.html":"<b>Sign-up</b>Mail to <span>folke.kleinrad@gmail.com</span> · Subject: \"Sign-up · Leipzig Invitation 2026\". Required: name, arrival, departure, lodging preference (Pleißenhof €25 one-time / Heizhaus overnight €10 per night / self-organised), allergies, notes. Reply usually within 48h.",
-      "ps.foot.dropin.full.html":"<b>Drop-in rule</b>16+ · own responsibility · bring tent &amp; sleeping gear · unicycle/helmet a given. No online prepayment — €25 is collected <b>in cash on site at sign-up</b> and covers location, power, trash, organisation.",
+      "ps.foot.dropin.full.html":"<b>Drop-in rule</b>16+ · own responsibility · bring tent &amp; sleeping gear · unicycle/helmet a given. No online prepayment, €25 is collected <b>in cash on site at sign-up</b> and covers location, power, trash, organisation.",
       "overview.jump_aria":"Jump to \"Where you sleep\"",
       "map.gate.aria":"Activate map",
       "map.lock.aria":"Lock map",
@@ -1715,8 +1717,8 @@ const I18N = {
       "so.tag.home":"Home","so.tag.lake":"Lake",
       "lb.close":"Close","lb.prev":"Previous","lb.next":"Next",
       "toast.copied":"Copied ✓",
-      "meta.title":"LEIPZIG INVITATION 2026 — Street Unicycle",
-      "meta.description":"Leipzig Invitation — 9 days of street unicycle after Unicon. Aug 8 – 16, 2026.",
+      "meta.title":"LEIPZIG INVITATION 2026 · Street Unicycle",
+      "meta.description":"Leipzig Invitation. 9 days of street unicycle after Unicon. Aug 8 – 16, 2026.",
       "mail.subject":"Sign-up · Leipzig Invitation 2026"
     }
   }
@@ -1767,12 +1769,12 @@ const MAIL_BODY_DE = `Hey Folke,
 ich möchte bei der Leipzig Invitation 2026 (08.–16.08.2026) dabei sein.
 Ich bin mindestens 16 Jahre alt.
 
-— Name:
-— Ankunft:
-— Abreise:
-— Unterkunft-Wunsch (Pleißenhof 25 € einmalig / Heizhaus-ÜBERNACHTUNG 10 € pro Nacht / selbst organisiert):
-— Allergien:
-— Sonstiges:
+• Name:
+• Ankunft:
+• Abreise:
+• Unterkunft-Wunsch (Pleißenhof 25 € einmalig / Heizhaus-ÜBERNACHTUNG 10 € pro Nacht / selbst organisiert):
+• Allergien:
+• Sonstiges:
 
 KOSTEN
 Teilnahmegebühr: 25 € pro Person, EINMALIG für das gesamte Event.
@@ -1780,7 +1782,7 @@ Zelten auf dem Pleißenhof ist inklusive. First come, first serve
 (max. 25 Zeltplätze).
 
 Heizhaus-ÜBERNACHTUNG (optional): 10 € PRO NACHT / TAG, direkt ans
-Heizhaus bezahlt (heizhaus-leipzig.de) — NICHT über den Veranstalter.
+Heizhaus bezahlt (heizhaus-leipzig.de), NICHT über den Veranstalter.
 Dieser Preis ist NUR für den Schlafplatz und hat nichts mit dem
 Session-Besuch im Heizhaus zu tun. Zusätzlich zur 25 €
 Teilnahmegebühr. Nur eine Alternative zu Hotel oder Campingplatz.
@@ -1794,12 +1796,12 @@ const MAIL_BODY_EN = `Hey Folke,
 I'd like to join the Leipzig Invitation 2026 (Aug 8 – 16, 2026).
 I'm at least 16 years old.
 
-— Name:
-— Arrival:
-— Departure:
-— Lodging preference (Pleißenhof €25 one-time / Heizhaus OVERNIGHT €10 per night / self-organised):
-— Allergies:
-— Notes:
+• Name:
+• Arrival:
+• Departure:
+• Lodging preference (Pleißenhof €25 one-time / Heizhaus OVERNIGHT €10 per night / self-organised):
+• Allergies:
+• Notes:
 
 COSTS
 Entry fee: €25 per person, ONE-TIME for the whole event.
@@ -1807,7 +1809,7 @@ Camping at Pleißenhof is included. First come, first serve
 (max. 25 tent spots).
 
 Heizhaus OVERNIGHT (optional): €10 PER NIGHT / DAY, paid directly
-to Heizhaus (heizhaus-leipzig.de) — NOT through the organiser.
+to Heizhaus (heizhaus-leipzig.de), NOT through the organiser.
 This price is FOR THE SLEEPING SPOT ONLY and has nothing to do
 with our session visit at Heizhaus. On top of the €25 entry fee.
 Just an alternative to a hotel or campsite. Max. 10 sleeping spots.
@@ -1932,7 +1934,7 @@ function buildPrintSheet(){
     const dayPrefix = (window.__LANG__ === "en") ? "D" : "T";
     psSpots.innerHTML = ids.map(id => {
       const s = spotsMaster[id];
-      const days = spotDayMap && spotDayMap[id] ? [...spotDayMap[id]].sort((a,b)=>a-b).map(n => dayPrefix+n).join(" · ") : "—";
+      const days = spotDayMap && spotDayMap[id] ? [...spotDayMap[id]].sort((a,b)=>a-b).map(n => dayPrefix+n).join(" · ") : "…";
       return `<tr>
         <td class="ps-num">${id}</td>
         <td><b>${escapeHtml(s.title)}</b></td>
@@ -1942,7 +1944,7 @@ function buildPrintSheet(){
     }).join("");
   }
   /* Statisches HTML im Print-Sheet (data-i18n Attribute) frisch uebersetzen,
-     bevor das Browser-Print-Dialog erscheint — falls applyTranslations seit
+     bevor das Browser-Print-Dialog erscheint, falls applyTranslations seit
      Sprachwechsel noch nicht ueber das aktuelle printSheet-DOM lief. */
   if(typeof applyTranslations === "function"){
     const sheet = document.getElementById("printSheet");
@@ -1957,8 +1959,8 @@ if(pdfBtn) pdfBtn.addEventListener("click", () => {
 
 /* ============ DATA ============ */
 const accommodations = [
-  { name:"Pleißenhof · Homebase", city:"Markkleeberg", address:"Bornaische Str. 68, 04416 Markkleeberg", cost:"25 €", costNote:"einmalig · bar vor Ort", slots:25, note:"Teilnahmegebühr 25 € pro Person für das gesamte Event — <strong>Zahlung bar vor Ort bei Anmeldung am Pleißenhof</strong>. Zelten auf dem Gelände inklusive. First come, first serve. Strandhaus am See 300 m entfernt.", mapsUrl:"https://maps.app.goo.gl/weCVkzvTJEUxFYG77" },
-  { name:"Heizhaus · Schlafplatz (Option)", city:"Leipzig West", address:"Alte Salzstraße 63, 04209 Leipzig", cost:"10 € / Nacht", costNote:"direkt ans Heizhaus", slots:10, note:"Anmeldung für die Übernachtung direkt auf der <strong>Heizhaus-Webseite</strong> — <strong>10 € die Nacht</strong>, das Geld geht ans Heizhaus. Kommt <strong>zusätzlich</strong> zur Anmeldegebühr drauf.", mapsUrl:"https://maps.app.goo.gl/JShsajAzJpGFTfQu9?g_st=ac", webUrl:"https://heizhaus-leipzig.de/" },
+  { name:"Pleißenhof · Homebase", city:"Markkleeberg", address:"Bornaische Str. 68, 04416 Markkleeberg", cost:"25 €", costNote:"einmalig · bar vor Ort", slots:25, note:"Teilnahmegebühr 25 € pro Person für das gesamte Event, <strong>Zahlung bar vor Ort bei Anmeldung am Pleißenhof</strong>. Zelten auf dem Gelände inklusive. First come, first serve. Strandhaus am See 300 m entfernt.", mapsUrl:"https://maps.app.goo.gl/weCVkzvTJEUxFYG77" },
+  { name:"Heizhaus · Schlafplatz (Option)", city:"Leipzig West", address:"Alte Salzstraße 63, 04209 Leipzig", cost:"10 € / Nacht", costNote:"direkt ans Heizhaus", slots:10, note:"Anmeldung für die Übernachtung direkt auf der <strong>Heizhaus-Webseite</strong>, <strong>10 € die Nacht</strong>, das Geld geht ans Heizhaus. Kommt <strong>zusätzlich</strong> zur Anmeldegebühr drauf.", mapsUrl:"https://maps.app.goo.gl/JShsajAzJpGFTfQu9?g_st=ac", webUrl:"https://heizhaus-leipzig.de/" },
   { name:"Selbst organisieren", city:"ab Platz 36", address:"Campingplatz · Hostel · Hotel · Jugendherberge", cost:"variabel", costNote:"eigene Buchung", slots:"∞", note:"Sobald Pleißenhof und Heizhaus-Schlafplätze voll sind, regelt sich jeder selbst.", mapsUrl:"https://www.google.com/maps/search/Leipzig+Hostel+Hotel" }
 ];
 
@@ -2033,9 +2035,9 @@ const VID = {
 };
 
 const spotsMaster = {
-  1:  { title:"Pleißenhof · Homebase",          addr:"Bornaische Str. 68, Markkleeberg",     coords:[51.2758,12.3964], desc:"Der Pleißenhof ist ein Vierseitenhof am Rand von Leipzig (Markkleeberg) mit einer Obstbaumwiese, auf der gezeltet wird (max. 25 Personen). Ein gemeinsamer Ort zum Ankommen und Zusammensein.\n\nIn der Partyscheune auf dem Hof wird zusammen gekocht, gegessen, geredet und auch Indoor gefahren. Hier lassen wir die Tage ausklingen.\n\nDer Hof ist gut mit der Straßenbahn erreichbar, der Markkleeberger See liegt nur wenige Minuten entfernt.\n\nDer Pleißenhof wird als Genossenschaft betrieben — ein achtsamer und respektvoller Umgang miteinander und mit dem Ort ist uns wichtig.", mapsUrl:"https://maps.app.goo.gl/weCVkzvTJEUxFYG77", img:IMG.plei1, home:true },
+  1:  { title:"Pleißenhof · Homebase",          addr:"Bornaische Str. 68, Markkleeberg",     coords:[51.2758,12.3964], desc:"Der Pleißenhof ist ein Vierseitenhof am Rand von Leipzig (Markkleeberg) mit einer Obstbaumwiese, auf der gezeltet wird (max. 25 Personen). Ein gemeinsamer Ort zum Ankommen und Zusammensein.\n\nIn der Partyscheune auf dem Hof wird zusammen gekocht, gegessen, geredet und auch Indoor gefahren. Hier lassen wir die Tage ausklingen.\n\nDer Hof ist gut mit der Straßenbahn erreichbar, der Markkleeberger See liegt nur wenige Minuten entfernt.\n\nDer Pleißenhof wird als Genossenschaft betrieben, ein achtsamer und respektvoller Umgang miteinander und mit dem Ort ist uns wichtig.", mapsUrl:"https://maps.app.goo.gl/weCVkzvTJEUxFYG77", img:IMG.plei1, home:true },
   2:  { title:"Plaza · Wagner-Platz",           addr:"Richard-Wagner-Platz 1, 04109 Leipzig", coords:[51.3432,12.3723], desc:"Großer Platz in der Innenstadt mit Springbrunnen und angrenzenden Restaurants und Shopping Mall.\n\nAuf dem Platz ist ein Skatepark mit Ledges, Marmorboden und Wasserbrunnen.",                  mapsUrl:"https://maps.app.goo.gl/dd29GXX65ni8C1LT8",          img:IMG.plaza1 },
-  3:  { title:"Heizhaus · Indoor",              addr:"Alte Salzstraße 63, 04209 Leipzig",    coords:[51.3205,12.2991], desc:"Großer Skatepark in Grünau mit Street Section, Bowl und Miniramp sowie einer 1000 m² großen Indoor-Skatehalle.\n\nÜbernachtung ist möglich — Anmeldung direkt auf heizhaus-leipzig.de, 10 € die Nacht, zusätzlich zur Anmeldegebühr.", mapsUrl:"https://maps.app.goo.gl/JShsajAzJpGFTfQu9?g_st=ac", img:IMG.heiz1, webUrl:"https://heizhaus-leipzig.de/" },
+  3:  { title:"Heizhaus · Indoor",              addr:"Alte Salzstraße 63, 04209 Leipzig",    coords:[51.3205,12.2991], desc:"Großer Skatepark in Grünau mit Street Section, Bowl und Miniramp sowie einer 1000 m² großen Indoor-Skatehalle.\n\nÜbernachtung ist möglich, Anmeldung direkt auf heizhaus-leipzig.de, 10 € die Nacht, zusätzlich zur Anmeldegebühr.", mapsUrl:"https://maps.app.goo.gl/JShsajAzJpGFTfQu9?g_st=ac", img:IMG.heiz1, webUrl:"https://heizhaus-leipzig.de/" },
   4:  { title:"Giezer Skatespot DIY",           addr:"Naumburger Str. 44, 04229 Leipzig",    coords:[51.3270,12.3256], desc:"Von den Lokals gebaute Obstacles neben einem Fußweg.\n\nPartylocations, Backstein-Restaurant und Konsum nebenan.",    mapsUrl:"https://maps.app.goo.gl/FfhY9LhZF2jNgfQh6?g_st=ac", img:IMG.geizer1, primaryDay:8 },
   5:  { title:"Biomare Südvorstadt",            addr:"Karl-Liebknecht-Str. 27, 04107 Leipzig", coords:[51.3281,12.3742], desc:"Flat & Street. Zwei 3er-Stairs plus 7-Stair mit Downrail. Technisches Gelände.",                mapsUrl:"https://maps.app.goo.gl/Qh9e5h8DKNPHF5BK7",         img:IMG.biomare },
   6:  { title:"Propsteikirche St. Trinitatis",  addr:"Nonnenmühlgasse 2, 04107 Leipzig",     coords:[51.3352,12.3729], desc:"Moderne Sakralarchitektur mit vielseitigen Obstacles: ein größer werdendes Stairset (bis zu 6 Stufen) mit Downrail, ein 8-Stufen-Set mit Kinkrail sowie zwei Downledges.",               mapsUrl:"https://maps.app.goo.gl/n7dXYNUHT4Hd77uZ6?g_st=ac", img:IMG.probstei1 },
@@ -2049,7 +2051,7 @@ const spotsMaster = {
   14: { title:"Reudnitz Skatepark",             addr:"Fröschelstraße 4, 04317 Leipzig",      coords:[51.3348,12.4019], desc:"Großer Park, solide Obstacles. Rails, Quarters, Ledges. Street bis in den Abend.",             mapsUrl:"https://maps.app.goo.gl/MfE7mifyHYmtSYvt7?g_st=ac", img:IMG.mdr4 },
   15: { title:"Haus am See",                    addr:"Strandbad Ost Markkleeberger See · Auenhainer Str. 1, 04416 Markkleeberg", coords:[51.271034,12.397521], desc:"Badesee direkt nebenan.\n\nStrand ist 300 m entfernt.", mapsUrl:"https://maps.app.goo.gl/9x3vtyWNHKamvns59?g_st=ac", img:IMG.see, lake:true },
   16: { title:"Wilhelm-Leuschner-Platz",        addr:"Wilhelm-Leuschner-Platz, 04107 Leipzig", coords:[51.3350,12.3750], desc:"Treffpunkt zum Skateboard Jam am letzten Tag. Großzügige Fläche im Zentrum, Kanten und offenes Pflaster.", mapsUrl:"https://www.google.com/maps/search/Wilhelm-Leuschner-Platz+Leipzig", img:IMG.wilhelm1 },
-  17: { title:"Penny Plagwitz · 15er-Stairset", addr:"Plagwitz, 04229 Leipzig",              coords:[51.3239,12.3325], desc:"Zwischenstopp auf dem Weg zum Giezer DIY. Getränke kaufen, 15er-Stairset und Wallride fahren — kurzer, knackiger Stop.", mapsUrl:"https://www.google.com/maps/search/Penny+Plagwitz+Leipzig", img:IMG.penny1 }
+  17: { title:"Penny Plagwitz · 15er-Stairset", addr:"Plagwitz, 04229 Leipzig",              coords:[51.3239,12.3325], desc:"Zwischenstopp auf dem Weg zum Giezer DIY. Getränke kaufen, 15er-Stairset und Wallride fahren, kurzer, knackiger Stop.", mapsUrl:"https://www.google.com/maps/search/Penny+Plagwitz+Leipzig", img:IMG.penny1 }
 };
 function spot(id, time, extras){ return { ...spotsMaster[id], id, time, ...(extras||{}) } }
 
@@ -2076,14 +2078,14 @@ const spotMedia = {
 
 const eventDays = [
   { id:"day-1", n:1, date:"Sa · 08.08.2026", tag:"ANKOMMEN", title:"Arrival &amp; <span class='accent'>Set-Up</span>",
-    description:"Ankunft am Pleißenhof nach der Unicon. Zelte aufbauen, Grube für Trockenklo ausheben, Equipment sortieren, Crew kennenlernen. Abends gemeinsam zum See (300 m) — reinspringen, Selbstverpflegung, Foodliste für Tag 2.",
+    description:"Ankunft am Pleißenhof nach der Unicon. Zelte aufbauen, Grube für Trockenklo ausheben, Equipment sortieren, Crew kennenlernen. Abends gemeinsam zum See (300 m), reinspringen, Selbstverpflegung, Foodliste für Tag 2.",
     pretext:"Tag null zählt auch.",
     image:IMG.folke,
     summary:[{k:"Treffpunkt",v:"Pleißenhof"},{k:"Gebühr",v:"25 € einmalig"},{k:"Abends",v:"See baden"},{k:"Vibe",v:"Set-Up"}],
     stops:[ spot(1,"ab Nachmittag"), spot(15,"abends") ] },
 
   { id:"day-2", n:2, date:"So · 09.08.2026", tag:"FIRST DAY", title:"City Ride &amp; <span class='accent'>Heizhaus</span>",
-    description:"Gemeinsames Frühstück zum Start in den Tag. 12 Uhr Beginn der Session am Richard-Wagner-Platz, danach von Spot zu Spot in der Innenstadt. Nachmittag: Heizhaus — Street und Flatland. Ab 20 Uhr geht's zurück nach Hause.",
+    description:"Gemeinsames Frühstück zum Start in den Tag. 12 Uhr Beginn der Session am Richard-Wagner-Platz, danach von Spot zu Spot in der Innenstadt. Nachmittag: Heizhaus, Street und Flatland. Ab 20 Uhr geht's zurück nach Hause.",
     pretext:"Erster echter Event-Tag.",
     image:IMG.heiz1,
     summary:[{k:"12:00",v:"Plaza"},{k:"Nachmittag",v:"Heizhaus"},{k:"Stil",v:"Street · Flatland"},{k:"Return",v:"ab 20:00"}],
@@ -2164,21 +2166,21 @@ function dayWeekdayLong(d){
   return WEEKDAY_LONG[key] || key;
 }
 
-/* Englische Uebersetzungen pro Tag — Tag-Tag, Titel (mit accent-span), Pretext,
+/* Englische Uebersetzungen pro Tag, Tag-Tag, Titel (mit accent-span), Pretext,
    Description, Summary-Stichworte. Wird via tDay()/tDaySummary() konsumiert. */
 const daysTranslations = {
   1: {
     tag: "ARRIVAL",
     title: "Arrival & <span class='accent'>Set-Up</span>",
     pretext: "Day zero counts too.",
-    description: "Arrival at Pleißenhof after Unicon. Pitch tents, dig the dry-toilet pit, sort gear, meet the crew. In the evening together to the lake (300 m) — jump in, self-catering, food list for day 2.",
+    description: "Arrival at Pleißenhof after Unicon. Pitch tents, dig the dry-toilet pit, sort gear, meet the crew. In the evening together to the lake (300 m), jump in, self-catering, food list for day 2.",
     summary: [{k:"Meeting",v:"Pleißenhof"},{k:"Fee",v:"€25 one-time"},{k:"Evening",v:"swim at the lake"},{k:"Vibe",v:"Set-Up"}]
   },
   2: {
     tag: "FIRST DAY",
     title: "City Ride & <span class='accent'>Heizhaus</span>",
     pretext: "First real event day.",
-    description: "Breakfast together to start the day. 12:00 session start at Richard-Wagner-Platz, then spot to spot through the city centre. Afternoon: Heizhaus — street and flatland. From 20:00 we head back home.",
+    description: "Breakfast together to start the day. 12:00 session start at Richard-Wagner-Platz, then spot to spot through the city centre. Afternoon: Heizhaus, street and flatland. From 20:00 we head back home.",
     summary: [{k:"12:00",v:"Plaza"},{k:"Afternoon",v:"Heizhaus"},{k:"Style",v:"Street · Flatland"},{k:"Return",v:"from 20:00"}]
   },
   3: {
@@ -2199,7 +2201,7 @@ const daysTranslations = {
     tag: "CHILL DAY",
     title: "Conne Island & <span class='accent'>Connewitz</span>",
     pretext: "Recovery and crew time.",
-    description: "14:00 we meet at Conne Island in Connewitz. Today we chill — hammock, ice cream, a bit of riding (flatland, bowl & miniramp) and music. 18:00 dinner together at Herder playground. Later 20:00 back to homebase. After that everyone can chill, head to the lake and swim.",
+    description: "14:00 we meet at Conne Island in Connewitz. Today we chill, hammock, ice cream, a bit of riding (flatland, bowl & miniramp) and music. 18:00 dinner together at Herder playground. Later 20:00 back to homebase. After that everyone can chill, head to the lake and swim.",
     summary: [{k:"14:00",v:"Conne Island"},{k:"Style",v:"Flatland · Bowl · Miniramp"},{k:"18:00",v:"Dinner Herder playground"},{k:"Evening",v:"swim at the lake"}]
   },
   6: {
@@ -2305,7 +2307,7 @@ function renderStay(){
     c.innerHTML = `
       <h3>${a.name}</h3>
       <span class="pill ${a.cost==='free'?'pill--free':''}">${costLine}</span>
-      <p><strong>${a.city}</strong> — ${a.address}<br>${a.note}</p>
+      <p><strong>${a.city}</strong>, ${a.address}<br>${a.note}</p>
       <a href="${a.mapsUrl}" target="_blank" rel="noopener">${routeLbl}</a>${webLink}`;
     c.addEventListener("mousemove", e => {
       const r = c.getBoundingClientRect();
@@ -2585,7 +2587,7 @@ eventDays.forEach((d, i) => {
   }
 });
 
-/* Slippy-map Tile-URL — weiter verwendet für Popup-Fallback-Bilder */
+/* Slippy-map Tile-URL, weiter verwendet für Popup-Fallback-Bilder */
 function spotFallbackImg(lat, lng){
   const z = 15;
   const n = Math.pow(2, z);
@@ -2803,16 +2805,22 @@ map.getContainer().addEventListener("mouseleave", () => map.scrollWheelZoom.disa
   apply();
 })();
 
-/* SVG-Multi-Segment-Ring: ein <circle> pro anderem Besuchstag mit
-   stroke-dasharray fuer mathematisch praezise Segmente. Start oben (12 Uhr)
-   durch rotate(-90deg) am Circle. Kleine 1.5px-Gap zwischen Segmenten fuer
-   visuelle Trennschaerfe. Bei nur 1 Segment: Vollkreis ohne Gap. */
+/* SVG-Multi-Segment-Ring als HALO ausserhalb des Pin-Body.
+   Geometrie:
+     - r=25 platziert den Ring komplett ausserhalb der 3.5px-Body-White-Border (bis r~23)
+     - SVG nutzt overflow:visible damit der Kreis die viewBox 46x46 verlassen kann
+     - Z-Index: Body (2) liegt VOR Ring (1), Tropfen-Spitze ueberdeckt unteren Ring-
+       Bogen sauber, oberer ~270deg-Halo ist sichtbar als Mehrtages-Indikator
+   Segmente:
+     - Start oben (12 Uhr) via rotate(-90deg) am Circle
+     - 2px Gap zwischen Segmenten fuer visuelle Trennschaerfe
+     - Bei nur einem anderen Tag: Vollkreis ohne Gap */
 function ringSvg(segments){
   if(!segments || segments.length === 0) return "";
-  const r = 21, cx = 23, cy = 23;
+  const r = 25, cx = 23, cy = 23;
   const C = 2 * Math.PI * r;
   const N = segments.length;
-  const gap = N > 1 ? 1.5 : 0;
+  const gap = N > 1 ? 2 : 0;
   const seg = (C - gap*N) / N;
   let off = 0;
   const titles = segments.map(s => `T${s.day}`).join(" + ");
@@ -2845,7 +2853,7 @@ function makePin(spotId, isHome, seq, color, role, focusKey, isLake, ringSegment
    - Single-Day Spots: kein Ring
    - currentDayN==null (Uebersicht): Ring zeigt alle Tage AUSSER primaryDay
    - currentDayN gesetzt (Tag-Modus): Innen=aktiver Tag (Caller setzt color),
-     Ring zeigt alle Tage AUSSER currentDayN — chronologisch, kleinste Tagesnummer oben */
+     Ring zeigt alle Tage AUSSER currentDayN, chronologisch, kleinste Tagesnummer oben */
 function spotRingSegments(spotId, currentDayN){
   if(spotId === 1 || spotId === 15) return null;
   const days = (typeof spotDayMap !== "undefined") ? spotDayMap[spotId] : null;
@@ -2907,7 +2915,7 @@ function attachPinTap(marker, spotId, popupArgs){
 }
 
 /* Tages-Layer (farbig, mit Start/Ende-Indikatoren)
-   Routing via OSRM (cycling) — reale Straßen statt Luftlinie.
+   Routing via OSRM (cycling), reale Straßen statt Luftlinie.
    Fallback auf Luftlinie, falls Request fehlschlägt. */
 const dayLayers = [];
 const dayMeta = [];
@@ -3081,7 +3089,7 @@ function renderPanel(){
         <span class="dayCard__stopPin" style="--dc:${meta.color}"><span>${seq}</span></span>
         <span class="dayCard__stopInfo">
           <span class="dayCard__stopName">${s.title}</span>
-          <span class="dayCard__stopTime">${s.time || "—"}</span>
+          <span class="dayCard__stopTime">${s.time || "…"}</span>
         </span>
       </button>`;
     }).join("");
@@ -3267,7 +3275,7 @@ function showDay(idx, opts){
 resetBtn.addEventListener("click", () => showDay(-1));
 
 /* === SINGLE SOURCE OF TRUTH fuer Uebersichts-Fit ===
-   Pleissenhof (1) und See (15) bewusst aus Bounds ausgeschlossen — die liegen
+   Pleissenhof (1) und See (15) bewusst aus Bounds ausgeschlossen, die liegen
    suedlich und wuerden den Fokus aus der Stadt rausziehen. Beide Pins bleiben
    sichtbar als Marker auf der Karte, erreichbar per Pan oder Spot-Übersicht. */
 allLayer.addTo(map);
@@ -3276,12 +3284,12 @@ function computeOverviewBounds(){
   const cityCoords = Object.values(spotsMaster)
     .filter(s => !s.home && !s.lake)
     .map(s => s.coords);
-  /* Kein .pad() — Stadt-Pins fuellen den Fit-Bereich, der visuelle Buffer
+  /* Kein .pad(), Stadt-Pins fuellen den Fit-Bereich, der visuelle Buffer
      kommt allein aus dem Padding unten (= Suedrichtung, geografischer Kontext). */
   return L.latLngBounds(cityCoords);
 }
 function overviewPadding(){
-  /* Top minimal (Topbar-Klar), Bottom doppelt so gross — die Stadt-Pins liegen damit
+  /* Top minimal (Topbar-Klar), Bottom doppelt so gross, die Stadt-Pins liegen damit
      in der oberen Haelfte des Canvas und der Suedraum (Richtung Markkleeberg) bekommt
      visuell Luft nach unten. Skaliert mit Canvas-Hoehe, mit sinnvollen Mindestwerten. */
   const mc = document.getElementById("mapCanvas");
@@ -3717,7 +3725,7 @@ document.addEventListener("keydown", (e) => {
                 : s.lake ? `<span class="spot-tile__tag">${t("so.tag.lake")}</span>` : '';
       // Adresse kompakt: erste zwei Komma-getrennte Teile (Strasse, PLZ Stadt)
       const addrShort = (s.addr || "").split(",").slice(0,2).join(",").trim();
-      return `<button type="button" class="${cls}" data-spot-id="${id}" aria-label="Spot ${id} — ${escapeHTML(s.title)} öffnen">
+      return `<button type="button" class="${cls}" data-spot-id="${id}" aria-label="Spot ${id}, ${escapeHTML(s.title)} öffnen">
         <span class="spot-tile__pin"><span>${id}</span></span>
         <span class="spot-tile__body">
           <span class="spot-tile__title-row">
@@ -3809,7 +3817,7 @@ document.addEventListener("keydown", (e) => {
     try { if(typeof renderStay === "function") renderStay(); } catch(_){}
     /* Lineup-Day-Cards (Tag-Tag, Titel, Pretext, Description, Summary, Stop-Times) */
     try { if(typeof relocalizeDayCards === "function") relocalizeDayCards(); } catch(_){}
-    /* Spot-Pin-Popups: alte Bindings haben statisches dayLabel — neu binden */
+    /* Spot-Pin-Popups: alte Bindings haben statisches dayLabel, neu binden */
     try {
       if(typeof dayStopMarkers !== "undefined" && typeof attachPinTap === "function"){
         dayStopMarkers.forEach((markers, di) => {
@@ -3847,7 +3855,7 @@ document.addEventListener("keydown", (e) => {
     try { if(typeof refreshMailPreview === "function") refreshMailPreview(); } catch(_){}
   });
 
-  /* 3) Erste Anwendung — sobald DOM ready ist (Script steht am Ende -> ist es schon) */
+  /* 3) Erste Anwendung, sobald DOM ready ist (Script steht am Ende -> ist es schon) */
   applyTranslations();
 })();
 
