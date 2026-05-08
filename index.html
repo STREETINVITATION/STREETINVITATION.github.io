@@ -540,8 +540,10 @@ a{color:inherit;text-decoration:none}
 .spot-detail__bg img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.1) brightness(.35);transform:scale(1.04)}
 .spot-detail__bg::after{content:"";position:absolute;inset:0;background:linear-gradient(155deg,rgba(10,10,14,.88) 0%,rgba(14,14,18,.78) 45%,rgba(18,18,22,.72) 100%)}
 @keyframes sdIn{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
-.spot-detail__close{position:absolute;top:.9rem;right:.9rem;width:54px;height:54px;border-radius:50%;border:3px solid #e6194b;background:rgba(255,255,255,.97);color:#e6194b;font-size:2rem;font-weight:900;line-height:1;display:grid;place-items:center;cursor:pointer;transition:all .25s var(--ease);z-index:5;box-shadow:0 0 0 2px rgba(230,25,75,.25),0 6px 18px rgba(0,0,0,.45)}
+.spot-detail__close{position:absolute;top:.9rem;right:.9rem;width:54px;height:54px;border-radius:50%;border:3px solid #e6194b;background:rgba(255,255,255,.97);color:#e6194b;font-size:2rem;font-weight:900;line-height:1;display:grid;place-items:center;cursor:pointer;transition:all .25s var(--ease);z-index:5;box-shadow:0 0 0 2px rgba(230,25,75,.25),0 6px 18px rgba(0,0,0,.45);outline:none;-webkit-tap-highlight-color:transparent}
 .spot-detail__close:hover{background:#e6194b;color:#fff;border-color:#fff;transform:scale(1.12) rotate(90deg);box-shadow:0 0 0 3px #e6194b,0 8px 24px rgba(230,25,75,.55)}
+.spot-detail__close:focus,.spot-detail__close:focus-visible{outline:none;box-shadow:0 0 0 2px rgba(230,25,75,.25),0 6px 18px rgba(0,0,0,.45)}
+.spot-detail__close.is-closing{background:#0a0a0a;color:#fff;border-color:#0a0a0a;transform:scale(.45) rotate(360deg);opacity:0;box-shadow:0 0 0 0 rgba(0,0,0,0);pointer-events:none;transition:transform .35s cubic-bezier(.6,.05,.4,1.2),background .2s ease,color .2s ease,border-color .2s ease,opacity .35s ease}
 .spot-detail__head{display:flex;gap:1rem;align-items:flex-start;padding-right:3rem;margin-bottom:1.2rem}
 .spot-detail__pin{flex-shrink:0;width:54px;height:54px;border-radius:50%;background:var(--grad);color:#fff;display:grid;place-items:center;font-family:var(--font-pin);font-weight:400;font-size:1.7rem;letter-spacing:.04em;box-shadow:var(--glow-red)}
 .spot-detail__pin--lake{background:linear-gradient(135deg,#1e88e5,#0d5fb8);box-shadow:0 0 22px rgba(30,136,229,.55)}
@@ -846,8 +848,13 @@ a{color:inherit;text-decoration:none}
 .pop__body::-webkit-scrollbar-track{background:transparent}
 .pop p{margin:0 0 .55rem}
 .leaflet-popup-tip{background:#fff!important}
-.leaflet-popup-close-button{width:44px!important;height:44px!important;border-radius:50%!important;border:2.5px solid #e6194b!important;background:rgba(255,255,255,.97)!important;color:#e6194b!important;font-size:1.6rem!important;font-weight:900!important;line-height:1!important;display:grid!important;place-items:center!important;padding:0!important;top:.6rem!important;right:.6rem!important;box-shadow:0 0 0 2px rgba(230,25,75,.25),0 4px 14px rgba(0,0,0,.4)!important;opacity:1!important;text-decoration:none!important;transition:all .25s var(--ease)!important;text-indent:0!important}
+.leaflet-popup-close-button{width:44px!important;height:44px!important;border-radius:50%!important;border:2.5px solid #e6194b!important;background:rgba(255,255,255,.97)!important;color:#e6194b!important;font-size:1.6rem!important;font-weight:900!important;line-height:1!important;display:grid!important;place-items:center!important;padding:0!important;top:.6rem!important;right:.6rem!important;box-shadow:0 0 0 2px rgba(230,25,75,.25),0 4px 14px rgba(0,0,0,.4)!important;opacity:1!important;text-decoration:none!important;transition:all .25s var(--ease)!important;text-indent:0!important;outline:none!important;-webkit-tap-highlight-color:transparent!important}
 .leaflet-popup-close-button:hover{background:#e6194b!important;color:#fff!important;border-color:#fff!important;transform:scale(1.1) rotate(90deg)!important;box-shadow:0 0 0 3px #e6194b,0 6px 20px rgba(230,25,75,.55)!important}
+.leaflet-popup-close-button:focus,.leaflet-popup-close-button:focus-visible{outline:none!important;box-shadow:0 0 0 2px rgba(230,25,75,.25),0 4px 14px rgba(0,0,0,.4)!important}
+/* Schliess-Animation: dreht zu schwarzem X, schrumpft, blendet aus.
+   Aktiviert via .is-closing-Klasse durch JS, damit Leaflet's Default-
+   Click-Verhalten unterdrueckt und stattdessen die Animation laeuft. */
+.leaflet-popup-close-button.is-closing{background:#0a0a0a!important;color:#fff!important;border-color:#0a0a0a!important;transform:scale(.45) rotate(360deg)!important;opacity:0!important;box-shadow:0 0 0 0 rgba(0,0,0,0)!important;pointer-events:none!important;transition:transform .35s cubic-bezier(.6,.05,.4,1.2),background .2s ease,color .2s ease,border-color .2s ease,opacity .35s ease!important}
 
 .pop__img{width:100%;height:140px;object-fit:cover;display:block}
 .pop__img--ghost{display:grid;place-items:center;background:linear-gradient(135deg,#222 0%,#111 50%,#2a0610 100%);color:transparent;-webkit-text-stroke:1.5px rgba(255,0,64,.55);font-family:var(--font-head);font-weight:600;font-size:4rem;letter-spacing:-.04em}
@@ -1265,7 +1272,7 @@ a{color:inherit;text-decoration:none}
     <details class="faq__item"><summary data-i18n="faq.q9.q">Was passiert bei Regen?</summary><div class="answer" data-i18n-html="faq.q9.a.html">Plan B: Heizhaus Indoor-Skatepark.</div></details>
     <details class="faq__item"><summary data-i18n="faq.q10.q">Welche Sprachen werden gesprochen?</summary><div class="answer" data-i18n-html="faq.q10.a.html">Deutsch und Englisch.</div></details>
     <details class="faq__item"><summary data-i18n="faq.q11.q">Sind die Spots öffentlich, wie verhalten wir uns?</summary><div class="answer" data-i18n-html="faq.q11.a.html">Ja (außer Heizhaus). Spot-Etikette beachten.</div></details>
-    <details class="faq__item"><summary data-i18n="faq.q12.q">Foto / Video, was ist mit Konsens?</summary><div class="answer" data-i18n-html="faq.q12.a.html">Niemand muss aufs Bild. Opt-out bei Anmeldung möglich.</div></details>
+    <details class="faq__item"><summary data-i18n="faq.q12.q">Foto / Video, was ist mit Konsens?</summary><div class="answer" data-i18n-html="faq.q12.a.html">Niemand muss aufs Bild. Pflicht-Kreuz JA/NEIN in der Anmelde-Mail.</div></details>
     <details class="faq__item"><summary data-i18n="faq.q13.q">Mindestalter, und Minderjährige?</summary><div class="answer" data-i18n-html="faq.q13.a.html">16+, mit Zustimmung der Erziehungsberechtigten.</div></details>
     <details class="faq__item"><summary data-i18n="faq.q14.q">Skateboards / BMX / Rollerblades, auch willkommen?</summary><div class="answer" data-i18n-html="faq.q14.a.html">Ja, besonders Tag 8 (Finale).</div></details>
     <details class="faq__item"><summary data-i18n="faq.q15.q">Crew-Kommunikation vor & während des Events?</summary><div class="answer" data-i18n-html="faq.q15.a.html">Mail vorab, Telegram/Signal-Gruppe nach Anmeldung.</div></details>
@@ -1568,7 +1575,7 @@ const I18N = {
       "faq.q11.q":"Sind die Spots öffentlich, wie verhalten wir uns?",
       "faq.q11.a.html":"Ja, bis auf das <strong>Heizhaus</strong> (vereinsbetrieben, <a href=\"https://heizhaus-leipzig.de/\" target=\"_blank\" rel=\"noopener\">heizhaus-leipzig.de</a>). Für unsere Sessions dort läuft alles über die Crew. Alle Straßenspots sind öffentlicher Raum.<br><br><strong>Spot-Etikette:</strong> keine Schäden, keine Lautstärke zur Unzeit, Müll mitnehmen. Bei Ansprache: freundlich bleiben, gegebenenfalls Spot wechseln. <em>Wir sind Gäste.</em>",
       "faq.q12.q":"Foto / Video, was ist mit Konsens?",
-      "faq.q12.a.html":"Geplant ist Doku per Foto + Video (siehe Outro-Sektion). <strong>Niemand muss aufs Bild.</strong> Wenn du nicht gefilmt oder fotografiert werden willst, schreib das in die Anmelde-Mail oder sag der Crew vor Ort Bescheid.",
+      "faq.q12.a.html":"Geplant ist Doku per Foto + Video (siehe Outro-Sektion). <strong>Niemand muss aufs Bild.</strong><br><br><strong>In der Anmelde-Mail steht ein Pflicht-Kreuz</strong> mit zwei Optionen: <em>JA</em> (Aufnahmen erlaubt für die Event-Doku) oder <em>NEIN</em> (keine Aufnahmen von dir). Bitte EIN Kästchen ankreuzen, sonst kann Folke nicht sicher zuordnen, was für dich gilt.<br><br><strong>Wichtig bei NEIN:</strong> bei großen Gruppenaufnahmen (Crew-Foto, Session-Clips, Highlight-Video) kannst du dann nicht mit drauf sein, weil sich einzelne Personen aus solchen Frames meist nicht sauber rausschneiden lassen. Bei kleineren Situationen sagst du der Crew vor Ort kurz Bescheid und wir nehmen Rücksicht.",
       "faq.q13.q":"Mindestalter, und Minderjährige?",
       "faq.q13.a.html":"<strong>16 Jahre, keine Ausnahme.</strong> Street-Sessions, späte Abende und Eigenverantwortung am Zeltplatz setzen das voraus.<br><br><strong>Wenn du zwischen 16 und 17 bist:</strong> schreib das einfach in die Anmelde-Mail. Folke meldet sich zurück und klärt den Rest individuell. Erziehungsberechtigte können sich bei Sorge ebenfalls an Folke wenden.",
       "faq.q14.q":"Was ist mit Skateboarden und anderen Roll-Disziplinen?",
@@ -1705,7 +1712,7 @@ const I18N = {
       "faq.q11.q":"Are the spots public, how do we behave?",
       "faq.q11.a.html":"Yes, except for the <strong>Heizhaus</strong> (club-run, <a href=\"https://heizhaus-leipzig.de/\" target=\"_blank\" rel=\"noopener\">heizhaus-leipzig.de</a>). The crew handles our sessions there. All street spots are public space.<br><br><strong>Spot etiquette:</strong> no damage, no noise at bad times, take your trash. If approached: stay friendly, switch spots if needed. <em>We are guests.</em>",
       "faq.q12.q":"Photo / video, what about consent?",
-      "faq.q12.a.html":"Documentation via photo + video is planned (see outro section). <strong>Nobody has to be in the picture.</strong> If you don't want to be filmed or photographed, mention it in the sign-up mail or tell the crew on site.",
+      "faq.q12.a.html":"Documentation via photo + video is planned (see outro section). <strong>Nobody has to be in the picture.</strong><br><br><strong>The sign-up mail contains a required tick-box</strong> with two options: <em>YES</em> (photo / video allowed for the event documentation) or <em>NO</em> (no footage of you). Please tick ONE box, otherwise Folke can't reliably tell what applies to you.<br><br><strong>Important if NO:</strong> for large group shots (crew photo, session clips, highlight video) you can't be included, since cutting individual people out of such frames usually isn't cleanly possible. For smaller situations, just tell the crew on site and we'll respect it.",
       "faq.q13.q":"Minimum age, and minors?",
       "faq.q13.a.html":"<strong>16 years, no exceptions.</strong> Street sessions, late nights and self-responsibility at the camp require it.<br><br><strong>If you're 16 or 17:</strong> just mention it in the sign-up mail. Folke will get back to you and clarify the rest individually. Guardians can reach out to Folke if they have concerns.",
       "faq.q14.q":"What about skateboarding and other rolling disciplines?",
@@ -1829,6 +1836,16 @@ Ich bin mindestens 16 Jahre alt.
 • Allergien:
 • Sonstiges:
 
+FOTO- / VIDEO-EINVERSTÄNDNIS (bitte EIN Kästchen ankreuzen, Pflicht)
+[ ] JA — ich bin damit einverstanden, dass Foto- und Videoaufnahmen
+    von mir gemacht werden und für die Doku des Events (Highlight-Clip,
+    Crew-Bilder, Social-Posts) verwendet werden dürfen.
+[ ] NEIN — ich möchte NICHT auf Foto- oder Videoaufnahmen erscheinen.
+    Mir ist klar: Bei großen Gruppenaufnahmen (Crew-Foto, Sessions,
+    Highlight-Clip) kann ich dann nicht mit drauf sein, weil sich
+    einzelne Personen aus solchen Frames meist nicht sauber rausschneiden
+    lassen.
+
 KOSTEN
 Teilnahmegebühr: 25 € pro Person, EINMALIG für das gesamte Event.
 Zelten auf dem Pleißenhof ist inklusive. First come, first serve
@@ -1855,6 +1872,15 @@ I'm at least 16 years old.
 • Lodging preference (Pleißenhof €25 one-time / Heizhaus OVERNIGHT €10 per night / self-organised):
 • Allergies:
 • Notes:
+
+PHOTO / VIDEO CONSENT (please tick ONE box, required)
+[ ] YES — I agree that photos and video footage of me may be taken
+    and used for the event documentation (highlight clip, crew shots,
+    social posts).
+[ ] NO — I do NOT want to appear in any photo or video footage.
+    I understand: for large group shots (crew photo, sessions,
+    highlight clip) I cannot be included, since cutting individual
+    people out of such frames usually isn't cleanly possible.
 
 COSTS
 Entry fee: €25 per person, ONE-TIME for the whole event.
@@ -3636,8 +3662,27 @@ function closeSpotDetail(){
   sdCurrentId = null;
 }
 
-spotDetail.querySelectorAll("[data-sd-close]").forEach(el => el.addEventListener("click", closeSpotDetail));
+function animateCloseAndRun(btn, runFn){
+  if(!btn || btn.classList.contains("is-closing")){ runFn(); return; }
+  btn.classList.add("is-closing");
+  setTimeout(() => { btn.classList.remove("is-closing"); runFn(); }, 320);
+}
+spotDetail.querySelectorAll("[data-sd-close]").forEach(el => el.addEventListener("click", () => {
+  // Nur den runden Close-Button animieren, Backdrop-Klick schliesst direkt.
+  if(el.classList.contains("spot-detail__close")) animateCloseAndRun(el, closeSpotDetail);
+  else closeSpotDetail();
+}));
 document.addEventListener("keydown", e => { if(e.key === "Escape" && spotDetail.classList.contains("open")) closeSpotDetail(); });
+/* Leaflet-Popup-Close: vor dem Schliessen die Spin-and-Fade-Animation
+   abspielen, dann erst Leaflet das Popup zumachen lassen. */
+document.addEventListener("click", e => {
+  const btn = e.target.closest(".leaflet-popup-close-button");
+  if(!btn || btn.classList.contains("is-closing")) return;
+  e.preventDefault();
+  e.stopPropagation();
+  btn.classList.add("is-closing");
+  setTimeout(() => { try{ if(typeof map !== "undefined" && map.closePopup) map.closePopup(); }catch(_){} }, 320);
+}, true);
 
 /* Mobile Bottom-Sheet: Drag-to-dismiss am Handle */
 (function(){
