@@ -1365,52 +1365,52 @@ a{color:inherit;text-decoration:none}
 <div class="print-sheet" id="printSheet" aria-hidden="true">
   <header class="ps-head">
     <div class="ps-head__brand">
-      <div class="ps-head__eyebrow">STREET · UNICYCLE · LEIPZIG</div>
+      <div class="ps-head__eyebrow" data-i18n="ps.head.eyebrow">STREET · UNICYCLE · LEIPZIG</div>
       <h1 class="ps-head__title">LEIPZIG INVITATION <span>2026</span></h1>
-      <div class="ps-head__dateline">08. — 16. August 2026 · 9 Tage · Leipzig &amp; Markkleeberg</div>
+      <div class="ps-head__dateline" data-i18n-html="ps.head.dateline">08. — 16. August 2026 · 9 Tage · Leipzig &amp; Markkleeberg</div>
     </div>
     <div class="ps-head__meta">
-      <div><b>Kontakt</b><span>Folke · folke.kleinrad@gmail.com</span></div>
-      <div><b>Web</b><span id="psUrl">—</span></div>
-      <div><b>FSK</b><span>16+ · keine Ausnahme</span></div>
+      <div><b data-i18n="ps.head.meta.contact">Kontakt</b><span>Folke · folke.kleinrad@gmail.com</span></div>
+      <div><b data-i18n="ps.head.meta.web">Web</b><span id="psUrl">—</span></div>
+      <div><b data-i18n="ps.head.meta.fsk">FSK</b><span data-i18n="ps.head.meta.fsk_value">16+ · keine Ausnahme</span></div>
     </div>
   </header>
 
   <section class="ps-facts">
-    <div class="ps-fact"><b>25 €</b><span>Einmalige Teilnahmegebühr · Zahlung bar vor Ort bei Anmeldung · Zelten Pleißenhof inkl.</span></div>
-    <div class="ps-fact"><b>10 €/Übernachtung</b><span>Heizhaus-<b>Schlafplatz</b> · optional · pro Tag/Nacht · direkt ans Heizhaus · NICHT Session-Preis · 10 Plätze</span></div>
-    <div class="ps-fact"><b>35</b><span>Plätze gesamt · first come, first serve</span></div>
-    <div class="ps-fact"><b>9</b><span>Event-Tage · 17 Orte · eine Crew</span></div>
+    <div class="ps-fact"><b data-i18n="ps.fact.fee.amount">25 €</b><span data-i18n="ps.fact.fee.text">Einmalige Teilnahmegebühr · Zahlung bar vor Ort bei Anmeldung · Zelten Pleißenhof inkl.</span></div>
+    <div class="ps-fact"><b data-i18n="ps.fact.heizhaus.amount">10 €/Übernachtung</b><span data-i18n-html="ps.fact.heizhaus.text.html">Heizhaus-<b>Schlafplatz</b> · optional · pro Tag/Nacht · direkt ans Heizhaus · NICHT Session-Preis · 10 Plätze</span></div>
+    <div class="ps-fact"><b data-i18n="ps.fact.slots.amount">35</b><span data-i18n="ps.fact.slots.text">Plätze gesamt · first come, first serve</span></div>
+    <div class="ps-fact"><b data-i18n="ps.fact.days.amount">9</b><span data-i18n="ps.fact.days.text">Event-Tage · 17 Orte · eine Crew</span></div>
   </section>
 
   <section class="ps-stay">
-    <h2>Unterkunft &amp; Kosten</h2>
+    <h2 data-i18n-html="ps.stay.title">Unterkunft &amp; Kosten</h2>
     <table>
-      <thead><tr><th>Option</th><th>Ort</th><th>Adresse</th><th>Plätze</th><th>Kosten</th></tr></thead>
+      <thead><tr><th data-i18n="ps.stay.col.option">Option</th><th data-i18n="ps.stay.col.city">Ort</th><th data-i18n="ps.stay.col.address">Adresse</th><th data-i18n="ps.stay.col.slots">Plätze</th><th data-i18n="ps.stay.col.cost">Kosten</th></tr></thead>
       <tbody id="psStay"></tbody>
     </table>
-    <p class="ps-note"><b>25 € = einmalige Teilnahmegebühr pro Person, bar vor Ort bei Anmeldung am Pleißenhof zu zahlen</b> (Zelten im Pleißenhof inklusive). <b>Heizhaus-Übernachtung = 10 € pro Nacht</b>, <b>direkt ans Heizhaus</b> (heizhaus-leipzig.de) — <b>nur Schlafplatz-Preis, NICHT für den Session-Besuch</b>. Optionale Alternative zu Hotel oder Campingplatz, läuft <b>nicht über den Veranstalter</b>. First come, first serve. Ab Platz 36 selbst organisieren (Camping · Hostel · Hotel · Jugendherberge). Verpflegung Selbstversorgung; gemeinsam wird gekocht und gegrillt. <b>Mindestalter 16 Jahre.</b></p>
+    <p class="ps-note" data-i18n-html="ps.stay.note.html"><b>25 € = einmalige Teilnahmegebühr pro Person, bar vor Ort bei Anmeldung am Pleißenhof zu zahlen</b> (Zelten im Pleißenhof inklusive). <b>Mindestalter 16 Jahre.</b></p>
   </section>
 
   <section class="ps-lineup">
-    <h2>Lineup · 9 Tage auf einen Blick</h2>
+    <h2 data-i18n="ps.lineup.title">Lineup · 9 Tage auf einen Blick</h2>
     <div class="ps-days" id="psDays"></div>
   </section>
 
   <section class="ps-spots">
-    <h2>Alle Orte · 17 Spots</h2>
+    <h2 data-i18n="ps.spots.title">Alle Orte · 17 Spots</h2>
     <table>
-      <thead><tr><th>#</th><th>Name</th><th>Adresse</th><th>Tage</th></tr></thead>
+      <thead><tr><th data-i18n="ps.spots.col.num">#</th><th data-i18n="ps.spots.col.name">Name</th><th data-i18n="ps.spots.col.address">Adresse</th><th data-i18n="ps.spots.col.days">Tage</th></tr></thead>
       <tbody id="psSpots"></tbody>
     </table>
   </section>
 
   <footer class="ps-foot">
-    <div class="ps-foot__col">
+    <div class="ps-foot__col" data-i18n-html="ps.foot.signup.full.html">
       <b>Anmeldung</b>
       Mail an <span>folke.kleinrad@gmail.com</span> · Betreff: „Anmeldung · Leipzig Invitation 2026". Nötig: Name, Ankunft, Abreise, Unterkunftswunsch (Pleißenhof 25 € einmalig / Heizhaus-Übernachtung 10 € pro Nacht / selbst), Allergien, Sonstiges. Antwort i. d. R. innerhalb 48 h.
     </div>
-    <div class="ps-foot__col">
+    <div class="ps-foot__col" data-i18n-html="ps.foot.dropin.full.html">
       <b>Drop-In-Regel</b>
       16+ · eigene Verantwortung · Zelt &amp; Schlafzeug mitbringen · Einrad/Helm selbstverständlich. Keine Online-Vorabzahlung — die 25 € werden <b>bar vor Ort bei Anmeldung</b> kassiert und decken Location, Strom, Müll, Orga.
     </div>
@@ -1533,6 +1533,26 @@ const I18N = {
       "stay.card.routelink":"Route öffnen →","stay.card.slots":"Plätze","stay.card.web_suffix":"→",
       "map.day_pin_label":"Tag {n} · {tag}",
       "spotsbtn.label":"Spot Übersicht",
+      "ps.head.eyebrow":"STREET · UNICYCLE · LEIPZIG",
+      "ps.head.dateline":"08. — 16. August 2026 · 9 Tage · Leipzig &amp; Markkleeberg",
+      "ps.head.meta.contact":"Kontakt","ps.head.meta.web":"Web","ps.head.meta.fsk":"FSK",
+      "ps.head.meta.fsk_value":"16+ · keine Ausnahme",
+      "ps.fact.fee.amount":"25 €",
+      "ps.fact.fee.text":"Einmalige Teilnahmegebühr · Zahlung bar vor Ort bei Anmeldung · Zelten Pleißenhof inkl.",
+      "ps.fact.heizhaus.amount":"10 €/Übernachtung",
+      "ps.fact.heizhaus.text.html":"Heizhaus-<b>Schlafplatz</b> · optional · pro Tag/Nacht · direkt ans Heizhaus · NICHT Session-Preis · 10 Plätze",
+      "ps.fact.slots.amount":"35",
+      "ps.fact.slots.text":"Plätze gesamt · first come, first serve",
+      "ps.fact.days.amount":"9",
+      "ps.fact.days.text":"Event-Tage · 17 Orte · eine Crew",
+      "ps.stay.title":"Unterkunft &amp; Kosten",
+      "ps.stay.col.option":"Option","ps.stay.col.city":"Ort","ps.stay.col.address":"Adresse","ps.stay.col.slots":"Plätze","ps.stay.col.cost":"Kosten",
+      "ps.stay.note.html":"<b>25 € = einmalige Teilnahmegebühr pro Person, bar vor Ort bei Anmeldung am Pleißenhof zu zahlen</b> (Zelten im Pleißenhof inklusive). <b>Heizhaus-Übernachtung = 10 € pro Nacht</b>, <b>direkt ans Heizhaus</b> (heizhaus-leipzig.de) — <b>nur Schlafplatz-Preis, NICHT für den Session-Besuch</b>. Optionale Alternative zu Hotel oder Campingplatz, läuft <b>nicht über den Veranstalter</b>. First come, first serve. Ab Platz 36 selbst organisieren (Camping · Hostel · Hotel · Jugendherberge). Verpflegung Selbstversorgung; gemeinsam wird gekocht und gegrillt. <b>Mindestalter 16 Jahre.</b>",
+      "ps.lineup.title":"Lineup · 9 Tage auf einen Blick",
+      "ps.spots.title":"Alle Orte · 17 Spots",
+      "ps.spots.col.num":"#","ps.spots.col.name":"Name","ps.spots.col.address":"Adresse","ps.spots.col.days":"Tage",
+      "ps.foot.signup.full.html":"<b>Anmeldung</b>Mail an <span>folke.kleinrad@gmail.com</span> · Betreff: „Anmeldung · Leipzig Invitation 2026“. Nötig: Name, Ankunft, Abreise, Unterkunftswunsch (Pleißenhof 25 € einmalig / Heizhaus-Übernachtung 10 € pro Nacht / selbst), Allergien, Sonstiges. Antwort i. d. R. innerhalb 48 h.",
+      "ps.foot.dropin.full.html":"<b>Drop-In-Regel</b>16+ · eigene Verantwortung · Zelt &amp; Schlafzeug mitbringen · Einrad/Helm selbstverständlich. Keine Online-Vorabzahlung — die 25 € werden <b>bar vor Ort bei Anmeldung</b> kassiert und decken Location, Strom, Müll, Orga.",
       "so.eyebrow":"Alle Orte · 1 Klick","so.title":"Spot Übersicht",
       "so.lede":"Sortiert nach Spot-ID. Klick auf einen Spot öffnet die Details mit Adresse, Galerie und Routenlink.",
       "so.legend.spot":"Spot","so.legend.home":"Homebase","so.legend.lake":"Badesee",
@@ -1635,6 +1655,26 @@ const I18N = {
       "stay.card.routelink":"Open route →","stay.card.slots":"spots","stay.card.web_suffix":"→",
       "map.day_pin_label":"Day {n} · {tag}",
       "spotsbtn.label":"Spot Overview",
+      "ps.head.eyebrow":"STREET · UNICYCLE · LEIPZIG",
+      "ps.head.dateline":"Aug 8 – 16, 2026 · 9 days · Leipzig &amp; Markkleeberg",
+      "ps.head.meta.contact":"Contact","ps.head.meta.web":"Web","ps.head.meta.fsk":"Min age",
+      "ps.head.meta.fsk_value":"16+ · no exceptions",
+      "ps.fact.fee.amount":"€25",
+      "ps.fact.fee.text":"One-time entry fee · cash on site at sign-up · camping at Pleißenhof incl.",
+      "ps.fact.heizhaus.amount":"€10/night",
+      "ps.fact.heizhaus.text.html":"Heizhaus <b>sleeping spot</b> · optional · per day/night · paid directly to Heizhaus · NOT session price · 10 spots",
+      "ps.fact.slots.amount":"35",
+      "ps.fact.slots.text":"total spots · first come, first serve",
+      "ps.fact.days.amount":"9",
+      "ps.fact.days.text":"event days · 17 locations · one crew",
+      "ps.stay.title":"Lodging &amp; Costs",
+      "ps.stay.col.option":"Option","ps.stay.col.city":"City","ps.stay.col.address":"Address","ps.stay.col.slots":"Spots","ps.stay.col.cost":"Cost",
+      "ps.stay.note.html":"<b>€25 = one-time entry fee per person, paid in cash on site at sign-up at Pleißenhof</b> (camping at Pleißenhof included). <b>Heizhaus overnight = €10 per night</b>, <b>paid directly to Heizhaus</b> (heizhaus-leipzig.de) — <b>sleeping price only, NOT for the session visit</b>. Optional alternative to a hotel or campsite, <b>not handled via the organiser</b>. First come, first serve. Beyond spot #36: organise yourself (camping · hostel · hotel). Self-catering; the crew cooks and grills together. <b>Min age 16.</b>",
+      "ps.lineup.title":"Lineup · 9 days at a glance",
+      "ps.spots.title":"All locations · 17 spots",
+      "ps.spots.col.num":"#","ps.spots.col.name":"Name","ps.spots.col.address":"Address","ps.spots.col.days":"Days",
+      "ps.foot.signup.full.html":"<b>Sign-up</b>Mail to <span>folke.kleinrad@gmail.com</span> · Subject: \"Sign-up · Leipzig Invitation 2026\". Required: name, arrival, departure, lodging preference (Pleißenhof €25 one-time / Heizhaus overnight €10 per night / self-organised), allergies, notes. Reply usually within 48h.",
+      "ps.foot.dropin.full.html":"<b>Drop-in rule</b>16+ · own responsibility · bring tent &amp; sleeping gear · unicycle/helmet a given. No online prepayment — €25 is collected <b>in cash on site at sign-up</b> and covers location, power, trash, organisation.",
       "so.eyebrow":"All spots · 1 click","so.title":"Spot Overview",
       "so.lede":"Sorted by spot ID. Click a spot to open details with address, gallery and route link.",
       "so.legend.spot":"Spot","so.legend.home":"Homebase","so.legend.lake":"Lake",
@@ -1828,6 +1868,7 @@ function buildPrintSheet(){
 
   const psDays = document.getElementById("psDays");
   if(psDays && typeof eventDays !== "undefined"){
+    const dayLbl = (typeof t === "function") ? t("days.bar.day") : "Tag";
     psDays.innerHTML = eventDays.map(d => {
       const weekday = (typeof dayWeekdayLong === "function") ? dayWeekdayLong(d) : d.date.slice(0,2);
       const datePart = (d.date.split(" · ")[1]) || d.date;
@@ -1840,7 +1881,7 @@ function buildPrintSheet(){
       return `
         <article class="ps-day">
           <header class="ps-day__head">
-            <div class="ps-day__num">Tag ${String(d.n).padStart(2,"0")}</div>
+            <div class="ps-day__num">${dayLbl} ${String(d.n).padStart(2,"0")}</div>
             <div class="ps-day__date">${escapeHtml(weekday)} · ${escapeHtml(datePart)}</div>
             <div class="ps-day__tag">${escapeHtml(d.tag)}</div>
           </header>
@@ -1854,9 +1895,10 @@ function buildPrintSheet(){
   const psSpots = document.getElementById("psSpots");
   if(psSpots && typeof spotsMaster !== "undefined"){
     const ids = Object.keys(spotsMaster).map(Number).sort((a,b) => a - b);
+    const dayPrefix = (window.__LANG__ === "en") ? "D" : "T";
     psSpots.innerHTML = ids.map(id => {
       const s = spotsMaster[id];
-      const days = spotDayMap && spotDayMap[id] ? [...spotDayMap[id]].sort((a,b)=>a-b).map(n => "T"+n).join(" · ") : "—";
+      const days = spotDayMap && spotDayMap[id] ? [...spotDayMap[id]].sort((a,b)=>a-b).map(n => dayPrefix+n).join(" · ") : "—";
       return `<tr>
         <td class="ps-num">${id}</td>
         <td><b>${escapeHtml(s.title)}</b></td>
@@ -1864,6 +1906,13 @@ function buildPrintSheet(){
         <td>${escapeHtml(days)}</td>
       </tr>`;
     }).join("");
+  }
+  /* Statisches HTML im Print-Sheet (data-i18n Attribute) frisch uebersetzen,
+     bevor das Browser-Print-Dialog erscheint — falls applyTranslations seit
+     Sprachwechsel noch nicht ueber das aktuelle printSheet-DOM lief. */
+  if(typeof applyTranslations === "function"){
+    const sheet = document.getElementById("printSheet");
+    if(sheet) applyTranslations(sheet);
   }
 }
 const pdfBtn = document.getElementById("pdfBtn");
