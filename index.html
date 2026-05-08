@@ -7,12 +7,53 @@
 <title>LEIPZIG INVITATION 2026 — Street Unicycle</title>
 <meta name="description" content="Leipzig Invitation — 9 Tage Street Unicycle nach der Unicon. 08.–16.08.2026." />
 
+<script>
+/* === I18N · Bootstrap (FOUC-Prevention, laeuft synchron im <head>) === */
+(function(){
+  const SUPPORTED = ["de","en"];
+  const FALLBACK  = "de";
+  const STORAGE   = "li2026.lang";
+  function pickLang(candidates){
+    for(const c of candidates){
+      if(!c) continue;
+      const lc = String(c).toLowerCase();
+      if(SUPPORTED.includes(lc)) return lc;
+      const family = lc.split(/[-_]/)[0];
+      if(SUPPORTED.includes(family)) return family;
+    }
+    return null;
+  }
+  function detectLang(){
+    const urlLang = new URLSearchParams(location.search).get("lang");
+    if(urlLang){ const p = pickLang([urlLang]); if(p) return p; }
+    try { const stored = localStorage.getItem(STORAGE); if(stored && SUPPORTED.includes(stored)) return stored; } catch(_){}
+    const browser = (navigator.languages && navigator.languages.length)
+      ? navigator.languages
+      : [navigator.language || navigator.userLanguage || ""];
+    const matched = pickLang(browser);
+    if(matched) return matched;
+    /* Wenn Browser keinerlei Match hat (exotic locale): EN bevorzugen, DE fuer DE-Sprecher */
+    const looksGerman = browser.some(l => /^de\b/i.test(l));
+    return looksGerman ? "de" : "en";
+  }
+  const lang = detectLang();
+  document.documentElement.setAttribute("lang", lang);
+  window.__LANG__ = lang;
+  window.__I18N_SUPPORTED__ = SUPPORTED;
+  window.__I18N_FALLBACK__  = FALLBACK;
+  window.__I18N_STORAGE__   = STORAGE;
+})();
+</script>
+
 <link rel="preconnect" href="https://fonts.bunny.net" crossorigin />
 <link href="https://fonts.bunny.net/css?family=permanent-marker:400|space-grotesk:300,400,500,600,700|jetbrains-mono:400,500,700|bebas-neue:400|anton:400&display=swap" rel="stylesheet" />
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 
 <style>
+/* FOUC-Prevention: Body unsichtbar bis i18n-Translations appliziert wurden.
+   Loader bleibt sichtbar (steht ausserhalb der Translation-Pipeline). */
+html:not([data-i18n-ready]) body > :not(.loader){visibility:hidden}
 :root{
   --bg:#08080a;--bg-2:#0e0e11;--bg-3:#16161a;--line:#24242a;
   --text:#f5f5f0;--text-dim:#c8c8c8;--text-mute:#9a9a9a;
@@ -75,6 +116,21 @@ a{color:inherit;text-decoration:none}
 .nav__cta{display:inline-flex;align-items:center;gap:.5rem;padding:.65rem 1.1rem;background:var(--grad);color:#fff;font-weight:700;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;border-radius:999px;box-shadow:var(--glow-red);border:2px solid #fff;transition:transform .3s var(--ease),box-shadow .3s;cursor:pointer;white-space:nowrap}
 .nav__cta svg{width:14px;height:14px;flex-shrink:0}
 .nav__cta:hover{transform:translateY(-2px) scale(1.03);box-shadow:var(--glow-pink)}
+/* === Sprachumschalter === */
+.nav__lang{position:relative;margin-right:.4rem}
+.nav__lang-toggle{display:inline-flex;align-items:center;gap:.4rem;padding:.55rem .8rem;border:1px solid var(--line);border-radius:999px;color:var(--text-dim);font-family:var(--font-mono);font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;background:rgba(255,255,255,.02);transition:all .25s var(--ease);cursor:pointer}
+.nav__lang-toggle:hover,.nav__lang.is-open .nav__lang-toggle{border-color:var(--red);color:var(--text)}
+.nav__lang-toggle svg{width:9px;height:7px;transition:transform .25s}
+.nav__lang.is-open .nav__lang-toggle svg{transform:rotate(180deg)}
+.nav__lang-flag{font-size:.85rem;line-height:1}
+.nav__lang-menu{position:absolute;top:calc(100% + .4rem);right:0;list-style:none;min-width:160px;background:rgba(8,8,12,.96);backdrop-filter:blur(14px);border:1px solid var(--line);border-radius:12px;padding:.35rem;box-shadow:0 20px 50px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:.1rem;z-index:600;margin:0}
+.nav__lang-menu[hidden]{display:none}
+.nav__lang-menu li{display:flex;align-items:center;gap:.65rem;padding:.55rem .75rem;border-radius:8px;cursor:pointer;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.14em;color:var(--text-dim);transition:all .2s}
+.nav__lang-menu li:hover{background:rgba(255,0,64,.1);color:var(--text)}
+.nav__lang-menu li[aria-selected="true"]{background:var(--grad);color:#fff}
+.nav__lang-menu li b{font-weight:700;min-width:22px;letter-spacing:.18em}
+.nav__lang-menu li em{font-style:normal;font-size:.7rem;opacity:.85;letter-spacing:.04em;text-transform:none}
+@media (max-width:900px){.nav__lang{order:-1}.nav__lang-menu{right:auto;left:0}}
 .nav__burger{display:none;width:40px;height:40px;border-radius:8px;position:relative}
 .nav__burger span{position:absolute;left:8px;right:8px;height:2px;background:var(--text);transition:transform .3s,top .3s,opacity .3s}
 .nav__burger span:nth-child(1){top:13px}
@@ -875,14 +931,25 @@ a{color:inherit;text-decoration:none}
 <header class="nav" id="nav">
   <a href="#top" class="nav__brand"><i></i>LEIPZIG/INV.26</a>
   <nav class="nav__links" id="navLinks">
-    <a href="#overview">Event</a>
-    <a href="#stay">Stay</a>
-    <a href="#days">Lineup</a>
-    <a href="#map">Map</a>
-    <a href="#faq">FAQ</a>
+    <a href="#overview" data-i18n="nav.event">Event</a>
+    <a href="#stay" data-i18n="nav.stay">Stay</a>
+    <a href="#days" data-i18n="nav.lineup">Lineup</a>
+    <a href="#map" data-i18n="nav.map">Map</a>
+    <a href="#faq" data-i18n="nav.faq">FAQ</a>
   </nav>
-  <button type="button" class="nav__cta" id="joinBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M4 6h16v12H4zM4 6l8 7 8-7"/></svg><span>Jetzt anmelden</span></button>
-  <button type="button" class="nav__burger" id="burger" aria-label="Menü"><span></span><span></span><span></span></button>
+  <div class="nav__lang" id="navLang" role="group" data-i18n-attr="aria-label:nav.lang">
+    <button type="button" class="nav__lang-toggle" aria-haspopup="listbox" aria-expanded="false" data-i18n-attr="aria-label:nav.lang_switch">
+      <span class="nav__lang-flag" aria-hidden="true">🌐</span>
+      <span class="nav__lang-code" id="navLangCode">DE</span>
+      <svg viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+    </button>
+    <ul class="nav__lang-menu" role="listbox" hidden>
+      <li role="option" data-lang="de"><b>DE</b><em>Deutsch</em></li>
+      <li role="option" data-lang="en"><b>EN</b><em>English</em></li>
+    </ul>
+  </div>
+  <button type="button" class="nav__cta" id="joinBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M4 6h16v12H4zM4 6l8 7 8-7"/></svg><span data-i18n="nav.cta">Jetzt anmelden</span></button>
+  <button type="button" class="nav__burger" id="burger" data-i18n-attr="aria-label:nav.menu_label"><span></span><span></span><span></span></button>
 </header>
 
 <section class="hero" id="top">
@@ -891,22 +958,22 @@ a{color:inherit;text-decoration:none}
     <img src="Bilder/Titelbild.jpg" alt="" />
   </div>
   <div class="hero__inner">
-    <div class="hero__meta"><span>Post-Unicon Ride Trip</span><span>Leipzig · Markkleeberg</span><span>35 Plätze</span><span class="hero__fsk">16+</span></div>
+    <div class="hero__meta"><span data-i18n="hero.meta.trip">Post-Unicon Ride Trip</span><span data-i18n="hero.meta.place">Leipzig · Markkleeberg</span><span data-i18n="hero.meta.spots">35 Plätze</span><span class="hero__fsk" data-i18n="hero.meta.fsk">16+</span></div>
     <h1 class="hero__title">
       <span class="l"><span>Leipzig</span></span>
       <span class="l"><span>Invita<i>tion</i></span></span>
     </h1>
-    <div class="hero__dateline">08.–16. August 2026</div>
+    <div class="hero__dateline" data-i18n="hero.dateline">08.–16. August 2026</div>
     <div class="hero__tag">
-      <p class="hero__tag-lead">Das erste Street Einrad &amp; Skate Event in Leipzig <span class="hero__tag-emoji">🌻🌈</span></p>
-      <p>Direkt nach der Unicon geht es weiter mit der Leipzig Invitation.</p>
-      <p>Neun Tage sind wir gemeinsam in Leipzig unterwegs, fahren Street &amp; Flatland und besuchen täglich verschiedene Spots.</p>
-      <p>Es wird gefahren, gefilmt, Musik gehört und entspannt Zeit miteinander verbracht.</p>
+      <p class="hero__tag-lead"><span data-i18n="hero.tag.lead">Das erste Street Einrad &amp; Skate Event in Leipzig</span> <span class="hero__tag-emoji">🌻🌈</span></p>
+      <p data-i18n="hero.tag.p1">Direkt nach der Unicon geht es weiter mit der Leipzig Invitation.</p>
+      <p data-i18n="hero.tag.p2">Neun Tage sind wir gemeinsam in Leipzig unterwegs, fahren Street &amp; Flatland und besuchen täglich verschiedene Spots.</p>
+      <p data-i18n="hero.tag.p3">Es wird gefahren, gefilmt, Musik gehört und entspannt Zeit miteinander verbracht.</p>
     </div>
     <div class="hero__cta">
-      <button type="button" class="btn btn--primary" id="joinHero"><span>Anmelden<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
-      <a href="#days" class="btn btn--ghost">Lineup</a>
-      <a href="#map" class="btn btn--ghost">Map</a>
+      <button type="button" class="btn btn--primary" id="joinHero"><span><span data-i18n="hero.cta.signup">Anmelden</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
+      <a href="#days" class="btn btn--ghost" data-i18n="hero.cta.lineup">Lineup</a>
+      <a href="#map" class="btn btn--ghost" data-i18n="hero.cta.map">Map</a>
     </div>
   </div>
 </section>
@@ -915,29 +982,29 @@ a{color:inherit;text-decoration:none}
 
 <section class="section" id="overview">
   <header class="section__head section__head--intro">
-    <div><div class="section__eyebrow reveal">Das Event</div><h2 class="section__title reveal">Ohne <em>Wettbewerb</em><br>zusammen fahren.</h2></div>
+    <div><div class="section__eyebrow reveal" data-i18n="overview.eyebrow">Das Event</div><h2 class="section__title reveal" data-i18n-html="overview.title.html">Ohne <em>Wettbewerb</em><br>zusammen fahren.</h2></div>
     <div class="section__lede reveal reveal--2">
-      <p>Geplant sind außerdem ein Grill- und Bierballabend sowie spontane Aktionen wie Baden, Game of Uni, Zelten und natürlich viel gemeinsames Fahren.</p>
-      <p>Das Event findet ohne Wettbewerb statt (allenfalls kleine Jams mit Preisen für best Tricks). Im Mittelpunkt stehen das Fahren, der Austausch und das gemeinsame Lernen auch über Ländergrenzen hinweg.</p>
-      <p>Ziel ist es, Street-Einradfahren stärker in die Community zu bringen und eine schöne Zeit zu haben.</p>
+      <p data-i18n="overview.lede.p1">Geplant sind außerdem ein Grill- und Bierballabend sowie spontane Aktionen wie Baden, Game of Uni, Zelten und natürlich viel gemeinsames Fahren.</p>
+      <p data-i18n="overview.lede.p2">Das Event findet ohne Wettbewerb statt (allenfalls kleine Jams mit Preisen für best Tricks). Im Mittelpunkt stehen das Fahren, der Austausch und das gemeinsame Lernen auch über Ländergrenzen hinweg.</p>
+      <p data-i18n="overview.lede.p3">Ziel ist es, Street-Einradfahren stärker in die Community zu bringen und eine schöne Zeit zu haben.</p>
     </div>
   </header>
   <div class="overview-grid reveal">
-    <div class="overview-cell"><b>08–16</b><div><div class="label">August 2026</div><div class="desc">Samstag zu Sonntag. Ankommen, riden, abreisen.</div></div></div>
-    <div class="overview-cell"><b>35</b><div><div class="label">Plätze maximal</div><div class="desc">25 Pleißenhof · 10 Heizhaus-Schlafplatz. Ab Platz 36 selbst.</div></div></div>
-    <div class="overview-cell overview-cell--jump" data-jump="stay" role="button" tabindex="0" aria-label="Zu 'Wo du schläfst' springen"><b>25 €</b><div><div class="label">Einmalige Teilnahmegebühr · vor Ort</div><div class="desc">Pro Person, einmalig — Zahlung bar bei Anmeldung am Pleißenhof. Inkl. Zelten. <span class="overview-cell__cta">Details zu Übernachtung → „Wo du schläfst" ↗</span></div></div></div>
-    <div class="overview-cell"><b>17</b><div><div class="label">Spots &amp; Locations</div><div class="desc">Street, Flat, DIY, Parks — plus Bade-See direkt am Camp.</div></div></div>
-    <div class="overview-cell"><b>Self</b><div><div class="label">Selbstverpflegung</div><div class="desc">Crew kocht, teilt, grillt. Foodliste für Tag 2 bei Ankunft.</div></div></div>
-    <div class="overview-cell"><b>16+</b><div><div class="label">Mindestalter</div><div class="desc">Ab 16 Jahren — keine Ausnahme.</div></div></div>
+    <div class="overview-cell"><b>08–16</b><div><div class="label" data-i18n="overview.cell.dates.label">August 2026</div><div class="desc" data-i18n="overview.cell.dates.desc">Samstag zu Sonntag. Ankommen, riden, abreisen.</div></div></div>
+    <div class="overview-cell"><b>35</b><div><div class="label" data-i18n="overview.cell.slots.label">Plätze maximal</div><div class="desc" data-i18n="overview.cell.slots.desc">25 Pleißenhof · 10 Heizhaus-Schlafplatz. Ab Platz 36 selbst.</div></div></div>
+    <div class="overview-cell overview-cell--jump" data-jump="stay" role="button" tabindex="0" aria-label="Zu 'Wo du schläfst' springen"><b>25 €</b><div><div class="label" data-i18n="overview.cell.fee.label">Einmalige Teilnahmegebühr · vor Ort</div><div class="desc" data-i18n-html="overview.cell.fee.desc.html">Pro Person, einmalig — Zahlung bar bei Anmeldung am Pleißenhof. Inkl. Zelten. <span class="overview-cell__cta">Details zu Übernachtung → „Wo du schläfst" ↗</span></div></div></div>
+    <div class="overview-cell"><b>17</b><div><div class="label" data-i18n-html="overview.cell.spots.label">Spots &amp; Locations</div><div class="desc" data-i18n="overview.cell.spots.desc">Street, Flat, DIY, Parks — plus Bade-See direkt am Camp.</div></div></div>
+    <div class="overview-cell"><b>Self</b><div><div class="label" data-i18n="overview.cell.self.label">Selbstverpflegung</div><div class="desc" data-i18n="overview.cell.self.desc">Crew kocht, teilt, grillt. Foodliste für Tag 2 bei Ankunft.</div></div></div>
+    <div class="overview-cell"><b>16+</b><div><div class="label" data-i18n="overview.cell.age.label">Mindestalter</div><div class="desc" data-i18n="overview.cell.age.desc">Ab 16 Jahren — keine Ausnahme.</div></div></div>
   </div>
 </section>
 
 <details class="section--fold reveal" id="stay">
   <summary>
     <div class="section--fold__head">
-      <div class="section__eyebrow">Unterkunft</div>
-      <h2 class="section__title">Wo du <em>schläfst.</em></h2>
-      <p class="section__lede">Selbstverpflegung, selbst kümmern. Homebase gestellt — der Rest ist eigene Entscheidung.</p>
+      <div class="section__eyebrow" data-i18n="stay.eyebrow">Unterkunft</div>
+      <h2 class="section__title" data-i18n-html="stay.title.html">Wo du <em>schläfst.</em></h2>
+      <p class="section__lede" data-i18n="stay.lede">Selbstverpflegung, selbst kümmern. Homebase gestellt — der Rest ist eigene Entscheidung.</p>
     </div>
     <span class="section--fold__toggle" aria-hidden="true"></span>
   </summary>
@@ -948,8 +1015,8 @@ a{color:inherit;text-decoration:none}
 
 <section class="section" id="days">
   <header class="section__head">
-    <div><div class="section__eyebrow reveal">Lineup · 9 Days</div><h2 class="section__title reveal">Jeder Tag<br>verschiedene <em>Spots.</em></h2></div>
-    <p class="section__lede reveal reveal--2">Klick auf ein Thumbnail öffnet Bild oder Video in der Galerie.</p>
+    <div><div class="section__eyebrow reveal" data-i18n="days.eyebrow">Lineup · 9 Days</div><h2 class="section__title reveal" data-i18n-html="days.title.html">Jeder Tag<br>verschiedene <em>Spots.</em></h2></div>
+    <p class="section__lede reveal reveal--2" data-i18n="days.lede">Klick auf ein Thumbnail öffnet Bild oder Video in der Galerie.</p>
   </header>
   <div class="days" id="daysList"></div>
 </section>
@@ -1066,9 +1133,9 @@ a{color:inherit;text-decoration:none}
       </svg>
     </div>
     <div class="section--fold__head">
-      <div class="section__eyebrow">The Map</div>
-      <h2 class="section__title">Jeder Tag. <em>Eigene Farbe.</em></h2>
-      <p class="section__lede">Links Tag wählen — rechts die Route in der Tagesfarbe. Nummerierte Pins zeigen Reihenfolge. Essen &amp; WCs zuschaltbar. Klick auf einen Stop zoomt die Karte.</p>
+      <div class="section__eyebrow" data-i18n="map.eyebrow">The Map</div>
+      <h2 class="section__title" data-i18n-html="map.title.html">Jeder Tag. <em>Eigene Farbe.</em></h2>
+      <p class="section__lede" data-i18n="map.lede">Links Tag wählen — rechts die Route in der Tagesfarbe. Nummerierte Pins zeigen Reihenfolge. Essen &amp; WCs zuschaltbar. Klick auf einen Stop zoomt die Karte.</p>
     </div>
     <span class="section--fold__toggle" aria-hidden="true"></span>
   </summary>
@@ -1077,30 +1144,30 @@ a{color:inherit;text-decoration:none}
     <aside class="map-panel" aria-label="Tagesauswahl">
       <div class="map-panel__head">
         <div class="map-panel__title" id="mapPanelTitle"><b>Ansicht</b>Alle Spots</div>
-        <button type="button" class="map-panel__reset" id="mapReset" title="Zur Übersicht" aria-label="Zurück zur Übersicht" hidden>×</button>
+        <button type="button" class="map-panel__reset" id="mapReset" data-i18n-attr="title:map.panel.all_overview;aria-label:map.reset_back" title="Zur Übersicht" aria-label="Zurück zur Übersicht" hidden>×</button>
       </div>
       <div class="map-panel__body">
         <section class="box box--days">
-          <div class="box__label"><span><span class="dot"></span><b>Tage</b> &amp; Stops</span><span class="count" id="boxDaysCount">9 Tage</span></div>
+          <div class="box__label"><span><span class="dot"></span><b data-i18n="map.panel.box.days">Tage</b> &amp; Stops</span><span class="count" id="boxDaysCount">9 Tage</span></div>
           <div class="box__content" id="mapPanelBody"></div>
         </section>
       </div>
       <div class="map-panel__foot">
         <section class="box box--legend">
-          <div class="box__label"><span><span class="dot" style="background:var(--pink)"></span><b>Legende</b></span><span class="count" id="boxLegendCtx">Übersicht</span></div>
+          <div class="box__label"><span><span class="dot" style="background:var(--pink)"></span><b data-i18n="map.panel.box.legend">Legende</b></span><span class="count" id="boxLegendCtx">Übersicht</span></div>
           <div class="box__content" id="mapLegend"></div>
           <button type="button" class="spots-btn" id="spotsOverviewBtn" aria-haspopup="dialog" aria-controls="spotsOverview">
             <span class="spots-btn__ic" aria-hidden="true">#</span>
-            <span class="spots-btn__label">Spot Übersicht</span>
+            <span class="spots-btn__label" data-i18n="map.panel.spots_overview">Spot Übersicht</span>
             <span class="spots-btn__count" id="spotsBtnCount">17</span>
           </button>
         </section>
         <section class="box box--poi">
-          <div class="box__label"><span><span class="dot" style="background:#ff7a00"></span><b>POI</b> &middot; Nähe</span><span class="count">Zuschalten</span></div>
+          <div class="box__label"><span><span class="dot" style="background:#ff7a00"></span><b data-i18n="map.panel.box.poi">POI</b> &middot; <span data-i18n="map.panel.box.poi_subtitle">Nähe</span></span><span class="count" data-i18n="map.panel.poi.toggle">Zuschalten</span></div>
           <div class="box__content">
             <div class="map-poi-toggle">
-              <button type="button" class="poi-btn poi-btn--food" data-poi="food" aria-pressed="false"><span class="poi-btn__ic">F</span>Essen <span class="poi-btn__count" id="poiCountFood"></span></button>
-              <button type="button" class="poi-btn poi-btn--wc" data-poi="wc" aria-pressed="false"><span class="poi-btn__ic">W</span>WC <span class="poi-btn__count" id="poiCountWc"></span></button>
+              <button type="button" class="poi-btn poi-btn--food" data-poi="food" aria-pressed="false"><span class="poi-btn__ic">F</span><span data-i18n="map.panel.poi.food">Essen</span> <span class="poi-btn__count" id="poiCountFood"></span></button>
+              <button type="button" class="poi-btn poi-btn--wc" data-poi="wc" aria-pressed="false"><span class="poi-btn__ic">W</span><span data-i18n="map.panel.poi.wc">WC</span> <span class="poi-btn__count" id="poiCountWc"></span></button>
             </div>
           </div>
         </section>
@@ -1108,14 +1175,14 @@ a{color:inherit;text-decoration:none}
     </aside>
     <div class="map-stage">
       <section class="box box--topbar">
-        <div class="box__label"><span><span class="dot"></span><b>Schnellwahl</b> &middot; <span id="topbarCtx">Tag wählen</span></span><span class="count" id="topbarCount"></span></div>
+        <div class="box__label"><span><span class="dot"></span><b data-i18n="map.panel.quickselect">Schnellwahl</b> &middot; <span id="topbarCtx">Tag wählen</span></span><span class="count" id="topbarCount"></span></div>
         <div class="map-topbar" id="mapTopbar"></div>
       </section>
       <div id="mapCanvas"></div>
       <div class="map-gate is-visible" id="mapGate" role="button" tabindex="0" aria-label="Karte aktivieren">
-        <div class="map-gate__card"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.5-7-12a7 7 0 1 1 14 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>Tippen zum Aktivieren</div>
+        <div class="map-gate__card"><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.5-7-12a7 7 0 1 1 14 0c0 5.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg><span data-i18n="map.gate.activate">Tippen zum Aktivieren</span></div>
       </div>
-      <button class="map-lock-btn" id="mapLock" type="button" aria-label="Karte sperren">✕ Sperren</button>
+      <button class="map-lock-btn" id="mapLock" type="button" aria-label="Karte sperren" data-i18n="map.lock.label">✕ Sperren</button>
     </div>
   </div>
   </div>
@@ -1124,35 +1191,35 @@ a{color:inherit;text-decoration:none}
 <details class="section--fold reveal" id="faq">
   <summary>
     <div class="section--fold__head">
-      <div class="section__eyebrow">FAQ</div>
-      <h2 class="section__title">Good to <em>know.</em></h2>
-      <p class="section__lede">Kosten, Verpflegung, Anreise, WCs, Sicherheit — alle wichtigen Antworten auf einen Klick.</p>
+      <div class="section__eyebrow" data-i18n="faq.eyebrow">FAQ</div>
+      <h2 class="section__title" data-i18n-html="faq.title.html">Good to <em>know.</em></h2>
+      <p class="section__lede" data-i18n="faq.lede">Kosten, Verpflegung, Anreise, WCs, Sicherheit — alle wichtigen Antworten auf einen Klick.</p>
     </div>
     <span class="section--fold__toggle" aria-hidden="true"></span>
   </summary>
   <div class="section--fold__body">
   <div class="faq">
-    <details class="faq__item"><summary>Muss ich Tricks können?</summary><div class="answer">Nein. Wir haben Spots für Flat, Street, technisches Riden und Chill-Sessions. Wichtiger als Level ist Motivation und Respekt vor den Spots.</div></details>
-    <details class="faq__item"><summary>Wie läuft Verpflegung?</summary><div class="answer">Selbstverpflegung. Am Ankunftstag gibt's eine Foodliste für Tag 2. Danach organisiert sich die Crew über den Community-Tisch. Frühstück gemeinsam, Abends wird gegrillt wenn geplant.</div></details>
-    <details class="faq__item"><summary>Was kostet es?</summary><div class="answer"><strong>25 € pro Person, einmalige Teilnahmegebühr</strong> für das gesamte Event — Zelten auf dem Pleißenhof inklusive (25 Plätze, first come, first serve). <br><br><strong>Heizhaus-Übernachtung optional: 10 € pro Nacht</strong> (pro Tag) — <strong>nur Schlafplatz-Preis</strong>, hat <strong>nichts mit unserem Session-Besuch zu tun</strong>. <strong>Direkt ans Heizhaus bezahlt</strong>, läuft nicht über den Veranstalter. Nur eine mögliche Alternative zu Hotel oder Campingplatz — wer dort schlafen will, bucht selbst bei <a href="https://heizhaus-leipzig.de/" target="_blank" rel="noopener">heizhaus-leipzig.de</a>. 10 Schlafplätze verfügbar. <br><br>Ab Platz 36: selbst organisiert — Campingplatz, Hostel, Hotel oder Jugendherberge.</div></details>
-    <details class="faq__item"><summary>Gibt es ein Mindestalter?</summary><div class="answer">Ja — <strong>16 Jahre</strong>, keine Ausnahme. Street-Sessions, späte Abende und Eigenverantwortung am Zeltplatz setzen das voraus.</div></details>
-    <details class="faq__item"><summary>Kann ich auch nur ein paar Tage kommen?</summary><div class="answer">Grundsätzlich ja. Meld dich früh, damit wir einen Platz freihalten können — besonders auf der Homebase sind Plätze begrenzt.</div></details>
-    <details class="faq__item"><summary>Welche Ausrüstung brauche ich?</summary><div class="answer">Dein Einrad (ideal 19" oder 24/26" Street-Setup), Protektoren (Shin, Knee empfehlen wir strong), Helm. Zelt + Schlafsack für die Homebase, Kochzeug. Eventuell Reserve-Pedale und Pumpe.</div></details>
+    <details class="faq__item"><summary data-i18n="faq.q1.q">Muss ich Tricks können?</summary><div class="answer" data-i18n-html="faq.q1.a.html">Nein. Wir haben Spots für Flat, Street, technisches Riden und Chill-Sessions. Wichtiger als Level ist Motivation und Respekt vor den Spots.</div></details>
+    <details class="faq__item"><summary data-i18n="faq.q2.q">Wie läuft Verpflegung?</summary><div class="answer" data-i18n-html="faq.q2.a.html">Selbstverpflegung. Am Ankunftstag gibt's eine Foodliste für Tag 2. Danach organisiert sich die Crew über den Community-Tisch. Frühstück gemeinsam, Abends wird gegrillt wenn geplant.</div></details>
+    <details class="faq__item"><summary data-i18n="faq.q3.q">Was kostet es?</summary><div class="answer" data-i18n-html="faq.q3.a.html"><strong>25 € pro Person, einmalige Teilnahmegebühr</strong> für das gesamte Event — Zelten auf dem Pleißenhof inklusive (25 Plätze, first come, first serve).</div></details>
+    <details class="faq__item"><summary data-i18n="faq.q4.q">Gibt es ein Mindestalter?</summary><div class="answer" data-i18n-html="faq.q4.a.html">Ja — <strong>16 Jahre</strong>, keine Ausnahme.</div></details>
+    <details class="faq__item"><summary data-i18n="faq.q5.q">Kann ich auch nur ein paar Tage kommen?</summary><div class="answer" data-i18n-html="faq.q5.a.html">Grundsätzlich ja. Meld dich früh, damit wir einen Platz freihalten können — besonders auf der Homebase sind Plätze begrenzt.</div></details>
+    <details class="faq__item"><summary data-i18n="faq.q6.q">Welche Ausrüstung brauche ich?</summary><div class="answer" data-i18n-html="faq.q6.a.html">Dein Einrad, Protektoren, Helm. Zelt + Schlafsack für die Homebase, Kochzeug.</div></details>
 
-    <details class="faq__item"><summary>Wie komme ich zwischen den Spots?</summary><div class="answer">Primär auf dem Einrad — wir sind ein Ride-Trip. Die Routen sind auf der Karte als verbundene Linien sichtbar, jeder Stop nummeriert nach Reihenfolge im Tag. Für längere Strecken (Homebase ↔ Innenstadt) nutzen wir LVB S-Bahn & Straßenbahn, Tageskarte 8,80 €.</div></details>
-    <details class="faq__item"><summary>Wo sind die Spots geografisch verteilt?</summary><div class="answer">Fast alles liegt innerhalb des Leipziger Stadtgebiets in ≤ 5 km Radius um das Zentrum. Homebase Pleißenhof liegt in Markkleeberg (südlich, 8 km zur Innenstadt). Heizhaus im Westen (Alte Salzstraße), Giezer DIY im Südwesten, Reudnitz Skatepark östlich — alles machbar am Rad.</div></details>
-    <details class="faq__item"><summary>Sind alle Spots öffentlich und frei zugänglich?</summary><div class="answer">Ja, bis auf das Heizhaus — das ist vereinsbetrieben (<a href="https://heizhaus-leipzig.de/" target="_blank" rel="noopener">heizhaus-leipzig.de</a>). Für unsere Sessions dort läuft alles über die Crew. Die <strong>Übernachtung im Heizhaus</strong> ist eine <strong>komplett separate Option</strong> und hat <u>nichts</u> mit dem Session-Besuch zu tun: <strong>10 € pro Nacht</strong>, direkt ans Heizhaus gezahlt — nicht Teil der 25 € Teilnahmegebühr. Alle Straßenspots sind öffentlicher Raum — wir verhalten uns respektvoll: keine Schäden, keine Lautstärke zur Unzeit, Müll mitnehmen. Bei Ansprache freundlich bleiben, gegebenenfalls Spot wechseln.</div></details>
-    <details class="faq__item"><summary>Was ist wenn ich einen Spot nicht finde?</summary><div class="answer">Jeder Spot auf der Karte hat eine „Navigation →" zu Google Maps. Im Zweifel ping die Crew-Gruppe — Telegram/Signal-Link kommt nach Anmeldung. Alle Adressen + Koordinaten stehen auch in der Spots-Übersicht oben.</div></details>
-    <details class="faq__item"><summary>Gibt es WCs und Wasser an den Spots?</summary><div class="answer">Homebase Pleißenhof, Heizhaus und Skatepark Leipzig (AOK) haben WC. Für Stadtspots nutzen wir Gastronomie (Blaza, Biomare, Moritzbastei) oder öffentliche Anlagen am Augustusplatz. Wasser: Mehrwegflasche mitbringen, in Leipzig läuft Trinkwasser aus allen Hähnen.</div></details>
-    <details class="faq__item"><summary>Wie weit sind die Spots voneinander?</summary><div class="answer">Innenstadt-Spots (Blaza, Moritzbastei, Augustusplatz, Propsteikirche, Biomare) liegen in ≤ 2 km. Heizhaus ↔ Giezer DIY: 4 km. Homebase ↔ Innenstadt: 8 km. Die Tages-Routen auf der Karte zeigen die tatsächlich gefahrene Reihenfolge mit Pfeilen.</div></details>
-    <details class="faq__item"><summary>Parke ich mein Auto sicher auf der Homebase?</summary><div class="answer">Pleißenhof hat Stellplätze auf dem Gelände. Keine Garage, aber umzäunt. Wertsachen nicht im Auto lassen — besser auf dem Zeltplatz oder im Hauptgebäude. Für Innenstadt-Anreise besser Auto auf der Homebase stehen lassen und ÖPNV/Einrad nehmen.</div></details>
+    <details class="faq__item"><summary data-i18n="faq.q7.q">Wie komme ich zwischen den Spots?</summary><div class="answer" data-i18n-html="faq.q7.a.html">Primär auf dem Einrad — wir sind ein Ride-Trip.</div></details>
+    <details class="faq__item"><summary data-i18n="faq.q8.q">Wo sind die Spots geografisch verteilt?</summary><div class="answer" data-i18n-html="faq.q8.a.html">Fast alles liegt innerhalb des Leipziger Stadtgebiets in ≤ 5 km Radius um das Zentrum.</div></details>
+    <details class="faq__item"><summary data-i18n="faq.q9.q">Sind alle Spots öffentlich und frei zugänglich?</summary><div class="answer" data-i18n-html="faq.q9.a.html">Ja, bis auf das Heizhaus — das ist vereinsbetrieben.</div></details>
+    <details class="faq__item"><summary data-i18n="faq.q10.q">Was ist wenn ich einen Spot nicht finde?</summary><div class="answer" data-i18n-html="faq.q10.a.html">Jeder Spot auf der Karte hat eine „Navigation →" zu Google Maps.</div></details>
+    <details class="faq__item"><summary data-i18n="faq.q11.q">Gibt es WCs und Wasser an den Spots?</summary><div class="answer" data-i18n-html="faq.q11.a.html">Homebase Pleißenhof, Heizhaus und Skatepark Leipzig (AOK) haben WC.</div></details>
+    <details class="faq__item"><summary data-i18n="faq.q12.q">Wie weit sind die Spots voneinander?</summary><div class="answer" data-i18n-html="faq.q12.a.html">Innenstadt-Spots liegen in ≤ 2 km.</div></details>
+    <details class="faq__item"><summary data-i18n="faq.q13.q">Parke ich mein Auto sicher auf der Homebase?</summary><div class="answer" data-i18n-html="faq.q13.a.html">Pleißenhof hat Stellplätze auf dem Gelände.</div></details>
   </div>
   </div>
 </details>
 
 <section class="join" id="join">
   <div class="join__inner reveal">
-    <div class="join__fsk" aria-label="Ab 16 Jahren · Einrad" title="Mindestalter 16 Jahre">
+    <div class="join__fsk" data-i18n-attr="aria-label:join.fsk_aria;title:join.fsk_title" aria-label="Ab 16 Jahren · Einrad" title="Mindestalter 16 Jahre">
       <svg viewBox="0 0 160 280" aria-hidden="true">
         <defs>
           <linearGradient id="fskRed" x1="0" y1="0" x2="1" y2="1">
@@ -1201,23 +1268,23 @@ a{color:inherit;text-decoration:none}
     </div>
     <div class="join__content">
       <div>
-        <div class="section__eyebrow">Anmeldung · Direkt</div>
-        <h2>Bock <em>dabei</em><br>zu sein?</h2>
-        <p>Ein Klick → Mail-Programm öffnet sich mit fertig ausgefülltem Formular an Folke. Oder kopiere die Vorlage per Button und nutze dein bevorzugtes Mail-Tool. Antwort meist innerhalb von 48 h.</p>
+        <div class="section__eyebrow" data-i18n="join.eyebrow">Anmeldung · Direkt</div>
+        <h2 data-i18n-html="join.title.html">Bock <em>dabei</em><br>zu sein?</h2>
+        <p data-i18n="join.lede">Ein Klick → Mail-Programm öffnet sich mit fertig ausgefülltem Formular an Folke.</p>
         <div class="join__cost">
-          <b>25 €</b>
-          <span><strong>Einmalige Teilnahmegebühr pro Person · Zahlung bar vor Ort bei Anmeldung am Pleißenhof.</strong> Zelten im Pleißenhof inklusive. First come, first serve (25 Plätze).<br><strong>Heizhaus-Übernachtung separat: 10 € pro Nacht</strong> direkt ans <a href="https://heizhaus-leipzig.de/" target="_blank" rel="noopener">Heizhaus</a> — <strong>nur Schlafplatz</strong>, nicht der Session-Besuch (10 Plätze, läuft nicht über Veranstalter). Ab Platz 36 selbst organisieren. <strong>Mindestalter 16.</strong></span>
+          <b data-i18n="join.cost.amount">25 €</b>
+          <span data-i18n-html="join.cost.text.html"><strong>Einmalige Teilnahmegebühr pro Person · Zahlung bar vor Ort bei Anmeldung am Pleißenhof.</strong></span>
         </div>
         <div class="join__cta">
           <div class="join__actions">
-            <button class="btn btn--primary" id="joinCTA" type="button"><span>Mail-Programm öffnen<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
-            <button class="btn btn--ghost" id="copyMailBtn" type="button"><span>Adresse kopieren</span></button>
-            <button class="btn btn--ghost" id="copyBodyBtn" type="button"><span>Vorlage kopieren</span></button>
-            <button class="btn btn--ghost" id="pdfBtn" type="button" title="Alle Infos + Lineup als PDF drucken/speichern"><span>PDF · Infopaket</span></button>
+            <button class="btn btn--primary" id="joinCTA" type="button"><span><span data-i18n="join.cta.openmail">Mail-Programm öffnen</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
+            <button class="btn btn--ghost" id="copyMailBtn" type="button"><span data-i18n="join.cta.copyaddr">Adresse kopieren</span></button>
+            <button class="btn btn--ghost" id="copyBodyBtn" type="button"><span data-i18n="join.cta.copybody">Vorlage kopieren</span></button>
+            <button class="btn btn--ghost" id="pdfBtn" type="button" data-i18n-attr="title:join.cta.pdf_title" title="Alle Infos + Lineup als PDF drucken/speichern"><span data-i18n="join.cta.pdf">PDF · Infopaket</span></button>
           </div>
-          <div class="meta">An: <b id="mailAddrShow">folke.kleinrad@gmail.com</b> · Betreff: Anmeldung · Leipzig Invitation 2026</div>
+          <div class="meta"><span data-i18n="join.meta.to">An:</span> <b id="mailAddrShow">folke.kleinrad@gmail.com</b> · <span data-i18n="join.meta.subject">Betreff: Anmeldung · Leipzig Invitation 2026</span></div>
         </div>
-        <details class="mail-preview"><summary>Vorschau der Mail-Vorlage</summary><pre id="mailBodyShow"></pre></details>
+        <details class="mail-preview"><summary data-i18n="join.preview">Vorschau der Mail-Vorlage</summary><pre id="mailBodyShow"></pre></details>
       </div>
     </div>
   </div>
@@ -1226,40 +1293,40 @@ a{color:inherit;text-decoration:none}
 <section class="outro" id="outro" aria-labelledby="outroTitle">
   <div class="outro__bg" style="background-image:url('Bilder/FOTO_VIDEO.jpg')" aria-hidden="true"></div>
   <div class="outro__inner reveal">
-    <div class="outro__eyebrow">Dokumentation · Ausklang</div>
+    <div class="outro__eyebrow" data-i18n="outro.eyebrow">Dokumentation · Ausklang</div>
     <div class="outro__icons" aria-hidden="true">
       <svg viewBox="0 0 24 24"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3z"/></svg>
       <svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="4"/><path d="M8 6l2-2h4l2 2"/></svg>
     </div>
-    <h2 class="outro__title" id="outroTitle">Es ist geplant,<br>das Projekt per <em>Video &amp; Foto</em><br>zu begleiten.</h2>
+    <h2 class="outro__title" id="outroTitle" data-i18n-html="outro.title.html">Es ist geplant,<br>das Projekt per <em>Video &amp; Foto</em><br>zu begleiten.</h2>
     <div class="outro__rule" aria-hidden="true"></div>
-    <span class="outro__sign"><i></i>Leipzig Invitation · 2026</span>
+    <span class="outro__sign"><i></i><span data-i18n="outro.sign">Leipzig Invitation · 2026</span></span>
   </div>
 </section>
 
-<section class="sponsor" aria-label="Sponsor & Partner">
+<section class="sponsor" data-i18n-attr="aria-label:sponsor.aria" aria-label="Sponsor & Partner">
   <div class="sponsor__inner">
-    <span class="sponsor__eyebrow">Mit Unterstützung von</span>
+    <span class="sponsor__eyebrow" data-i18n="sponsor.label">Mit Unterstützung von</span>
     <a class="sponsor__logo" href="https://heizhaus-leipzig.de/" target="_blank" rel="noopener" aria-label="Heizhaus Leipzig">
       <img src="https://heizhaus-leipzig.de/build/website/images/heizhaus-logo-orange.65c4a11a.svg" alt="Heizhaus Leipzig" loading="lazy" decoding="async" />
     </a>
   </div>
 </section>
 
-<div class="toast" id="toast">Kopiert ✓</div>
+<div class="toast" id="toast" data-i18n="toast.copied">Kopiert ✓</div>
 
 <div class="spots-overview" id="spotsOverview" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="soTitle">
   <div class="spots-overview__backdrop" data-so-close></div>
   <div class="spots-overview__panel" role="document">
-    <button type="button" class="spots-overview__close" data-so-close aria-label="Schließen">✕</button>
+    <button type="button" class="spots-overview__close" data-so-close data-i18n-attr="aria-label:sd.close" aria-label="Schließen">✕</button>
     <header class="spots-overview__head">
-      <div class="spots-overview__eyebrow">Alle Orte · 1 Klick</div>
-      <h2 class="spots-overview__title" id="soTitle">Spot Übersicht</h2>
-      <p class="spots-overview__lede">Sortiert nach Spot-ID. Klick auf einen Spot öffnet die Details mit Adresse, Galerie und Routenlink.</p>
+      <div class="spots-overview__eyebrow" data-i18n="so.eyebrow">Alle Orte · 1 Klick</div>
+      <h2 class="spots-overview__title" id="soTitle" data-i18n="so.title">Spot Übersicht</h2>
+      <p class="spots-overview__lede" data-i18n="so.lede">Sortiert nach Spot-ID. Klick auf einen Spot öffnet die Details mit Adresse, Galerie und Routenlink.</p>
       <div class="spots-overview__legend" aria-hidden="true">
-        <span><i class="--regular"></i>Spot</span>
-        <span><i class="--home"></i>Homebase</span>
-        <span><i class="--lake"></i>Badesee</span>
+        <span><i class="--regular"></i><span data-i18n="so.legend.spot">Spot</span></span>
+        <span><i class="--home"></i><span data-i18n="so.legend.home">Homebase</span></span>
+        <span><i class="--lake"></i><span data-i18n="so.legend.lake">Badesee</span></span>
       </div>
     </header>
     <div class="spots-overview__grid" id="soGrid"></div>
@@ -1271,7 +1338,7 @@ a{color:inherit;text-decoration:none}
   <div class="spot-detail__panel" id="sdPanel">
     <div class="spot-detail__bg" id="sdBg" aria-hidden="true"></div>
     <div class="spot-detail__handle" id="sdHandle" aria-hidden="true"><span></span></div>
-    <button type="button" class="spot-detail__close" data-sd-close aria-label="Schließen">✕</button>
+    <button type="button" class="spot-detail__close" data-sd-close data-i18n-attr="aria-label:sd.close" aria-label="Schließen">✕</button>
     <div class="spot-detail__hero" id="sdHero" aria-hidden="true"></div>
     <header class="spot-detail__head">
       <span class="spot-detail__pin" id="sdPin">?</span>
@@ -1289,8 +1356,8 @@ a{color:inherit;text-decoration:none}
     <div class="spot-detail__meta" id="sdMeta"></div>
     <div class="spot-detail__gallery" id="sdGallery"></div>
     <div class="spot-detail__actions">
-      <a id="sdMaps" class="btn btn--primary" target="_blank" rel="noopener"><span>Route in Google Maps<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
-      <button type="button" id="sdToMap" class="btn btn--ghost">Auf der Karte zeigen</button>
+      <a id="sdMaps" class="btn btn--primary" target="_blank" rel="noopener"><span><span data-i18n="sd.cta.maps">Route in Google Maps</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a>
+      <button type="button" id="sdToMap" class="btn btn--ghost" data-i18n="sd.cta.tomap">Auf der Karte zeigen</button>
     </div>
   </div>
 </div>
@@ -1365,10 +1432,247 @@ a{color:inherit;text-decoration:none}
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
+/* ============ I18N · Translations + Runtime ============
+   Auto-Detection via navigator.language (siehe <head>-Bootstrap).
+   Sprachen: DE (Source-of-Truth) + EN. Manueller Wechsel via Switcher in nav.
+   Persistenz: localStorage["li2026.lang"] (gesetzt nur bei expliziter User-Wahl). */
+
+const I18N = {
+  fallback: "de",
+  supported: ["de","en"],
+  strings: {
+    de: {
+      "nav.event":"Event","nav.stay":"Stay","nav.lineup":"Lineup","nav.map":"Map","nav.faq":"FAQ",
+      "nav.cta":"Jetzt anmelden","nav.lang":"Sprache","nav.lang_switch":"Sprache wechseln","nav.menu_label":"Menü",
+      "hero.meta.trip":"Post-Unicon Ride Trip","hero.meta.place":"Leipzig · Markkleeberg",
+      "hero.meta.spots":"35 Plätze","hero.meta.fsk":"16+","hero.dateline":"08.–16. August 2026",
+      "hero.tag.lead":"Das erste Street Einrad &amp; Skate Event in Leipzig",
+      "hero.tag.p1":"Direkt nach der Unicon geht es weiter mit der Leipzig Invitation.",
+      "hero.tag.p2":"Neun Tage sind wir gemeinsam in Leipzig unterwegs, fahren Street &amp; Flatland und besuchen täglich verschiedene Spots.",
+      "hero.tag.p3":"Es wird gefahren, gefilmt, Musik gehört und entspannt Zeit miteinander verbracht.",
+      "hero.cta.signup":"Anmelden","hero.cta.lineup":"Lineup","hero.cta.map":"Map",
+      "overview.eyebrow":"Das Event",
+      "overview.title.html":"Ohne <em>Wettbewerb</em><br>zusammen fahren.",
+      "overview.lede.p1":"Geplant sind außerdem ein Grill- und Bierballabend sowie spontane Aktionen wie Baden, Game of Uni, Zelten und natürlich viel gemeinsames Fahren.",
+      "overview.lede.p2":"Das Event findet ohne Wettbewerb statt (allenfalls kleine Jams mit Preisen für best Tricks). Im Mittelpunkt stehen das Fahren, der Austausch und das gemeinsame Lernen auch über Ländergrenzen hinweg.",
+      "overview.lede.p3":"Ziel ist es, Street-Einradfahren stärker in die Community zu bringen und eine schöne Zeit zu haben.",
+      "overview.cell.dates.label":"August 2026","overview.cell.dates.desc":"Samstag zu Sonntag. Ankommen, riden, abreisen.",
+      "overview.cell.slots.label":"Plätze maximal","overview.cell.slots.desc":"25 Pleißenhof · 10 Heizhaus-Schlafplatz. Ab Platz 36 selbst.",
+      "overview.cell.fee.label":"Einmalige Teilnahmegebühr · vor Ort",
+      "overview.cell.fee.desc.html":"Pro Person, einmalig — Zahlung bar bei Anmeldung am Pleißenhof. Inkl. Zelten. <span class=\"overview-cell__cta\">Details zu Übernachtung → „Wo du schläfst“ ↗</span>",
+      "overview.cell.spots.label":"Spots &amp; Locations","overview.cell.spots.desc":"Street, Flat, DIY, Parks — plus Bade-See direkt am Camp.",
+      "overview.cell.self.label":"Selbstverpflegung","overview.cell.self.desc":"Crew kocht, teilt, grillt. Foodliste für Tag 2 bei Ankunft.",
+      "overview.cell.age.label":"Mindestalter","overview.cell.age.desc":"Ab 16 Jahren — keine Ausnahme.",
+      "stay.eyebrow":"Unterkunft","stay.title.html":"Wo du <em>schläfst.</em>",
+      "stay.lede":"Selbstverpflegung, selbst kümmern. Homebase gestellt — der Rest ist eigene Entscheidung.",
+      "days.eyebrow":"Lineup · 9 Days","days.title.html":"Jeder Tag<br>verschiedene <em>Spots.</em>",
+      "days.lede":"Klick auf ein Thumbnail öffnet Bild oder Video in der Galerie.",
+      "days.bar.day":"Tag","days.action.peek":"Blick in den Tag",
+      "map.eyebrow":"The Map","map.title.html":"Jeder Tag. <em>Eigene Farbe.</em>",
+      "map.lede":"Links Tag wählen — rechts die Route in der Tagesfarbe. Nummerierte Pins zeigen Reihenfolge. Essen &amp; WCs zuschaltbar. Klick auf einen Stop zoomt die Karte.",
+      "map.panel.view":"Ansicht","map.panel.allspots":"Alle Spots",
+      "map.panel.box.days":"Tage","map.panel.box.legend":"Legende","map.panel.box.poi":"POI","map.panel.box.poi_subtitle":"Nähe",
+      "map.panel.poi.toggle":"Zuschalten","map.panel.poi.food":"Essen","map.panel.poi.wc":"WC",
+      "map.panel.spots_overview":"Spot Übersicht","map.panel.quickselect":"Schnellwahl","map.panel.choose_day":"Tag wählen",
+      "map.panel.all_overview":"Übersicht","map.panel.overview_subtitle":"Alle Orte + See",
+      "map.legend.overview_hint":"Farbe = Tag · Zahl im Pin = Spot-ID (1–17)",
+      "map.legend.click_pin":"Klick auf Pin öffnet Details","map.legend.route_color":"Route in Tagesfarbe",
+      "map.legend.id_badge":"#N Badge = Spot-ID","map.legend.start_end":"▶ Start · ■ Ende",
+      "map.allcard.head":"◐ Übersicht · Alle 17 Orte","map.allcard.title":"Alle Spots · jeder in seiner Tagesfarbe",
+      "map.allcard.meta":"9 Tage · 17 Orte · klick auf einen Tag unten für die Route",
+      "map.gate.activate":"Tippen zum Aktivieren","map.lock.label":"✕ Sperren",
+      "map.popup.navigation":"Navigation →","map.popup.details":"Details",
+      "map.popup.poi.food":"Essen · Café","map.popup.poi.wc":"WC · Toilette",
+      "map.reset_back":"Zurück zur Übersicht",
+      "faq.eyebrow":"FAQ","faq.title.html":"Good to <em>know.</em>",
+      "faq.lede":"Kosten, Verpflegung, Anreise, WCs, Sicherheit — alle wichtigen Antworten auf einen Klick.",
+      "faq.q1.q":"Muss ich Tricks können?",
+      "faq.q1.a.html":"Nein. Wir haben Spots für Flat, Street, technisches Riden und Chill-Sessions. Wichtiger als Level ist Motivation und Respekt vor den Spots.",
+      "faq.q2.q":"Wie läuft Verpflegung?",
+      "faq.q2.a.html":"Selbstverpflegung. Am Ankunftstag gibt's eine Foodliste für Tag 2. Danach organisiert sich die Crew über den Community-Tisch. Frühstück gemeinsam, Abends wird gegrillt wenn geplant.",
+      "faq.q3.q":"Was kostet es?",
+      "faq.q3.a.html":"<strong>25 € pro Person, einmalige Teilnahmegebühr</strong> für das gesamte Event — Zelten auf dem Pleißenhof inklusive (25 Plätze, first come, first serve). <br><br><strong>Heizhaus-Übernachtung optional: 10 € pro Nacht</strong> (pro Tag) — <strong>nur Schlafplatz-Preis</strong>, hat <strong>nichts mit unserem Session-Besuch zu tun</strong>. <strong>Direkt ans Heizhaus bezahlt</strong>, läuft nicht über den Veranstalter. Nur eine mögliche Alternative zu Hotel oder Campingplatz — wer dort schlafen will, bucht selbst bei <a href=\"https://heizhaus-leipzig.de/\" target=\"_blank\" rel=\"noopener\">heizhaus-leipzig.de</a>. 10 Schlafplätze verfügbar. <br><br>Ab Platz 36: selbst organisiert — Campingplatz, Hostel, Hotel oder Jugendherberge.",
+      "faq.q4.q":"Gibt es ein Mindestalter?",
+      "faq.q4.a.html":"Ja — <strong>16 Jahre</strong>, keine Ausnahme. Street-Sessions, späte Abende und Eigenverantwortung am Zeltplatz setzen das voraus.",
+      "faq.q5.q":"Kann ich auch nur ein paar Tage kommen?",
+      "faq.q5.a.html":"Grundsätzlich ja. Meld dich früh, damit wir einen Platz freihalten können — besonders auf der Homebase sind Plätze begrenzt.",
+      "faq.q6.q":"Welche Ausrüstung brauche ich?",
+      "faq.q6.a.html":"Dein Einrad (ideal 19\" oder 24/26\" Street-Setup), Protektoren (Shin, Knee empfehlen wir strong), Helm. Zelt + Schlafsack für die Homebase, Kochzeug. Eventuell Reserve-Pedale und Pumpe.",
+      "faq.q7.q":"Wie komme ich zwischen den Spots?",
+      "faq.q7.a.html":"Primär auf dem Einrad — wir sind ein Ride-Trip. Die Routen sind auf der Karte als verbundene Linien sichtbar, jeder Stop nummeriert nach Reihenfolge im Tag. Für längere Strecken (Homebase ↔ Innenstadt) nutzen wir LVB S-Bahn &amp; Straßenbahn, Tageskarte 8,80 €.",
+      "faq.q8.q":"Wo sind die Spots geografisch verteilt?",
+      "faq.q8.a.html":"Fast alles liegt innerhalb des Leipziger Stadtgebiets in ≤ 5 km Radius um das Zentrum. Homebase Pleißenhof liegt in Markkleeberg (südlich, 8 km zur Innenstadt). Heizhaus im Westen (Alte Salzstraße), Giezer DIY im Südwesten, Reudnitz Skatepark östlich — alles machbar am Rad.",
+      "faq.q9.q":"Sind alle Spots öffentlich und frei zugänglich?",
+      "faq.q9.a.html":"Ja, bis auf das Heizhaus — das ist vereinsbetrieben (<a href=\"https://heizhaus-leipzig.de/\" target=\"_blank\" rel=\"noopener\">heizhaus-leipzig.de</a>). Für unsere Sessions dort läuft alles über die Crew. Die <strong>Übernachtung im Heizhaus</strong> ist eine <strong>komplett separate Option</strong> und hat <u>nichts</u> mit dem Session-Besuch zu tun: <strong>10 € pro Nacht</strong>, direkt ans Heizhaus gezahlt — nicht Teil der 25 € Teilnahmegebühr. Alle Straßenspots sind öffentlicher Raum — wir verhalten uns respektvoll: keine Schäden, keine Lautstärke zur Unzeit, Müll mitnehmen. Bei Ansprache freundlich bleiben, gegebenenfalls Spot wechseln.",
+      "faq.q10.q":"Was ist wenn ich einen Spot nicht finde?",
+      "faq.q10.a.html":"Jeder Spot auf der Karte hat eine „Navigation →\" zu Google Maps. Im Zweifel ping die Crew-Gruppe — Telegram/Signal-Link kommt nach Anmeldung. Alle Adressen + Koordinaten stehen auch in der Spots-Übersicht oben.",
+      "faq.q11.q":"Gibt es WCs und Wasser an den Spots?",
+      "faq.q11.a.html":"Homebase Pleißenhof, Heizhaus und Skatepark Leipzig (AOK) haben WC. Für Stadtspots nutzen wir Gastronomie (Blaza, Biomare, Moritzbastei) oder öffentliche Anlagen am Augustusplatz. Wasser: Mehrwegflasche mitbringen, in Leipzig läuft Trinkwasser aus allen Hähnen.",
+      "faq.q12.q":"Wie weit sind die Spots voneinander?",
+      "faq.q12.a.html":"Innenstadt-Spots (Blaza, Moritzbastei, Augustusplatz, Propsteikirche, Biomare) liegen in ≤ 2 km. Heizhaus ↔ Giezer DIY: 4 km. Homebase ↔ Innenstadt: 8 km. Die Tages-Routen auf der Karte zeigen die tatsächlich gefahrene Reihenfolge mit Pfeilen.",
+      "faq.q13.q":"Parke ich mein Auto sicher auf der Homebase?",
+      "faq.q13.a.html":"Pleißenhof hat Stellplätze auf dem Gelände. Keine Garage, aber umzäunt. Wertsachen nicht im Auto lassen — besser auf dem Zeltplatz oder im Hauptgebäude. Für Innenstadt-Anreise besser Auto auf der Homebase stehen lassen und ÖPNV/Einrad nehmen.",
+      "join.eyebrow":"Anmeldung · Direkt","join.title.html":"Bock <em>dabei</em><br>zu sein?",
+      "join.lede":"Ein Klick → Mail-Programm öffnet sich mit fertig ausgefülltem Formular an Folke. Oder kopiere die Vorlage per Button und nutze dein bevorzugtes Mail-Tool. Antwort meist innerhalb von 48 h.",
+      "join.cost.amount":"25 €",
+      "join.cost.text.html":"<strong>Einmalige Teilnahmegebühr pro Person · Zahlung bar vor Ort bei Anmeldung am Pleißenhof.</strong> Zelten im Pleißenhof inklusive. First come, first serve (25 Plätze).<br><strong>Heizhaus-Übernachtung separat: 10 € pro Nacht</strong> direkt ans <a href=\"https://heizhaus-leipzig.de/\" target=\"_blank\" rel=\"noopener\">Heizhaus</a> — <strong>nur Schlafplatz</strong>, nicht der Session-Besuch (10 Plätze, läuft nicht über Veranstalter). Ab Platz 36 selbst organisieren. <strong>Mindestalter 16.</strong>",
+      "join.cta.openmail":"Mail-Programm öffnen","join.cta.copyaddr":"Adresse kopieren","join.cta.copybody":"Vorlage kopieren","join.cta.pdf":"PDF · Infopaket","join.cta.pdf_title":"Alle Infos + Lineup als PDF drucken/speichern",
+      "join.preview":"Vorschau der Mail-Vorlage","join.meta.to":"An:","join.meta.subject":"Betreff: Anmeldung · Leipzig Invitation 2026",
+      "join.fsk_title":"Mindestalter 16 Jahre","join.fsk_aria":"Ab 16 Jahren · Einrad",
+      "outro.eyebrow":"Dokumentation · Ausklang",
+      "outro.title.html":"Es ist geplant,<br>das Projekt per <em>Video &amp; Foto</em><br>zu begleiten.",
+      "outro.sign":"Leipzig Invitation · 2026",
+      "sponsor.label":"Mit Unterstützung von","sponsor.aria":"Sponsor &amp; Partner",
+      "sd.cta.maps":"Route in Google Maps","sd.cta.tomap":"Auf der Karte zeigen","sd.close":"Schließen",
+      "sd.gallery.empty":"Noch kein Bild- oder Video-Material für diesen Ort — kommt beim Event dazu.",
+      "so.eyebrow":"Alle Orte · 1 Klick","so.title":"Spot Übersicht",
+      "so.lede":"Sortiert nach Spot-ID. Klick auf einen Spot öffnet die Details mit Adresse, Galerie und Routenlink.",
+      "so.legend.spot":"Spot","so.legend.home":"Homebase","so.legend.lake":"Badesee",
+      "so.tag.home":"Home","so.tag.lake":"See",
+      "lb.close":"Schließen","lb.prev":"Zurück","lb.next":"Weiter",
+      "toast.copied":"Kopiert ✓",
+      "meta.title":"LEIPZIG INVITATION 2026 — Street Unicycle",
+      "meta.description":"Leipzig Invitation — 9 Tage Street Unicycle nach der Unicon. 08.–16.08.2026.",
+      "mail.subject":"Anmeldung · Leipzig Invitation 2026"
+    },
+    en: {
+      "nav.event":"Event","nav.stay":"Stay","nav.lineup":"Lineup","nav.map":"Map","nav.faq":"FAQ",
+      "nav.cta":"Sign up","nav.lang":"Language","nav.lang_switch":"Change language","nav.menu_label":"Menu",
+      "hero.meta.trip":"Post-Unicon Ride Trip","hero.meta.place":"Leipzig · Markkleeberg",
+      "hero.meta.spots":"35 spots","hero.meta.fsk":"16+","hero.dateline":"Aug 8 – 16, 2026",
+      "hero.tag.lead":"The first street unicycle &amp; skate event in Leipzig",
+      "hero.tag.p1":"Right after Unicon, the Leipzig Invitation continues the ride.",
+      "hero.tag.p2":"Nine days together in Leipzig — riding street &amp; flatland and hitting different spots every day.",
+      "hero.tag.p3":"We ride, film, share music, and enjoy the time together.",
+      "hero.cta.signup":"Sign up","hero.cta.lineup":"Lineup","hero.cta.map":"Map",
+      "overview.eyebrow":"The Event",
+      "overview.title.html":"No <em>contest</em><br>just riding together.",
+      "overview.lede.p1":"Planned: a BBQ &amp; beerball night, plus spontaneous swimming, Game of Uni, camping, and lots of riding together.",
+      "overview.lede.p2":"This event has no contest format (at most small jams with prizes for best tricks). The focus is on riding, exchange, and learning from each other across borders.",
+      "overview.lede.p3":"The goal: bring street unicycling closer to the community and have a great time.",
+      "overview.cell.dates.label":"August 2026","overview.cell.dates.desc":"Saturday to Sunday. Arrive, ride, leave.",
+      "overview.cell.slots.label":"Max spots","overview.cell.slots.desc":"25 Pleißenhof · 10 Heizhaus sleep spots. Beyond #36: organise yourself.",
+      "overview.cell.fee.label":"One-time entry fee · pay on site",
+      "overview.cell.fee.desc.html":"Per person, one-time — cash on arrival at Pleißenhof. Camping included. <span class=\"overview-cell__cta\">Lodging details → \"Where you sleep\" ↗</span>",
+      "overview.cell.spots.label":"Spots &amp; locations","overview.cell.spots.desc":"Street, flat, DIY, parks — plus a swim lake right at camp.",
+      "overview.cell.self.label":"Self-catering","overview.cell.self.desc":"Crew cooks, shares, grills. Food list for day 2 on arrival.",
+      "overview.cell.age.label":"Minimum age","overview.cell.age.desc":"16 and up — no exceptions.",
+      "stay.eyebrow":"Lodging","stay.title.html":"Where you <em>sleep.</em>",
+      "stay.lede":"Self-catering, self-organised. Homebase provided — the rest is up to you.",
+      "days.eyebrow":"Lineup · 9 Days","days.title.html":"Every day<br>different <em>spots.</em>",
+      "days.lede":"Click a thumbnail to open the photo or video in the gallery.",
+      "days.bar.day":"Day","days.action.peek":"Peek into the day",
+      "map.eyebrow":"The Map","map.title.html":"Each day. <em>Its own colour.</em>",
+      "map.lede":"Pick a day on the left — the route shows in the day's colour on the right. Numbered pins show order. Food &amp; toilets toggleable. Click a stop to zoom in.",
+      "map.panel.view":"View","map.panel.allspots":"All spots",
+      "map.panel.box.days":"Days","map.panel.box.legend":"Legend","map.panel.box.poi":"POI","map.panel.box.poi_subtitle":"nearby",
+      "map.panel.poi.toggle":"Toggle","map.panel.poi.food":"Food","map.panel.poi.wc":"WC",
+      "map.panel.spots_overview":"Spot Overview","map.panel.quickselect":"Quick pick","map.panel.choose_day":"Choose a day",
+      "map.panel.all_overview":"Overview","map.panel.overview_subtitle":"All spots + lake",
+      "map.legend.overview_hint":"Colour = day · Number in pin = spot ID (1–17)",
+      "map.legend.click_pin":"Click pin to open details","map.legend.route_color":"Route in day colour",
+      "map.legend.id_badge":"#N badge = spot ID","map.legend.start_end":"▶ Start · ■ End",
+      "map.allcard.head":"◐ Overview · all 17 spots","map.allcard.title":"All spots · each in its day colour",
+      "map.allcard.meta":"9 days · 17 spots · click a day below for its route",
+      "map.gate.activate":"Tap to activate","map.lock.label":"✕ Lock",
+      "map.popup.navigation":"Navigation →","map.popup.details":"Details",
+      "map.popup.poi.food":"Food · café","map.popup.poi.wc":"WC · toilet",
+      "map.reset_back":"Back to overview",
+      "faq.eyebrow":"FAQ","faq.title.html":"Good to <em>know.</em>",
+      "faq.lede":"Costs, food, travel, toilets, safety — all the key answers in one click.",
+      "faq.q1.q":"Do I need tricks?",
+      "faq.q1.a.html":"No. We have spots for flat, street, technical riding and chill sessions. More important than skill level: motivation and respect for the spots.",
+      "faq.q2.q":"How does food work?",
+      "faq.q2.a.html":"Self-catering. On arrival day there's a food list for day 2. After that the crew organises around the community table. Breakfast together; grilling at night when planned.",
+      "faq.q3.q":"What does it cost?",
+      "faq.q3.a.html":"<strong>€25 per person, one-time entry fee</strong> for the whole event — camping at Pleißenhof included (25 spots, first come, first serve). <br><br><strong>Heizhaus overnight optional: €10 per night</strong> — <strong>sleeping price only</strong>, <strong>nothing to do with our session visit</strong>. <strong>Paid directly to Heizhaus</strong>, not through the organiser. Just an alternative to a hotel/campsite — book yourself at <a href=\"https://heizhaus-leipzig.de/\" target=\"_blank\" rel=\"noopener\">heizhaus-leipzig.de</a>. 10 sleeping spots available. <br><br>Beyond spot #36: self-organised — campsite, hostel, hotel or hostel.",
+      "faq.q4.q":"Is there a minimum age?",
+      "faq.q4.a.html":"Yes — <strong>16 years</strong>, no exceptions. Street sessions, late nights and self-responsibility at the camp require it.",
+      "faq.q5.q":"Can I just come for a few days?",
+      "faq.q5.a.html":"Generally yes. Sign up early so we can hold a spot — especially at the homebase, places are limited.",
+      "faq.q6.q":"What gear do I need?",
+      "faq.q6.a.html":"Your unicycle (ideally 19\" or 24/26\" street setup), pads (shin, knee strongly recommended), helmet. Tent + sleeping bag for the homebase, cooking kit. Maybe spare pedals and a pump.",
+      "faq.q7.q":"How do we get between spots?",
+      "faq.q7.a.html":"Primarily by unicycle — this is a ride trip. Routes are on the map as connected lines, each stop numbered by order in the day. For longer hops (homebase ↔ city) we take Leipzig public transport (LVB), day ticket €8.80.",
+      "faq.q8.q":"Where are the spots geographically?",
+      "faq.q8.a.html":"Almost everything is within a 5 km radius of the city centre. Homebase Pleißenhof is in Markkleeberg (south, 8 km to the centre). Heizhaus to the west (Alte Salzstraße), Giezer DIY in the south-west, Reudnitz skatepark to the east — all rideable.",
+      "faq.q9.q":"Are all spots public and freely accessible?",
+      "faq.q9.a.html":"Yes, except Heizhaus — that's club-run (<a href=\"https://heizhaus-leipzig.de/\" target=\"_blank\" rel=\"noopener\">heizhaus-leipzig.de</a>). The crew handles our sessions there. Sleeping at Heizhaus is a <strong>completely separate option</strong> and has <u>nothing</u> to do with the session visit: <strong>€10 per night</strong>, paid directly — not part of the €25 entry fee. All street spots are public space — be respectful: no damage, no noise at bad times, take your trash. If approached, stay friendly; switch spots if needed.",
+      "faq.q10.q":"What if I can't find a spot?",
+      "faq.q10.a.html":"Each spot on the map has a \"Navigation →\" link to Google Maps. If in doubt, ping the crew group — Telegram/Signal link comes after sign-up. All addresses + coordinates are also in the spots overview above.",
+      "faq.q11.q":"Are there toilets and water at the spots?",
+      "faq.q11.a.html":"Homebase Pleißenhof, Heizhaus and Skatepark Leipzig (AOK) have toilets. For city spots we use cafés (Blaza, Biomare, Moritzbastei) or public facilities at Augustusplatz. Water: bring a refillable bottle — Leipzig tap water is drinkable everywhere.",
+      "faq.q12.q":"How far apart are the spots?",
+      "faq.q12.a.html":"City centre spots (Blaza, Moritzbastei, Augustusplatz, Propsteikirche, Biomare) are within 2 km. Heizhaus ↔ Giezer DIY: 4 km. Homebase ↔ city: 8 km. The day routes on the map show the actual order with arrows.",
+      "faq.q13.q":"Can I park my car safely at the homebase?",
+      "faq.q13.a.html":"Pleißenhof has parking spots on the property. No garage, but fenced. Don't leave valuables in the car — better in your tent or the main building. For city trips, leave the car at the homebase and take public transport / unicycle.",
+      "join.eyebrow":"Sign up · direct","join.title.html":"Want to <em>join</em><br>the ride?",
+      "join.lede":"One click → mail app opens with a pre-filled message to Folke. Or copy the template and use your favourite mail tool. Reply usually within 48h.",
+      "join.cost.amount":"€25",
+      "join.cost.text.html":"<strong>One-time entry fee per person · cash on site at Pleißenhof on arrival.</strong> Camping at Pleißenhof included. First come, first serve (25 spots).<br><strong>Heizhaus overnight separate: €10 per night</strong> paid directly to <a href=\"https://heizhaus-leipzig.de/\" target=\"_blank\" rel=\"noopener\">Heizhaus</a> — <strong>sleeping only</strong>, not the session visit (10 spots, not via organiser). Beyond #36: organise yourself. <strong>Min age 16.</strong>",
+      "join.cta.openmail":"Open mail app","join.cta.copyaddr":"Copy address","join.cta.copybody":"Copy template","join.cta.pdf":"PDF · info pack","join.cta.pdf_title":"Print/save all info + lineup as PDF",
+      "join.preview":"Mail template preview","join.meta.to":"To:","join.meta.subject":"Subject: Sign-up · Leipzig Invitation 2026",
+      "join.fsk_title":"Minimum age 16","join.fsk_aria":"16 and up · unicycle",
+      "outro.eyebrow":"Documentation · outro",
+      "outro.title.html":"The plan is to<br>document this trip with <em>video &amp; photo</em>.",
+      "outro.sign":"Leipzig Invitation · 2026",
+      "sponsor.label":"Supported by","sponsor.aria":"Sponsor &amp; partner",
+      "sd.cta.maps":"Route in Google Maps","sd.cta.tomap":"Show on map","sd.close":"Close",
+      "sd.gallery.empty":"No photos or videos yet for this spot — they'll come during the event.",
+      "so.eyebrow":"All spots · 1 click","so.title":"Spot Overview",
+      "so.lede":"Sorted by spot ID. Click a spot to open details with address, gallery and route link.",
+      "so.legend.spot":"Spot","so.legend.home":"Homebase","so.legend.lake":"Lake",
+      "so.tag.home":"Home","so.tag.lake":"Lake",
+      "lb.close":"Close","lb.prev":"Previous","lb.next":"Next",
+      "toast.copied":"Copied ✓",
+      "meta.title":"LEIPZIG INVITATION 2026 — Street Unicycle",
+      "meta.description":"Leipzig Invitation — 9 days of street unicycle after Unicon. Aug 8 – 16, 2026.",
+      "mail.subject":"Sign-up · Leipzig Invitation 2026"
+    }
+  }
+};
+
+/* === I18N · Runtime === */
+function t(key, vars){
+  const lang = window.__LANG__ || I18N.fallback;
+  const dict = I18N.strings[lang] || I18N.strings[I18N.fallback];
+  let str = (dict && dict[key]) || (I18N.strings[I18N.fallback][key]) || key;
+  if(vars){ for(const k in vars){ str = str.replace(new RegExp("\\{"+k+"\\}", "g"), vars[k]); } }
+  return str;
+}
+function applyTranslations(root){
+  root = root || document;
+  root.querySelectorAll("[data-i18n]").forEach(el => { el.textContent = t(el.getAttribute("data-i18n")); });
+  root.querySelectorAll("[data-i18n-html]").forEach(el => { el.innerHTML = t(el.getAttribute("data-i18n-html")); });
+  root.querySelectorAll("[data-i18n-attr]").forEach(el => {
+    el.getAttribute("data-i18n-attr").split(";").forEach(pair => {
+      const [attr, key] = pair.split(":").map(s => s.trim());
+      if(attr && key) el.setAttribute(attr, t(key));
+    });
+  });
+  document.title = t("meta.title");
+  const md = document.querySelector('meta[name="description"]');
+  if(md) md.setAttribute("content", t("meta.description"));
+  document.documentElement.setAttribute("lang", window.__LANG__);
+  document.documentElement.setAttribute("data-i18n-ready", "");
+}
+const I18N_LISTENERS = new Set();
+function onLanguageChange(fn){ I18N_LISTENERS.add(fn); }
+function setLanguage(lang, persist){
+  if(!I18N.supported.includes(lang)) return;
+  if(lang === window.__LANG__){ applyTranslations(); return; }
+  window.__LANG__ = lang;
+  if(persist !== false){
+    try { localStorage.setItem(window.__I18N_STORAGE__, lang); } catch(_){}
+  }
+  document.documentElement.setAttribute("lang", lang);
+  applyTranslations();
+  I18N_LISTENERS.forEach(fn => { try { fn(lang); } catch(e){ console.error(e); } });
+}
+
 /* ============ MAILTO JOIN ============ */
 const MAIL = "folke.kleinrad@gmail.com";
-const MAIL_SUBJECT = "Anmeldung · Leipzig Invitation 2026";
-const MAIL_BODY = `Hey Folke,
+const MAIL_BODY_DE = `Hey Folke,
 
 ich möchte bei der Leipzig Invitation 2026 (08.–16.08.2026) dabei sein.
 Ich bin mindestens 16 Jahre alt.
@@ -1395,8 +1699,36 @@ Max. 10 Schlafplätze.
 Ab Platz 36 selbst organisieren (Camping / Hostel / Hotel / Jugendherberge).
 
 Cheers`;
+const MAIL_BODY_EN = `Hey Folke,
+
+I'd like to join the Leipzig Invitation 2026 (Aug 8 – 16, 2026).
+I'm at least 16 years old.
+
+— Name:
+— Arrival:
+— Departure:
+— Lodging preference (Pleißenhof €25 one-time / Heizhaus OVERNIGHT €10 per night / self-organised):
+— Allergies:
+— Notes:
+
+COSTS
+Entry fee: €25 per person, ONE-TIME for the whole event.
+Camping at Pleißenhof is included. First come, first serve
+(max. 25 tent spots).
+
+Heizhaus OVERNIGHT (optional): €10 PER NIGHT / DAY, paid directly
+to Heizhaus (heizhaus-leipzig.de) — NOT through the organiser.
+This price is FOR THE SLEEPING SPOT ONLY and has nothing to do
+with our session visit at Heizhaus. On top of the €25 entry fee.
+Just an alternative to a hotel or campsite. Max. 10 sleeping spots.
+
+Beyond spot #36: self-organised (camping / hostel / hotel / hostel).
+
+Cheers`;
+function getMailSubject(){ return t("mail.subject"); }
+function getMailBody(){ return (window.__LANG__ === "en") ? MAIL_BODY_EN : MAIL_BODY_DE; }
 function mailUrl(){
-  return `mailto:${MAIL}?subject=${encodeURIComponent(MAIL_SUBJECT)}&body=${encodeURIComponent(MAIL_BODY)}`;
+  return `mailto:${MAIL}?subject=${encodeURIComponent(getMailSubject())}&body=${encodeURIComponent(getMailBody())}`;
 }
 function openMail(e){
   if(e) e.preventDefault();
@@ -1426,9 +1758,11 @@ async function copyText(txt, label){
       document.execCommand("copy");
       document.body.removeChild(ta);
     }
-    showToast(label + " kopiert ✓");
+    const copiedWord = (window.__LANG__ === "en") ? "copied" : "kopiert";
+    showToast(label + " " + copiedWord + " ✓");
   }catch(err){
-    showToast("Kopieren nicht möglich – bitte manuell");
+    const failMsg = (window.__LANG__ === "en") ? "Copy failed – please copy manually" : "Kopieren nicht möglich – bitte manuell";
+    showToast(failMsg);
   }
 }
 ["joinBtn","joinHero","joinCTA"].forEach(id => {
@@ -1436,11 +1770,25 @@ async function copyText(txt, label){
   if(el) el.addEventListener("click", openMail);
 });
 const copyMailBtn = document.getElementById("copyMailBtn");
-if(copyMailBtn) copyMailBtn.addEventListener("click", () => copyText(MAIL, "Adresse"));
+if(copyMailBtn) copyMailBtn.addEventListener("click", () => {
+  const lbl = (window.__LANG__ === "en") ? "Address" : "Adresse";
+  copyText(MAIL, lbl);
+});
 const copyBodyBtn = document.getElementById("copyBodyBtn");
-if(copyBodyBtn) copyBodyBtn.addEventListener("click", () => copyText(`An: ${MAIL}\nBetreff: ${MAIL_SUBJECT}\n\n${MAIL_BODY}`, "Vorlage"));
+if(copyBodyBtn) copyBodyBtn.addEventListener("click", () => {
+  const toLbl = (window.__LANG__ === "en") ? "To" : "An";
+  const subjLbl = (window.__LANG__ === "en") ? "Subject" : "Betreff";
+  const tplLbl = (window.__LANG__ === "en") ? "Template" : "Vorlage";
+  copyText(`${toLbl}: ${MAIL}\n${subjLbl}: ${getMailSubject()}\n\n${getMailBody()}`, tplLbl);
+});
 const mailBodyShow = document.getElementById("mailBodyShow");
-if(mailBodyShow) mailBodyShow.textContent = `An: ${MAIL}\nBetreff: ${MAIL_SUBJECT}\n\n${MAIL_BODY}`;
+function refreshMailPreview(){
+  if(!mailBodyShow) return;
+  const toLbl = (window.__LANG__ === "en") ? "To" : "An";
+  const subjLbl = (window.__LANG__ === "en") ? "Subject" : "Betreff";
+  mailBodyShow.textContent = `${toLbl}: ${MAIL}\n${subjLbl}: ${getMailSubject()}\n\n${getMailBody()}`;
+}
+refreshMailPreview();
 
 /* ============ PDF · INFOPAKET ============ */
 function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
@@ -2441,13 +2789,16 @@ const mapLegend = document.getElementById("mapLegend");
 
 function renderPanel(){
   panelBody.innerHTML = "";
+  const dayLbl = t("days.bar.day");
+  const stopsLbl = (window.__LANG__ === "en") ? "stops" : "Stops";
+  const poisNearLbl = (window.__LANG__ === "en") ? "POIs nearby" : "POIs nah";
   const allBtn = document.createElement("button");
   allBtn.type = "button";
   allBtn.className = "allCard" + (activeDayIdx===-1?" is-active":"");
   allBtn.innerHTML = `
-    <div class="allCard__top">◐ Übersicht · Alle 17 Orte</div>
-    <div class="allCard__title">Alle Spots · jeder in seiner Tagesfarbe</div>
-    <div class="allCard__meta">9 Tage · 17 Orte · klick auf einen Tag unten für die Route</div>`;
+    <div class="allCard__top">${t("map.allcard.head")}</div>
+    <div class="allCard__title">${t("map.allcard.title")}</div>
+    <div class="allCard__meta">${t("map.allcard.meta")}</div>`;
   allBtn.addEventListener("click", () => showDay(-1));
   panelBody.appendChild(allBtn);
 
@@ -2469,15 +2820,15 @@ function renderPanel(){
     }).join("");
     btn.innerHTML = `
       <div class="dayCard__top">
-        <div class="dayCard__n">Tag ${String(d.n).padStart(2,'0')}</div>
+        <div class="dayCard__n">${dayLbl} ${String(d.n).padStart(2,'0')}</div>
         <div class="dayCard__date">${dayWeekdayLong(d)} · ${(d.date.split(' · ')[1]) || d.date}</div>
       </div>
       <div class="dayCard__title">${d.title}</div>
       <span class="dayCard__tag">${d.tag}</span>
       <div class="dayCard__stats">
-        <span><b>${d.stops.length}</b> Stops</span>
+        <span><b>${d.stops.length}</b> ${stopsLbl}</span>
         ${meta.km>0?`<span>ca. <b>${meta.km.toFixed(1)} km</b></span>`:""}
-        <span><b>${meta.poiCount}</b> POIs nah</span>
+        <span><b>${meta.poiCount}</b> ${poisNearLbl}</span>
       </div>
       <div class="dayCard__stops">${stopsHtml}</div>`;
     btn.addEventListener("click", e => {
@@ -2504,9 +2855,13 @@ const boxDaysCount = document.getElementById("boxDaysCount");
 
 function renderTopbar(){
   mapTopbar.innerHTML = "";
+  const dayShort = (window.__LANG__ === "en") ? "D" : "T";
+  const stopsLbl = (window.__LANG__ === "en") ? "stops" : "Stops";
+  const optionsLbl = (window.__LANG__ === "en") ? "options" : "Optionen";
+  const dayLbl = t("days.bar.day");
   if(activeDayIdx === -1){
-    topbarCtxEl.textContent = "Tag wählen";
-    topbarCountEl.textContent = "9 Optionen";
+    topbarCtxEl.textContent = t("map.panel.choose_day");
+    topbarCountEl.textContent = `9 ${optionsLbl}`;
     const chips = document.createElement("div");
     chips.className = "map-topbar__chips";
     eventDays.forEach((d, i) => {
@@ -2514,7 +2869,7 @@ function renderTopbar(){
       b.type = "button";
       b.className = "map-chip";
       b.style.setProperty("--dc", dayMeta[i].color);
-      b.innerHTML = `<i></i>T${d.n} · ${d.tag}`;
+      b.innerHTML = `<i></i>${dayShort}${d.n} · ${d.tag}`;
       b.addEventListener("click", () => showDay(i));
       chips.appendChild(b);
     });
@@ -2522,8 +2877,8 @@ function renderTopbar(){
   } else {
     const d = eventDays[activeDayIdx];
     const m = dayMeta[activeDayIdx];
-    topbarCtxEl.textContent = `Tag ${d.n} · Stops`;
-    topbarCountEl.textContent = `${d.stops.length} Stops`;
+    topbarCtxEl.textContent = `${dayLbl} ${d.n} · ${stopsLbl}`;
+    topbarCountEl.textContent = `${d.stops.length} ${stopsLbl}`;
     const back = document.createElement("button");
     back.type = "button";
     back.className = "map-chip map-chip--back";
@@ -2550,19 +2905,24 @@ function renderTopbar(){
 }
 
 function renderLegend(){
+  const dayLbl = t("days.bar.day");
+  const dayShort = (window.__LANG__ === "en") ? "D" : "T";
   if(activeDayIdx === -1){
-    boxLegendCtx.textContent = "Übersicht";
-    mapLegend.innerHTML = `<div class="row row--muted" style="margin-bottom:.3rem">Farbe = Tag · Zahl im Pin = Spot-ID (1–17)</div>
-      <div class="grid9">${eventDays.map((d, i) => `<div class="row" style="--dc:${dayMeta[i].color}"><i></i>T${d.n}</div>`).join("")}</div>
-      <hr><div class="row row--muted">Klick auf Pin öffnet Details</div>`;
+    boxLegendCtx.textContent = t("map.panel.all_overview");
+    mapLegend.innerHTML = `<div class="row row--muted" style="margin-bottom:.3rem">${t("map.legend.overview_hint")}</div>
+      <div class="grid9">${eventDays.map((d, i) => `<div class="row" style="--dc:${dayMeta[i].color}"><i></i>${dayShort}${d.n}</div>`).join("")}</div>
+      <hr><div class="row row--muted">${t("map.legend.click_pin")}</div>`;
   } else {
     const d = eventDays[activeDayIdx], m = dayMeta[activeDayIdx];
-    boxLegendCtx.textContent = `Tag ${d.n}`;
-    mapLegend.innerHTML = `<div class="row"><i class="sq" style="--dc:${m.color}"></i>Route in Tagesfarbe</div>
-      <div class="row"><i style="--dc:${m.color}"></i>Große Zahl = Reihenfolge (1→${d.stops.length})</div>
-      <div class="row row--muted"><i style="background:#111;box-shadow:0 0 0 1.5px ${m.color}"></i>#N Badge = Spot-ID</div>
-      <div class="row row--muted">▶ Start &middot; ■ Ende</div>
-      ${m.km>0?`<hr><div class="row row--muted">ca. <b style="color:var(--text)">${m.km.toFixed(1)} km</b> · ${d.stops.length} Stops · ${m.poiCount} POIs nah</div>`:""}`;
+    boxLegendCtx.textContent = `${dayLbl} ${d.n}`;
+    const orderLbl = (window.__LANG__ === "en") ? "Big number = order" : "Große Zahl = Reihenfolge";
+    const stopsLbl = (window.__LANG__ === "en") ? "stops" : "Stops";
+    const poisLbl = (window.__LANG__ === "en") ? "POIs nearby" : "POIs nah";
+    mapLegend.innerHTML = `<div class="row"><i class="sq" style="--dc:${m.color}"></i>${t("map.legend.route_color")}</div>
+      <div class="row"><i style="--dc:${m.color}"></i>${orderLbl} (1→${d.stops.length})</div>
+      <div class="row row--muted"><i style="background:#111;box-shadow:0 0 0 1.5px ${m.color}"></i>${t("map.legend.id_badge")}</div>
+      <div class="row row--muted">${t("map.legend.start_end")}</div>
+      ${m.km>0?`<hr><div class="row row--muted">ca. <b style="color:var(--text)">${m.km.toFixed(1)} km</b> · ${d.stops.length} ${stopsLbl} · ${m.poiCount} ${poisLbl}</div>`:""}`;
   }
 }
 
@@ -2570,15 +2930,19 @@ let activeStopIdx = -1;
 const resetBtn = document.getElementById("mapReset");
 
 function updatePanelHead(){
+  const dayLbl = t("days.bar.day");
+  const daysLbl = (window.__LANG__ === "en") ? "days" : "Tage";
+  const spotsLbl = (window.__LANG__ === "en") ? "spots" : "Orte";
+  const activeLbl = (window.__LANG__ === "en") ? "active" : "aktiv";
   if(activeDayIdx === -1){
-    panelTitle.innerHTML = `<b>Übersicht</b>Alle Orte + See`;
+    panelTitle.innerHTML = `<b>${t("map.panel.all_overview")}</b>${t("map.panel.overview_subtitle")}`;
     resetBtn.hidden = true;
-    boxDaysCount.textContent = "9 Tage · 17 Orte";
+    boxDaysCount.textContent = `9 ${daysLbl} · 17 ${spotsLbl}`;
   } else {
     const d = eventDays[activeDayIdx];
-    panelTitle.innerHTML = `<b>Tag ${String(d.n).padStart(2,'0')} · ${dayWeekdayLong(d)}</b>${d.tag}`;
+    panelTitle.innerHTML = `<b>${dayLbl} ${String(d.n).padStart(2,'0')} · ${dayWeekdayLong(d)}</b>${d.tag}`;
     resetBtn.hidden = false;
-    boxDaysCount.textContent = `Tag ${String(d.n).padStart(2,'0')} aktiv`;
+    boxDaysCount.textContent = `${dayLbl} ${String(d.n).padStart(2,'0')} ${activeLbl}`;
   }
 }
 
@@ -3124,6 +3488,70 @@ document.addEventListener("keydown", (e) => {
   document.addEventListener("keydown", e => {
     if(e.key === "Escape" && modal.classList.contains("open")) close();
   });
+})();
+
+/* ============ I18N · INIT (Sprachschalter + Erst-Applikation) ============ */
+(function initI18n(){
+  /* 1) Sprachschalter UI */
+  const wrap   = document.getElementById("navLang");
+  if(wrap){
+    const toggle = wrap.querySelector(".nav__lang-toggle");
+    const menu   = wrap.querySelector(".nav__lang-menu");
+    const codeEl = document.getElementById("navLangCode");
+    function syncUI(){
+      const cur = window.__LANG__;
+      if(codeEl) codeEl.textContent = cur.toUpperCase();
+      menu.querySelectorAll("li").forEach(li => {
+        li.setAttribute("aria-selected", li.dataset.lang === cur ? "true" : "false");
+      });
+    }
+    function close(){ menu.hidden = true; toggle.setAttribute("aria-expanded","false"); wrap.classList.remove("is-open"); }
+    function open(){  menu.hidden = false; toggle.setAttribute("aria-expanded","true");  wrap.classList.add("is-open"); }
+    toggle.addEventListener("click", e => { e.stopPropagation(); if(menu.hidden) open(); else close(); });
+    menu.addEventListener("click", e => {
+      const li = e.target.closest("li[data-lang]");
+      if(!li) return;
+      setLanguage(li.dataset.lang, true);
+      syncUI();
+      close();
+    });
+    document.addEventListener("click", e => { if(!wrap.contains(e.target)) close(); });
+    document.addEventListener("keydown", e => { if(e.key === "Escape" && !menu.hidden) close(); });
+    onLanguageChange(syncUI);
+    syncUI();
+  }
+
+  /* 2) Re-render dynamischer Inhalte beim Sprachwechsel.
+        Static HTML wird ueber data-i18n direkt von applyTranslations() upgedated.
+        Dynamic HTML (renderLegend/Panel/Topbar/Mail-Body, Spot-Cards in Lineup,
+        Spot-Übersicht-Modal-Grid, etc.) muss neu gebaut werden. */
+  onLanguageChange(() => {
+    /* Map-Panel */
+    try { if(typeof renderPanel === "function") renderPanel(); } catch(_){}
+    try { if(typeof renderTopbar === "function") renderTopbar(); } catch(_){}
+    try { if(typeof renderLegend === "function") renderLegend(); } catch(_){}
+    try { if(typeof updatePanelHead === "function") updatePanelHead(); } catch(_){}
+    /* Spots-Übersicht-Modal-Grid (rebuild bei naechster Oeffnung; wenn offen, jetzt) */
+    try {
+      const soGrid = document.getElementById("soGrid");
+      const soModal = document.getElementById("spotsOverview");
+      if(soGrid){ soGrid.innerHTML = ""; if(soModal && soModal.classList.contains("open")){
+        document.getElementById("spotsOverviewBtn").click();
+        document.getElementById("spotsOverviewBtn").click();
+      }}
+    } catch(_){}
+    /* Spot-Detail (falls offen): re-trigger fuer aktuelle Sprache */
+    try {
+      if(typeof sdCurrentId !== "undefined" && sdCurrentId != null && typeof openSpotDetail === "function"){
+        openSpotDetail(sdCurrentId);
+      }
+    } catch(_){}
+    /* Mail-Body-Vorschau */
+    try { if(typeof refreshMailPreview === "function") refreshMailPreview(); } catch(_){}
+  });
+
+  /* 3) Erste Anwendung — sobald DOM ready ist (Script steht am Ende -> ist es schon) */
+  applyTranslations();
 })();
 
 /* ============ LOADER ============ */
