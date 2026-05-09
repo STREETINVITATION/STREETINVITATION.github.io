@@ -3477,18 +3477,18 @@ function computeOverviewBounds(){
   const cityCoords = Object.values(spotsMaster)
     .filter(s => !s.home && !s.lake)
     .map(s => s.coords);
-  /* Kein .pad(), Stadt-Pins fuellen den Fit-Bereich, der visuelle Buffer
-     kommt allein aus dem Padding unten (= Suedrichtung, geografischer Kontext). */
-  return L.latLngBounds(cityCoords);
+  /* .pad(0.05) erweitert die bounds um 5 % pro Seite damit randnahe Pins
+     nicht direkt an der Map-Kante kleben. */
+  return L.latLngBounds(cityCoords).pad(0.05);
 }
 function overviewPadding(){
-  /* Tight padding: minimaler Rand damit die Stadt-Pins gross und klar im Fokus
-     stehen. Kein Reserve-Bereich nach Sueden mehr (Markkleeberger See ist bewusst
-     ausserhalb der city-bounds, das Auge braucht keinen leeren Suedraum). */
+  /* Symmetrische Polsterung damit die Pins in der Container-Mitte zentriert
+     sitzen — vorher zog asymmetrisches Padding (mehr unten/rechts) den
+     Fokus aus der Mitte. */
   const isMobile = matchMedia("(max-width:960px)").matches;
   return isMobile
-    ? { paddingTopLeft:[12, 30], paddingBottomRight:[12, 40] }
-    : { paddingTopLeft:[20, 50], paddingBottomRight:[20, 60] };
+    ? { paddingTopLeft:[24, 24], paddingBottomRight:[24, 24] }
+    : { paddingTopLeft:[40, 40], paddingBottomRight:[40, 40] };
 }
 function applyOverview(opts){
   const animated = !!(opts && opts.animated);
