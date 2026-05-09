@@ -520,8 +520,8 @@ a{color:inherit;text-decoration:none}
   .print-sheet{position:static;width:190mm;margin:0 auto;color:#111;font-family:"Space Grotesk",Helvetica,Arial,sans-serif;font-size:9pt;line-height:1.38;background:#fff}
   .print-sheet h1,.print-sheet h2{font-family:"Permanent Marker","Space Grotesk",sans-serif;font-weight:400;letter-spacing:.01em;color:#111;margin:0}
   .print-sheet .ps-head{display:grid;grid-template-columns:1.4fr 1fr;gap:8mm;align-items:end;padding:0 0 4mm 0;border-bottom:2pt solid #111}
-  .ps-head__eyebrow{font-family:"JetBrains Mono",monospace;font-size:7pt;letter-spacing:.24em;color:#c20030;margin-bottom:1.5mm}
-  .ps-head__title{font-size:26pt;line-height:1;letter-spacing:0}
+  .ps-head__eyebrow{font-family:"JetBrains Mono",monospace;font-size:6.6pt;letter-spacing:.22em;color:#c20030;margin-bottom:1.4mm}
+  .ps-head__title{font-size:22pt;line-height:1;letter-spacing:0}
   .ps-head__title span{color:#c20030}
   .ps-head__dateline{margin-top:1.8mm;font-size:9.5pt;color:#222;letter-spacing:.02em;font-weight:500}
   .ps-head__meta{display:grid;grid-template-columns:1fr;gap:1mm;font-size:7.8pt}
@@ -530,8 +530,8 @@ a{color:inherit;text-decoration:none}
   .ps-head__meta span{color:#111}
   .ps-facts{display:grid;grid-template-columns:repeat(4,1fr);gap:3mm;margin:4mm 0 5mm 0}
   .ps-fact{border:.6pt solid #111;border-radius:2mm;padding:2.5mm 3mm;background:#fafafa}
-  .ps-fact b{font-family:"Bebas Neue","Oswald","Impact",sans-serif;font-weight:400;font-size:18pt;line-height:1;letter-spacing:.04em;color:#c20030;display:block}
-  .ps-fact span{display:block;margin-top:1.2mm;font-size:7.6pt;color:#222;line-height:1.35}
+  .ps-fact b{font-family:"Bebas Neue","Oswald","Impact",sans-serif;font-weight:400;font-size:15pt;line-height:1;letter-spacing:.04em;color:#c20030;display:block}
+  .ps-fact span{display:block;margin-top:1mm;font-size:7.2pt;color:#222;line-height:1.32}
   .print-sheet section{margin-bottom:5mm}
   .print-sheet section h2{font-size:13pt;margin:0 0 2.5mm 0;color:#111;border-bottom:1pt solid #c20030;padding-bottom:1mm}
   .print-sheet table{width:100%;border-collapse:collapse;font-size:8.4pt}
@@ -541,24 +541,30 @@ a{color:inherit;text-decoration:none}
   .print-sheet tbody td.ps-num{font-family:"Permanent Marker","Space Grotesk",sans-serif;font-size:11pt;color:#c20030;width:8mm;text-align:center;font-weight:400}
   .ps-note{margin:2mm 0 0 0;font-size:7.6pt;color:#333;line-height:1.45}
   .ps-note b{color:#c20030}
-  .ps-days{display:grid;grid-template-columns:repeat(3,1fr);gap:2.8mm}
-  .ps-day{border:.6pt solid #111;border-radius:2mm;padding:2.5mm 3mm;background:#fff;page-break-inside:avoid;break-inside:avoid}
-  .ps-day__head{display:flex;align-items:baseline;gap:2mm;border-bottom:.5pt solid #d0d0d0;padding-bottom:1.3mm;margin-bottom:1.8mm}
-  .ps-day__num{font-family:"Permanent Marker","Space Grotesk",sans-serif;font-size:11pt;color:#c20030;flex-shrink:0;font-weight:400;line-height:1}
-  .ps-day__date{font-family:"JetBrains Mono",monospace;font-size:7pt;letter-spacing:.1em;color:#333;text-transform:uppercase;flex:1}
-  .ps-day__tag{font-family:"JetBrains Mono",monospace;font-size:6.3pt;letter-spacing:.16em;color:#fff;background:#c20030;padding:.4mm 1.4mm;border-radius:1mm;font-weight:700}
-  .ps-day__title{font-family:"Permanent Marker","Space Grotesk",sans-serif;font-weight:400;font-size:10pt;line-height:1.15;margin:0 0 1.4mm 0;color:#111;letter-spacing:0}
+  .ps-days{display:grid;grid-template-columns:repeat(3,1fr);gap:2.6mm}
+  .ps-day{border:.6pt solid #111;border-radius:2mm;padding:2.3mm 2.8mm;background:#fff;page-break-inside:avoid;break-inside:avoid}
+  /* Header: Tag-Nummer + Datum + Tag-Pill in eine Zeile, mit flex-wrap
+     fuer sehr lange Tags wie "FIRST DAY" / "SKATE+EINRAD" auf English. */
+  .ps-day__head{display:flex;align-items:center;gap:1.6mm;flex-wrap:wrap;border-bottom:.5pt solid #d0d0d0;padding-bottom:1.2mm;margin-bottom:1.6mm}
+  .ps-day__num{font-family:"Permanent Marker","Space Grotesk",sans-serif;font-size:9.5pt;color:#c20030;flex-shrink:0;font-weight:400;line-height:1}
+  .ps-day__date{font-family:"JetBrains Mono",monospace;font-size:6.6pt;letter-spacing:.08em;color:#333;text-transform:uppercase;flex:1;min-width:0}
+  .ps-day__tag{font-family:"JetBrains Mono",monospace;font-size:5.8pt;letter-spacing:.14em;color:#fff;background:#c20030;padding:.4mm 1.3mm;border-radius:1mm;font-weight:700;white-space:nowrap}
+  .ps-day__title{font-family:"Permanent Marker","Space Grotesk",sans-serif;font-weight:400;font-size:9pt;line-height:1.15;margin:0 0 1.3mm 0;color:#111;letter-spacing:0;word-break:break-word}
   .ps-day__title .accent{color:#c20030}
-  .ps-day__stops{list-style:none;padding:0;margin:0;font-size:7.8pt;line-height:1.35}
-  .ps-day__stops li{display:grid;grid-template-columns:16mm 1fr;gap:1mm;padding:.8mm 0;border-bottom:.3pt dotted #c8c8c8}
+  .ps-day__stops{list-style:none;padding:0;margin:0;font-size:7.6pt;line-height:1.32}
+  .ps-day__stops li{display:grid;grid-template-columns:13mm 1fr;gap:1.5mm;padding:.7mm 0;border-bottom:.3pt dotted #c8c8c8;align-items:start}
   .ps-day__stops li:last-child{border-bottom:none}
-  .ps-day__stops li time{font-family:"Anton","Bebas Neue","Impact",sans-serif;font-size:8pt;color:#c20030;letter-spacing:.06em;font-weight:400}
+  /* Time-Label: kleiner und mit word-break, damit lange Worte wie
+     "Zwischenstopp" / "stop on the way" nicht das Layout sprengen. */
+  .ps-day__stops li time{font-family:"JetBrains Mono","Space Grotesk",monospace;font-size:6.4pt;color:#c20030;letter-spacing:.04em;font-weight:700;text-transform:uppercase;word-break:break-word;line-height:1.25;display:inline-block;padding-top:.4mm}
   .ps-day__stops li .nm{color:#111;font-weight:500}
   .ps-day__stops li .nm em{font-style:normal;color:#555;font-size:7.2pt;display:block;margin-top:.2mm}
   .ps-foot{margin-top:4mm;padding-top:3mm;border-top:2pt solid #111;display:grid;grid-template-columns:1fr 1fr auto;gap:5mm;font-size:7.6pt;line-height:1.45;align-items:start}
-  .ps-foot__col b{display:block;color:#c20030;font-size:7.2pt;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1mm;font-weight:700}
+  .ps-foot__col b{display:block;color:#c20030;font-size:7pt;letter-spacing:.1em;text-transform:uppercase;margin-bottom:1mm;font-weight:700}
   .ps-foot__col span{color:#111;font-weight:600}
-  .ps-foot__stamp{font-family:"Permanent Marker","Space Grotesk",sans-serif;font-size:20pt;color:#c20030;transform:rotate(-6deg);border:1.5pt solid #c20030;padding:1.5mm 3mm;border-radius:2mm;letter-spacing:.02em;line-height:1;align-self:center;white-space:nowrap}
+  /* Stamp etwas kleiner, damit auch laengere Texte (z.B. "ANMELDUNG · DIREKT"
+     auf Deutsch) sicher in eine Zeile passen. */
+  .ps-foot__stamp{font-family:"Permanent Marker","Space Grotesk",sans-serif;font-size:14pt;color:#c20030;transform:rotate(-5deg);border:1.4pt solid #c20030;padding:1.4mm 2.6mm;border-radius:2mm;letter-spacing:.02em;line-height:1;align-self:center;white-space:nowrap}
   .ps-lineup{page-break-before:auto}
   .ps-spots tbody td:nth-child(1){width:8mm}
   .ps-spots tbody td:nth-child(4){width:22mm;font-family:"JetBrains Mono",monospace;font-size:7.2pt;color:#c20030;letter-spacing:.04em}
@@ -1872,15 +1878,9 @@ Ich bin mindestens 16 Jahre alt.
 • Allergien:
 • Sonstiges:
 
-FOTO- / VIDEO-EINVERSTÄNDNIS (bitte EIN Kästchen ankreuzen, Pflicht)
-[ ] JA — ich bin damit einverstanden, dass Foto- und Videoaufnahmen
-    von mir gemacht werden und für die Doku des Events (Highlight-Clip,
-    Crew-Bilder, Social-Posts) verwendet werden dürfen.
+FOTO- / VIDEO-EINVERSTÄNDNIS:
+[ ] JA — ich bin damit einverstanden, dass Foto- und Videoaufnahmen von mir gemacht werden und für die Doku des Events (Highlight-Clip, Crew-Bilder, Social-Posts) verwendet werden dürfen.
 [ ] NEIN — ich möchte NICHT auf Foto- oder Videoaufnahmen erscheinen.
-    Mir ist klar: Bei großen Gruppenaufnahmen (Crew-Foto, Sessions,
-    Highlight-Clip) kann ich dann nicht mit drauf sein, weil sich
-    einzelne Personen aus solchen Frames meist nicht sauber rausschneiden
-    lassen.
 
 KOSTEN
 Teilnahmegebühr: 25 € pro Person, EINMALIG für das gesamte Event.
@@ -1909,14 +1909,9 @@ I'm at least 16 years old.
 • Allergies:
 • Notes:
 
-PHOTO / VIDEO CONSENT (please tick ONE box, required)
-[ ] YES — I agree that photos and video footage of me may be taken
-    and used for the event documentation (highlight clip, crew shots,
-    social posts).
+PHOTO / VIDEO CONSENT:
+[ ] YES — I agree that photos and video footage of me may be taken and used for the event documentation (highlight clip, crew shots, social posts).
 [ ] NO — I do NOT want to appear in any photo or video footage.
-    I understand: for large group shots (crew photo, sessions,
-    highlight clip) I cannot be included, since cutting individual
-    people out of such frames usually isn't cleanly possible.
 
 COSTS
 Entry fee: €25 per person, ONE-TIME for the whole event.
