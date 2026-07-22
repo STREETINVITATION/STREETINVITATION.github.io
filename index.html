@@ -2129,6 +2129,17 @@ const IMG = {
   probstei6: "Bilder/Probsteikirche/Probsteikirche_p6.jpg",
   probstei7: "Bilder/Probsteikirche/Probsteikirche_p7.jpg",
   probstei8: "Bilder/Probsteikirche/Probsteikirche_p8.jpg",
+  dnb1: "Bilder/DNB_Magazinturm/DNB_Magazinturm_p1.jpg",
+  dnb2: "Bilder/DNB_Magazinturm/DNB_Magazinturm_p2.jpg",
+  dnb3: "Bilder/DNB_Magazinturm/DNB_Magazinturm_p3.jpg",
+  dnb4: "Bilder/DNB_Magazinturm/DNB_Magazinturm_p4.jpg",
+  dnb5: "Bilder/DNB_Magazinturm/DNB_Magazinturm_p5.jpg",
+  dnb6: "Bilder/DNB_Magazinturm/DNB_Magazinturm_p6.jpg",
+  reudnitz1: "Bilder/Reudnitz_Skatepark/Reudnitz_Skatepark_p1.jpg",
+  reudnitz2: "Bilder/Reudnitz_Skatepark/Reudnitz_Skatepark_p2.jpg",
+  reudnitz3: "Bilder/Reudnitz_Skatepark/Reudnitz_Skatepark_p3.jpg",
+  reudnitz4: "Bilder/Reudnitz_Skatepark/Reudnitz_Skatepark_p4.jpg",
+  reudnitz5: "Bilder/Reudnitz_Skatepark/Reudnitz_Skatepark_p5.jpg",
   wilhelm1: "Bilder/Wilhelm_Leuschner_Platz/Wilhelm_Leuschner_Platz_p1.jpg",
   penny1: "Bilder/15_Stairset_Penny/15_Stairset_Penny_p1.jpg",
   penny2: "Bilder/15_Stairset_Penny/15_Stairset_Penny_p2.jpg",
@@ -2172,9 +2183,9 @@ const spotsMaster = {
         en:{ title:"Herderstr. Playground · Connewitz", desc:"Relaxed area for shared food and easy riding." } },
   12: { title:"MDR Leipzig",                    addr:"Kantstraße 71–73, 04275 Leipzig",      coords:[51.3156,12.3846], desc:"DIY-Spot an der MDR-S-Bahn-Station.",                 mapsUrl:"https://maps.app.goo.gl/cNaJeusZk9FMrQNa9",         img:IMG.mdr1,
         en:{ desc:"DIY spot next to the MDR S-Bahn station." } },
-  13: { title:"DNB Magazinturm · Alte Messe",   addr:"Deutscher Pl. 1, 04103 Leipzig",       coords:[51.3223,12.3972], desc:"Deutsche Nationalbibliothek Magazinturm. Brutalismus, offene Plazas, Street & Flat.",          mapsUrl:"https://maps.app.goo.gl/Va54MWz71W3Wjvmw7?g_st=ac", img:IMG.mdr2,
+  13: { title:"DNB Magazinturm · Alte Messe",   addr:"Deutscher Pl. 1, 04103 Leipzig",       coords:[51.3223,12.3972], desc:"Deutsche Nationalbibliothek Magazinturm. Brutalismus, offene Plazas, Street & Flat.",          mapsUrl:"https://maps.app.goo.gl/Va54MWz71W3Wjvmw7?g_st=ac", img:IMG.dnb1,
         en:{ desc:"German National Library archive tower. Brutalism, open plazas, street & flatland." } },
-  14: { title:"Reudnitz Skatepark",             addr:"Fröschelstraße 4, 04317 Leipzig",      coords:[51.3348,12.4019], desc:"Großer Park, solide Obstacles. Rails, Quarters, Ledges. Street bis in den Abend.",             mapsUrl:"https://maps.app.goo.gl/MfE7mifyHYmtSYvt7?g_st=ac", img:IMG.mdr4,
+  14: { title:"Reudnitz Skatepark",             addr:"Fröschelstraße 4, 04317 Leipzig",      coords:[51.3348,12.4019], desc:"Großer Park, solide Obstacles. Rails, Quarters, Ledges. Street bis in den Abend.",             mapsUrl:"https://maps.app.goo.gl/MfE7mifyHYmtSYvt7?g_st=ac", img:IMG.reudnitz1,
         en:{ desc:"Large park, solid obstacles. Rails, quarters, ledges. Street riding into the evening." } },
   15: { title:"Haus am See",                    addr:"Strandbad Ost Markkleeberger See · Auenhainer Str. 1, 04416 Markkleeberg", coords:[51.271034,12.397521], desc:"Badesee direkt nebenan.\n\nStrand ist 300 m entfernt.", mapsUrl:"https://maps.app.goo.gl/9x3vtyWNHKamvns59?g_st=ac", img:IMG.see, lake:true,
         en:{ title:"Lake House", addr:"Strandbad Ost Markkleeberger See · Auenhainer Str. 1, 04416 Markkleeberg", desc:"Swim lake right next door.\n\nBeach is 300 m away." } },
@@ -2197,9 +2208,7 @@ function spot(id, time, extras){ return { ...spotsMaster[id], id, time, ...(extr
    OFFEN - kein eigenes Material vorhanden, bis dahin bewusst vom naechst-
    gelegenen Spot geliehen, damit die Galerie nicht leer bleibt:
      11 Spielplatz Herderstr.  <- Fotos + Videos vom Conne Island (Spot 10)
-     13 DNB Magazinturm        <- Fotos vom MDR-Spot (Spot 12)
-     14 Reudnitz Skatepark     <- Fotos vom MDR-Spot (Spot 12)
-   Betrifft auch das img: im spotsMaster dieser drei (Kartenpunkt + Kopfbild).
+   Betrifft auch das img: im spotsMaster dieses Spots (Kartenpunkt + Kopfbild).
 
    DUENN - nur ein einziges eigenes Foto:
      5 Biomare, 10 Conne Island (dafuer 3 Videos),
@@ -2220,8 +2229,8 @@ const spotMedia = {
   10: { img:[IMG.conne], vid:[VID.conne1, VID.conne2, VID.conne3] },
   11: { img:[IMG.conne], vid:[VID.conne1, VID.conne2, VID.conne3] },
   12: { img:[IMG.mdr1, IMG.mdr2, IMG.mdr3, IMG.mdr4, IMG.mdr5, IMG.mdr6], vid:[] },
-  13: { img:[IMG.mdr2, IMG.mdr3, IMG.mdr1, IMG.mdr4, IMG.mdr5, IMG.mdr6], vid:[] },
-  14: { img:[IMG.mdr4, IMG.mdr5, IMG.mdr6, IMG.mdr1, IMG.mdr2, IMG.mdr3], vid:[] },
+  13: { img:[IMG.dnb1, IMG.dnb2, IMG.dnb3, IMG.dnb4, IMG.dnb5, IMG.dnb6], vid:[] },
+  14: { img:[IMG.reudnitz1, IMG.reudnitz2, IMG.reudnitz3, IMG.reudnitz4, IMG.reudnitz5], vid:[] },
   15: { img:[IMG.see], vid:[] },
   16: { img:[IMG.wilhelm1], vid:[] },
   17: { img:[IMG.penny1, IMG.penny2, IMG.penny3], vid:[] }
