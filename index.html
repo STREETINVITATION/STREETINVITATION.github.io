@@ -2660,21 +2660,19 @@ eventDays.forEach((d, i) => {
     let active = false;
     let loadToken = 0;
 
-    /* Bilder der Tages-Diashow vorladen - aber erst, wenn der Tag in Sicht
-       kommt (siehe start()). Vorher lief das sofort beim Seitenaufbau fuer
-       alle neun Tage und hat rund 20 MB gezogen, weil new Image() das
-       loading="lazy" der Kacheln komplett umgeht. */
-    let preloaded = false;
-    function preloadImgs(){
-      if(preloaded) return;
-      preloaded = true;
-      imgs.forEach(it => { const p = new Image(); p.decoding = "async"; p.src = it.src; });
-      /* Galerie-Kacheln stehen im Markup auf preload="none", sonst wuerden
-         alle 21 Video-Kacheln schon beim Seitenaufbau Metadaten ziehen. Ihr
-         Standbild holen wir hier nach, sobald der Tag dran ist. */
-      sec.querySelectorAll(".gal-item--video video").forEach(v => {
-        if(v.preload !== "metadata"){ v.preload = "metadata"; v.load(); }
-      });
+    /* Nur das jeweils naechste Diashow-Bild vorladen, damit der Wechsel nicht
+       flackert. Frueher lud das hier ALLE Bilder ALLER neun Tage sofort beim
+       Seitenaufbau (~20 MB) und umging dabei das loading="lazy" der Kacheln;
+       auch pro Tag die ganze Galerie zu holen ist unnoetig - laufen tut immer
+       nur ein Bild. */
+    const vorgeladen = new Set();
+    function prefetch(it){
+      if(!it || it.type !== "img" || vorgeladen.has(it.src)) return;
+      vorgeladen.add(it.src);
+      const p = new Image(); p.decoding = "async"; p.src = it.src;
+    }
+    function prefetchNext(){
+      if(playlist.length > 1) prefetch(playlist[(pi + 1) % playlist.length]);
     }
 
     function clearT(){ if(timer){ clearTimeout(timer); timer = null; } }
@@ -2708,6 +2706,7 @@ eventDays.forEach((d, i) => {
       const it = playlist[pi];
       if(!it){ pi = 0; return; }
       const token = ++loadToken;
+      prefetchNext();
 
       if(it.type === "vid"){
         // Beide Video-Elemente bekommen die gleiche Quelle (Photo-Area + Bar-BG)
@@ -2747,7 +2746,7 @@ eventDays.forEach((d, i) => {
       }
     }
 
-    function start(){ if(active) return; active = true; preloadImgs(); showCurrent(); }
+    function start(){ if(active) return; active = true; showCurrent(); }
     function pause(){
       active = false;
       clearT(); clearW();
@@ -2787,6 +2786,15 @@ eventDays.forEach((d, i) => {
     io.observe(sec);
 
     sec.addEventListener("toggle", () => {
+      /* Video-Kacheln der Galerie stehen im Markup auf preload="none", sonst
+         wuerden alle 21 schon beim Seitenaufbau Metadaten ziehen. Ihr
+         Standbild holen wir erst, wenn der Tag wirklich aufgeklappt wird -
+         vorher sieht sie ohnehin niemand. */
+      if(sec.open){
+        sec.querySelectorAll(".gal-item--video video").forEach(v => {
+          if(v.preload !== "metadata"){ v.preload = "metadata"; v.load(); }
+        });
+      }
       resetFrame();
       setTimeout(() => start(), 60);
     });
