@@ -2578,7 +2578,7 @@ eventDays.forEach((d, i) => {
     const galLabel = tSpot(spotsMaster[it.spotId], "title");
     if(it.type === "vid"){
       return `<button type="button" class="gal-item gal-item--video" data-day="${i}" data-idx="${idx}" aria-label="${t("days.aria.video",{label:galLabel})}">
-        <video src="${it.src}" muted playsinline preload="metadata"></video>
+        <video src="${it.src}" muted playsinline preload="none"></video>
         <div class="gal-item__play" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>
         <div class="gal-item__label"><span class="gal-item__pin">${it.spotId}</span>${galLabel}</div>
       </button>`;
@@ -2598,7 +2598,7 @@ eventDays.forEach((d, i) => {
 
   sec.innerHTML = `
     <summary class="day__bar">
-      <div class="day__bar-bg"><img src="${d.image}" alt="" loading="lazy" />${d._gallery.some(it=>it.type==="vid") ? `<video class="day__bar-video" muted autoplay playsinline preload="metadata" crossorigin="anonymous"></video>` : ""}</div>
+      <div class="day__bar-bg"><img src="${d.image}" alt="" loading="lazy" />${d._gallery.some(it=>it.type==="vid") ? `<video class="day__bar-video" muted playsinline preload="none" crossorigin="anonymous"></video>` : ""}</div>
       <div class="day__bar-num">${t("days.bar.day")} ${num2}</div>
       <div class="day__bar-date"><b>${weekday}</b><span>${dateTail}</span></div>
       <div class="day__bar-tag">${tDay(d,"tag")}</div>
@@ -2608,7 +2608,7 @@ eventDays.forEach((d, i) => {
     <div class="day__body">
       <div class="day__photo">
         <img src="${d.image}" alt="" loading="lazy" />
-        ${d._gallery.length ? `<video class="day__video" muted autoplay playsinline preload="metadata" crossorigin="anonymous"></video>` : ""}
+        ${d._gallery.length ? `<video class="day__video" muted playsinline preload="none" crossorigin="anonymous"></video>` : ""}
         <div class="day__photo-overlay"></div>
         <div class="day__photo-scan"></div>
       </div>
@@ -2660,8 +2660,22 @@ eventDays.forEach((d, i) => {
     let active = false;
     let loadToken = 0;
 
-    // Bilder vorladen
-    imgs.forEach(it => { const p = new Image(); p.decoding = "async"; p.src = it.src; });
+    /* Bilder der Tages-Diashow vorladen - aber erst, wenn der Tag in Sicht
+       kommt (siehe start()). Vorher lief das sofort beim Seitenaufbau fuer
+       alle neun Tage und hat rund 20 MB gezogen, weil new Image() das
+       loading="lazy" der Kacheln komplett umgeht. */
+    let preloaded = false;
+    function preloadImgs(){
+      if(preloaded) return;
+      preloaded = true;
+      imgs.forEach(it => { const p = new Image(); p.decoding = "async"; p.src = it.src; });
+      /* Galerie-Kacheln stehen im Markup auf preload="none", sonst wuerden
+         alle 21 Video-Kacheln schon beim Seitenaufbau Metadaten ziehen. Ihr
+         Standbild holen wir hier nach, sobald der Tag dran ist. */
+      sec.querySelectorAll(".gal-item--video video").forEach(v => {
+        if(v.preload !== "metadata"){ v.preload = "metadata"; v.load(); }
+      });
+    }
 
     function clearT(){ if(timer){ clearTimeout(timer); timer = null; } }
     function clearW(){ if(watchdog){ clearTimeout(watchdog); watchdog = null; } }
@@ -2733,7 +2747,7 @@ eventDays.forEach((d, i) => {
       }
     }
 
-    function start(){ if(active) return; active = true; showCurrent(); }
+    function start(){ if(active) return; active = true; preloadImgs(); showCurrent(); }
     function pause(){
       active = false;
       clearT(); clearW();
@@ -4120,7 +4134,25 @@ document.addEventListener("keydown", (e) => {
 })();
 
 /* ============ LOADER ============ */
-window.addEventListener("load", () => setTimeout(() => document.getElementById("loader").classList.add("hidden"), 800));
+/* Loader ausblenden, sobald die Seite bedienbar ist.
+   Frueher hing das an window.load - das feuert erst, wenn ALLE Bilder und
+   Videos durch sind (live gemessen ~34 s), obwohl das DOM schon nach ~0,5 s
+   stand. Besucher sahen also gut 35 s lang nur den Ladebildschirm.
+   Jetzt entscheidet das Titelbild: ist es da, ist die Seite zeigbar. */
+(() => {
+  const loader = document.getElementById("loader");
+  if(!loader) return;
+  let done = false;
+  const hide = () => { if(done) return; done = true; loader.classList.add("hidden"); };
+  const hero = document.querySelector("#heroImg img");
+  if(hero && !hero.complete){
+    hero.addEventListener("load",  hide, { once:true });
+    hero.addEventListener("error", hide, { once:true });
+    setTimeout(hide, 3000);   // Notbremse bei langsamer Leitung
+  } else {
+    setTimeout(hide, 300);    // kurz stehen lassen, sonst blitzt er nur auf
+  }
+})();
 </script>
 </body>
 </html>
