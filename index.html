@@ -1069,10 +1069,15 @@ a.sponsor__logo:hover,a.sponsor__logo:focus-visible{opacity:1;transform:translat
 .sponsor__logo--heiz img{height:40px}
 .sponsor__logo--bambule img{height:60px}
 .sponsor__logo--dacs img{height:28px;max-width:min(280px,72vw)}
+/* Shredderei-Quelle ist nur 340x70 - bei 30 px bleibt es gut 2x scharf */
+.sponsor__logo--shredderei img{height:30px}
 @media (max-width:700px){
+  /* Vier Logos brechen sonst zu 3+1 um - als 2x2-Raster steht es ruhiger */
+  .sponsor__row{display:grid;grid-template-columns:repeat(2,auto);justify-content:center;align-items:center;gap:1.3rem 1.5rem}
   .sponsor__logo--heiz img{height:32px}
   .sponsor__logo--bambule img{height:48px}
   .sponsor__logo--dacs img{height:23px}
+  .sponsor__logo--shredderei img{height:24px}
 }
 
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important;animation-iteration-count:1!important}}
@@ -1439,6 +1444,9 @@ a.sponsor__logo:hover,a.sponsor__logo:focus-visible{opacity:1;transform:translat
       </span>
       <span class="sponsor__logo sponsor__logo--dacs">
         <img src="Bilder/Sponsoren/dacs.png" alt="D.A.C.S. e.V." loading="lazy" decoding="async" />
+      </span>
+      <span class="sponsor__logo sponsor__logo--shredderei">
+        <img src="Bilder/Sponsoren/shredderei.png" alt="Shredderei · Local Skateshop Leipzig" loading="lazy" decoding="async" />
       </span>
     </div>
   </div>
