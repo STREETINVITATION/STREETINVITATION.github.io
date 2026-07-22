@@ -2192,7 +2192,21 @@ function tSpot(s, field){
 }
 function spot(id, time, extras){ return { ...spotsMaster[id], id, time, ...(extras||{}) } }
 
-/* Medien-Zuordnung pro Spot: nur Material vom jeweiligen Ort */
+/* Medien-Zuordnung pro Spot.
+
+   OFFEN - kein eigenes Material vorhanden, bis dahin bewusst vom naechst-
+   gelegenen Spot geliehen, damit die Galerie nicht leer bleibt:
+     11 Spielplatz Herderstr.  <- Fotos + Videos vom Conne Island (Spot 10)
+     13 DNB Magazinturm        <- Fotos vom MDR-Spot (Spot 12)
+     14 Reudnitz Skatepark     <- Fotos vom MDR-Spot (Spot 12)
+   Betrifft auch das img: im spotsMaster dieser drei (Kartenpunkt + Kopfbild).
+
+   DUENN - nur ein einziges eigenes Foto:
+     5 Biomare, 10 Conne Island (dafuer 3 Videos),
+     15 Haus am See, 16 Wilhelm-Leuschner-Platz
+
+   Sobald eigenes Material da ist: Dateien nach Bilder/<Ort>/ legen, oben in
+   IMG bzw. VID eintragen und hier die geliehenen Eintraege ersetzen. */
 const spotMedia = {
   1:  { img:[IMG.plei1, IMG.plei2, IMG.plei3], vid:[VID.plei1] },
   2:  { img:[IMG.plaza1, IMG.plaza2, IMG.plaza3, IMG.plaza4, IMG.plaza5], vid:[] },
